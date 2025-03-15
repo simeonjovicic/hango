@@ -29,6 +29,62 @@ canvas {
   max-width: 1120px;
 }
 
+@keyframes shine {
+  to {
+    left: 150%;
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { 
+    transform: scale(1); 
+  }
+  50% { 
+    transform: scale(1.05); 
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.shine-animation {
+  animation: shine 2.5s ease-in-out infinite;
+  left: -50%;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(96, 165, 250, 0.1) 50%,
+    transparent 100%
+  );
+}
+
+@font-face {
+  font-family: 'Menulis';
+  src: url('/menulis-bold.ttf') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-k2d {
+  font-family: 'K2D', sans-serif;
+}
+
+.font-roboto {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.font-menulis {
+  font-family: 'menulis', sans-serif !important;
+}
+
 html {
   scroll-behavior: smooth;
 }

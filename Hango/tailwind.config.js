@@ -13,6 +13,18 @@ export default {
         },
         zinc: "#101010",
       },
+      fontFamily: {
+        roboto: ["Roboto", "sans-serif"],
+      },
+      fontFamily: {
+        k2d: ["K2D", "sans-serif"],
+      },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+      },
+      fontFamily: {
+        inter: ["menulis", "sans-serif"],
+      },
     },
   },
   plugins: [],

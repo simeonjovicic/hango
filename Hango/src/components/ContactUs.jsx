@@ -131,36 +131,114 @@ E-Mail: ${formData.email}
   };
 
   return (
-    <div
-      className="relative w-full bg-gradient-to-t to-[#28262B] via-[#3F404F] from-[#3F404F] text-white"
-      style={{ minHeight: "120vh" }}
-    >
-      <h1 className="text-center text-5xl md:text-6xl font-extrabold mb-20">
-        Wir würden uns freuen, von Ihnen zu hören
+    <div className="pt-16 md:pt-40 relative min-h-[182vh] lg:md:min-h-[147vh] w-full bg-gradient-to-t to-[#28262B] via-[#3F404F] from-[#3F404F] text-white">
+      <h1 className="text-center text-3xl md:text-5xl font-roboto font-extrabold mb-10">
+        Kontaktieren Sie uns!
       </h1>
 
-      <div className="max-w-8xl mx-64 grid grid-cols-1 md:grid-cols-2 gap-12 p-16 bg-black/30 rounded-xl shadow-2xl backdrop-blur-md">
+      <div className="max-w-8xl mx-4 md:mx-40 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 p-4 md:p-16 bg-black/30 rounded-xl shadow-2xl backdrop-blur-md">
         <div className="space-y-10">
-          <h2 className="text-3xl font-bold">Kontaktmöglichkeiten</h2>
+          <h2 className="text-2xl md:text-3xl font-bold font-roboto">
+            Kontaktmöglichkeiten
+          </h2>
           <div className="space-y-6 text-gray-200 text-lg">
-            <div>
-              <h3 className="text-white font-semibold text-xl">Flowbite USA</h3>
-              <p>1230 McCormick Rd, EP M, Suite 200, Iowa Myale, MD 20331</p>
-              <p className="mt-2">info@flowbite.com</p>
-              <p>sales@flowbite.com</p>
+            <div className="group relative overflow-hidden bg-gradient-to-br from-blue-900/30 to-indigo-900/20 p-6 rounded-xl border border-blue-400/20 hover:border-blue-400/30 transition-all duration-300 shadow-lg hover:shadow-xl">
+              {/* Simplified background animation */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute -top-1 -left-4 w-24 h-24 bg-blue-500 rounded-full blur-2xl opacity-20 animate-pulse-slow" />
+              </div>
+
+              <div className="relative flex items-center space-x-4">
+                {/* Icon container */}
+                <div className="flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-9 w-9 text-blue-400 transition-transform duration-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+
+                {/* Simplified content */}
+                <div className="flex-1">
+                  <h3 className="text-[1.3rem] font-semibold text-blue-50 mb-2">
+                    Garantierte Antwort innerhalb von 24h
+                  </h3>
+                  <p className="text-blue-300"></p>
+                </div>
+              </div>
+
+              {/* Subtle hover effect */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute -inset-12 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/30 to-transparent transform -skew-x-12 w-1/3 shine-animation" />
+                </div>
+              </div>
             </div>
+
+            {/* Email */}
+            <a
+              href="mailto:business@hango.at"
+              className="flex items-center hover:text-blue-400 transition-colors group hover:text-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-3 text-gray-400 group-hover:text-blue-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              <span>business@hango.at</span>
+            </a>
+
+            {/* Phone */}
+            <a
+              href="tel:+436605722674"
+              className="flex items-center hover:text-blue-400 transition-colors group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-3 text-gray-400 group-hover:text-blue-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              <span>+43 660 5722 674</span>
+            </a>
           </div>
         </div>
 
         <div className="space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold">
+          <h2 className="text-2xl md:text-3xl font-bold font-roboto">
             Kontaktieren Sie uns
           </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block mb-2 text-lg font-medium text-gray-200">
+                <label className="block mb-1 text-lg font-medium text-gray-200">
                   Vorname
                 </label>
                 <input
@@ -168,7 +246,7 @@ E-Mail: ${formData.email}
                   name="vorname"
                   value={formData.vorname}
                   onChange={handleChange}
-                  className="block w-full rounded-md bg-gray-800 border border-gray-700 p-4 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
                 {errors.vorname && (
                   <p className="text-red-500">{errors.vorname}</p>
@@ -176,7 +254,7 @@ E-Mail: ${formData.email}
               </div>
 
               <div>
-                <label className="block mb-2 text-lg font-medium text-gray-200">
+                <label className="block mb-1 text-lg font-medium text-gray-200">
                   Nachname
                 </label>
                 <input
@@ -184,7 +262,7 @@ E-Mail: ${formData.email}
                   name="nachname"
                   value={formData.nachname}
                   onChange={handleChange}
-                  className="block w-full rounded-md bg-gray-800 border border-gray-700 p-4 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
                 {errors.nachname && (
                   <p className="text-red-500">{errors.nachname}</p>
@@ -193,7 +271,7 @@ E-Mail: ${formData.email}
             </div>
 
             <div>
-              <label className="block mb-2 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-200">
                 E-Mail-Adresse
               </label>
               <input
@@ -201,13 +279,13 @@ E-Mail: ${formData.email}
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-4 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               {errors.email && <p className="text-red-500">{errors.email}</p>}
             </div>
 
             <div>
-              <label className="block mb-2 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-200">
                 Telefonnummer
               </label>
               <input
@@ -215,7 +293,7 @@ E-Mail: ${formData.email}
                 name="telefonnummer"
                 value={formData.telefonnummer}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-4 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               {errors.telefonnummer && (
                 <p className="text-red-500">{errors.telefonnummer}</p>
@@ -223,7 +301,7 @@ E-Mail: ${formData.email}
             </div>
 
             <div>
-              <label className="block mb-2 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-200">
                 Betreff
               </label>
               <input
@@ -231,7 +309,7 @@ E-Mail: ${formData.email}
                 name="betreff"
                 value={formData.betreff}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-4 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               {errors.betreff && (
                 <p className="text-red-500">{errors.betreff}</p>
@@ -239,7 +317,7 @@ E-Mail: ${formData.email}
             </div>
 
             <div>
-              <label className="block mb-2 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-200">
                 Ihre Nachricht
               </label>
               <textarea
@@ -247,7 +325,7 @@ E-Mail: ${formData.email}
                 name="nachricht"
                 value={formData.nachricht}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-4 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-gray-800 border border-gray-700 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               {errors.nachricht && (
                 <p className="text-red-500">{errors.nachricht}</p>
@@ -256,13 +334,14 @@ E-Mail: ${formData.email}
 
             <div className="flex items-start">
               <input
+                id="accept"
                 type="checkbox"
                 name="terms"
                 checked={formData.terms}
                 onChange={handleChange}
                 className="h-5 w-5 mt-1 mr-3 border-gray-300 rounded"
               />
-              <label className="text-lg text-gray-400">
+              <label className="text-lg text-gray-400" htmlFor="accept">
                 Ich akzeptiere die Bedingungen
               </label>
             </div>
@@ -286,3 +365,5 @@ E-Mail: ${formData.email}
 };
 
 export default ContactUs;
+
+

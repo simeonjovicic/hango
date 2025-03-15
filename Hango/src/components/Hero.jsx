@@ -29,8 +29,8 @@ function Hero() {
       });
 
       gsap.to(cylinderRef.current, {
-        x: "+=35",
-        y: "-=10",
+        x: "+=20",
+        y: "-=7",
         rotation: "-5deg",
         repeat: -1,
         yoyo: true,
@@ -72,7 +72,7 @@ function Hero() {
         {
           opacity: 1,
           y: 0,
-          duration: .6,
+          duration: 0.6,
           ease: "power3.in",
           delay: 0.95,
         }
@@ -90,18 +90,18 @@ function Hero() {
         }
       );
 
-      // Reveal the arrow only after scrolling
+      // Reveal the arrow only after scrolling on larger screens
       gsap.fromTo(
         arrowRef.current,
-        { opacity: 0, y: -100},
+        { opacity: 0, y: -50 },
         {
           opacity: 1,
           y: 0,
-          duration: 2,
+          duration: 1.2,
           ease: "expo.inOut",
           scrollTrigger: {
             trigger: heroRef.current,
-            start: 200,
+            start: 100,
             toggleActions: "play none none reverse",
           },
         }
@@ -112,20 +112,20 @@ function Hero() {
   }, []);
 
   return (
-    <div ref={heroRef} className="min-h-screen flex flex-col" id="home">
-      <section className="h-screen w-full bg-gradient-to-t from-[#473D3D] via-[#28262B] to-[#28262B] flex items-center justify-start">
-        <div className="flex flex-col items-start gap-8 max-w-5xl mb-10 px-8 ml-8 md:ml-16">
+    <div ref={heroRef} className="flex flex-col" id="home">
+      <section className="pt-40 lg:md:pt-0 h-[30rem] md:h-screen w-full bg-gradient-to-t from-[#473D3D] via-[#28262B] to-[#28262B] flex items-center justify-start relative">
+        <div className="flex flex-col items-start gap-8 max-w-3xl mt-10 md:mt-0 md:mb-10 px-6  lg:md:ml-20">
           {/* Text Content */}
           <div className="flex flex-col gap-4">
             <h1
               ref={textRef}
-              className="text-4xl font-extrabold text-white md:text-6xl lg:text-8xl leading-tight"
+              className="font-roboto text-[2.6rem] max-w-[50rem] lg:md:max-w-[40rem] sm:text-4xl md:text-6xl lg:text-[4rem] font-extrabold text-white leading-tight"
             >
               Ihre Webdesign Agentur in Wien
             </h1>
             <p
               ref={subtitleRef}
-              className="text-lg text-gray-200 md:text-xl lg:text-3xl max-w-3xl"
+              className="font-inter text-[1.3rem] md:text-xl lg:text-[1.5rem] text-gray-200 max-w-[21.5rem] lg:md:max-w-[38rem]"
             >
               Auf der Suche nach einer professionellen Webseite? Bei uns sind
               Sie richtig!
@@ -133,83 +133,58 @@ function Hero() {
           </div>
 
           {/* Buttons */}
-          {/* Button Container */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <a href="#über uns">
               <button
-                className="
-                px-6 py-3 
-                text-white 
-                text-lg 
-                font-medium 
-                relative 
-                overflow-hidden 
-                rounded-xl 
-                transition-all 
-                duration-300
-                hover:shadow-lg
-                hover:shadow-gray-500/20
-                
-                before:content-['']
-                before:absolute
-                before:inset-0
-                before:z-0
-                before:bg-gradient-to-r
-                before:from-white
-                before:to-gray-700
-                before:rounded-xl
-                
-                after:content-['']
-                after:absolute
-                after:inset-[2px]
-                after:z-10
-                after:bg-[#28262B]
-                after:rounded-lg
-                
-                hover:after:bg-[#373438]"
-
                 ref={learnButtonRef}
+                className="
+                  w-screen max-w-[21.5rem] lg:md:w-fit py-[.7rem] lg:md:px-4 sm:px-6 lg:md:py-3 sm:py-3
+                  relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gray-500/20
+                  before:content-[''] before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-white before:to-gray-700 before:rounded-xl
+                  after:content-[''] after:absolute after:inset-[2px] after:z-10 after:bg-[#28262B] after:rounded-lg hover:after:bg-[#373438]
+                "
               >
-                <span className="relative z-20 text-2xl">Mehr Erfahren</span>
+                <span className="font-inter relative z-20 text-[1.21rem]  md:text-lg">
+                  Mehr Erfahren
+                </span>
               </button>
             </a>
 
             <a href="#contact">
               <button
-                className="mr-6 px-[1.5rem] py-[.8rem] text-white text-lg font-medium 
-                    bg-gradient-to-r from-red-500 to-red-600 
-                    hover:from-red-500 hover:to-red-700 
-                    transition-all duration-300 
-                    shadow-lg shadow-red-500/30 
-                    hover:shadow-red-500/50 
-                    rounded-xl"
-
-                    ref={contactButtonRef}
+                ref={contactButtonRef}
+                className="
+                  w-screen max-w-[21.5rem]  lg:md:w-fit py-[.7rem]  px-2 lg:md:px-[1rem] sm:px-[1.5rem] lg:md:py-[.7rem] sm:py-[.8rem]
+                  bg-gradient-to-r from-red-500 to-red-600 hover:from-red-500 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 rounded-lg
+                "
               >
-                <p className="text-2xl">Jetzt Kontaktieren</p>
+                <p className="font-inter text-[1.21rem] md:text-lg">
+                  Jetzt Kontaktieren
+                </p>
               </button>
             </a>
           </div>
         </div>
 
-        {/* Animated Shapes */}
+        {/* Animated Shapes - Hidden on mobile */}
         <img
           ref={triangleRef}
           src={triangle}
           alt="abstract triangle"
-          className="absolute left-[31%] bottom-[5%] w-[400px] opacity-90"
+          className="hidden md:block absolute left-[78%] md:left-[45%] bottom-[58%] transform -translate-x-1/2 md:bottom-[5%] w-[80px] sm:w-[200px] md:w-[300px] opacity-90"
         />
         <img
           ref={cylinderRef}
           src={cylinder2}
           alt="abstract cylinder"
-          className="absolute right-[2%] bottom-[4%] w-[820px] opacity-90"
+          className="hidden md:block absolute md:right-[3%] right-[12%] bottom-[5%] md:bottom-[2%] w-[160px] sm:w-[400px] md:w-[610px] opacity-90"
         />
+        {/* Arrow is already hidden on mobile */}
         <img
           ref={arrowRef}
           src={arrow}
           alt="scroll arrow"
-          className="absolute right-[76%] -bottom-[5%] w-[30rem] opacity-60 rotate-[60deg]"
+          className="hidden md:block absolute right-[75%] -bottom-[7%] w-[22rem] opacity-60 rotate-[60deg]"
         />
       </section>
     </div>
@@ -217,4 +192,3 @@ function Hero() {
 }
 
 export default Hero;
-

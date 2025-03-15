@@ -42,152 +42,197 @@ const timelineData = [
     description: [
       "Regelmäßige Updates und Performance-Optimierung.",
       "Bugfixes und Sicherheitsupdates.",
-      "Kontinuierliche Weiterentwicklung basierend auf Nutzerfeedback.",
+      "Fortlaufende Weiterentwicklung je nach Nutzerfeedback.",
     ],
   },
 ];
 
 const Timeline = () => {
   const containerRef = useRef(null);
+  const titleRef = useRef(null);
   const itemsRef = useRef([]);
   const markersRef = useRef([]);
   const lineRef = useRef(null);
 
-useLayoutEffect(() => {
-  const ctx = gsap.context(() => {
-    if (!markersRef.current.length) return;
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate the title when scrolled into view
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: titleRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
 
-    const firstMarker = markersRef.current[0];
-    const lastMarker = markersRef.current[markersRef.current.length - 1];
+      if (!markersRef.current.length) return;
 
-    const firstMarkerOffset =
-      firstMarker.offsetTop + firstMarker.offsetHeight / 2;
-    const lastMarkerOffset = lastMarker.offsetTop + lastMarker.offsetHeight / 2;
-    const totalHeight = lastMarkerOffset - firstMarkerOffset;
+      const firstMarker = markersRef.current[0];
+      const lastMarker = markersRef.current[markersRef.current.length - 1];
+      const firstMarkerOffset =
+        firstMarker.offsetTop + firstMarker.offsetHeight / 2;
+      const lastMarkerOffset =
+        lastMarker.offsetTop + lastMarker.offsetHeight / 2;
+      const totalHeight = lastMarkerOffset - firstMarkerOffset;
 
-    if (lineRef.current) {
-      lineRef.current.style.top = `${firstMarkerOffset}px`;
-      lineRef.current.style.backgroundColor = "#FF6B6B";
-      gsap.fromTo(
-        lineRef.current,
-        { height: 0 },
-        {
-          height: totalHeight,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            scrub: true,
-          },
-          duration: 1,
-        }
-      );
-    }
+      if (lineRef.current) {
+        lineRef.current.style.top = `${firstMarkerOffset}px`;
+        lineRef.current.style.backgroundColor = "#FF6B6B"; // Vibrant red
+        gsap.fromTo(
+          lineRef.current,
+          { height: 0 },
+          {
+            height: totalHeight,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 80%",
+              end: "bottom 20%",
+              scrub: true,
+            },
+            duration: 1,
+          }
+        );
+      }
 
-    itemsRef.current.forEach((card, index) => {
-      gsap.fromTo(
-        card,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          scrollTrigger: {
-            trigger: card,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    });
+      itemsRef.current.forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 90%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
 
-    markersRef.current.forEach((marker) => {
-      gsap.fromTo(
-        marker,
-        { backgroundColor: "#2c3139" }, // Initial color
-        {
-          backgroundColor: "#4A5568", // Gold color
-          scrollTrigger: {
-            trigger: marker,
-            start: "top 75%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    });
-  }, containerRef);
+      markersRef.current.forEach((marker) => {
+        gsap.fromTo(
+          marker,
+          { backgroundColor: "#2c3139" },
+          {
+            backgroundColor: "#4A5568",
+            scrollTrigger: {
+              trigger: marker,
+              start: "top 75%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+    }, containerRef);
 
-  return () => ctx.revert();
-}, []);
-
+    return () => ctx.revert();
+  }, []);
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-gradient-to-t from-[#28262B] via-[#28262B] to-[#28262B] text-white py-56"
-      style={{ minHeight: "100vh" }}
+      className="pt-24 lg:pt-40 relative w-full bg-[#28262B] text-white min-h-screen"
       id="ablauf"
     >
       <div className="flex flex-col items-center py-16">
-        <h1 className="text-7xl font-bold mb-16 bg-gradient-to-t from-[#e0a33b] to-[#ffd87d] bg-clip-text text-transparent">
+        <h1
+          ref={titleRef}
+          className="text-5xl font-roboto font-bold mb-16 bg-gradient-to-t from-[#e0a33b] to-[#ffd87d] bg-clip-text text-transparent"
+        >
           Unser Ablauf
         </h1>
-        <div className="relative w-full max-w-7xl flex flex-col gap-8 pb-20">
+        <div className="relative w-full max-w-7xl flex flex-col gap-6 pb-16">
           <div
             ref={lineRef}
             className="absolute left-1/2 transform -translate-x-1/2 w-1"
             style={{ height: 0 }}
           ></div>
           {timelineData.map((event, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-x-16 items-center"
-            >
-              {index % 2 === 0 ? (
-                <div className="flex justify-end pr-8">
+            <div key={index} className="p-4">
+              {/* Mobile Layout */}
+              <div className="block md:hidden">
+                <div className="flex flex-col items-center">
+                  <div
+                    ref={(el) => (markersRef.current[index] = el)}
+                    className="w-10 h-10 rounded-full bg-[#4A5568] flex items-center justify-center text-xl font-bold text-red border-2 mb-6"
+                  >
+                    {event.number}
+                  </div>
                   <div
                     ref={(el) => (itemsRef.current[index] = el)}
-                    className="bg-[#272e3c] p-10 pt-8 pb-12 space-y-8 rounded-xl shadow-xl w-full max-w-[900px] border-4 border-[#f0b349] transition-all duration-300"
+                    className="bg-[#272e3c] p-6 rounded-lg shadow-lg w-full max-w-md mx-auto border-2 border-[#f0b349]"
                   >
-                    <h2 className="text-4xl font-bold mt-2 text-[#FFD166]">
+                    <h2 className="text-2xl font-bold text-[#FFD166] mb-4">
                       {event.title}
                     </h2>
-                    <ul className="list-disc list-inside text-gray-200 text-xl space-y-4">
+                    <ul className="mt-2 list-disc list-inside text-gray-200 text-sm space-y-3">
                       {event.description.map((point, i) => (
                         <li key={i}>{point}</li>
                       ))}
                     </ul>
                   </div>
-                </div>
-              ) : (
-                <div></div>
-              )}
-              <div className="flex justify-center relative">
-                <div
-                  ref={(el) => (markersRef.current[index] = el)}
-                  className="w-16 h-16 rounded-full bg-[#4A5568] flex items-center justify-center text-3xl font-bold text-red border-2 "
-                >
-                  {event.number}
                 </div>
               </div>
-              {index % 2 !== 0 ? (
-                <div className="flex justify-start pl-8">
+
+              {/* Desktop Layout */}
+              <div className="hidden md:grid grid-cols-[1fr_auto_1fr] gap-x-12 items-center">
+                {index % 2 === 0 ? (
+                  <div className="flex justify-end pr-4">
+                    <div
+                      ref={(el) => (itemsRef.current[index] = el)}
+                      className="bg-[#272e3c] p-8 rounded-lg shadow-lg w-[33rem] max-w-[600px] border-2 border-[#f0b349]"
+                    >
+                      <h2 className="text-2xl font-roboto font-bold text-[#FFD166]">
+                        {event.title}
+                      </h2>
+                      <ul className="mt-2 list-disc list-inside text-gray-200 text-lg space-y-2">
+                        {event.description.map((point, i) => (
+                          <li key={i}>{point}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+                <div className="flex justify-center relative">
                   <div
-                    ref={(el) => (itemsRef.current[index] = el)}
-                    className="bg-[#272e3c]  p-10 pt-8 pb-12  space-y-8 rounded-xl shadow-xl w-full max-w-[900px] border-4 border-[#f0b349] transition-all duration-300"
+                    ref={(el) => (markersRef.current[index] = el)}
+                    className="w-10 h-10 rounded-full bg-[#4A5568] flex items-center justify-center text-xl font-bold text-red border-2"
                   >
-                    <h2 className="text-4xl font-bold mt-2 text-[#FFD166]">
-                      {event.title}
-                    </h2>
-                    <ul className="list-disc list-inside text-gray-200 text-xl space-y-4">
-                      {event.description.map((point, i) => (
-                        <li key={i}>{point}</li>
-                      ))}
-                    </ul>
+                    {event.number}
                   </div>
                 </div>
-              ) : (
-                <div></div>
-              )}
+                {index % 2 !== 0 ? (
+                  <div className="flex justify-start pl-4">
+                    <div
+                      ref={(el) => (itemsRef.current[index] = el)}
+                      className="bg-[#272e3c] p-6 rounded-lg shadow-lg max-w-[800px] border-2 border-[#f0b349]"
+                    >
+                      <h2 className="text-2xl font-roboto font-bold text-[#FFD166]">
+                        {event.title}
+                      </h2>
+                      <ul className="mt-2 list-disc list-inside text-gray-200 text-lg space-y-2">
+                        {event.description.map((point, i) => (
+                          <li key={i}>{point}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+              </div>
             </div>
           ))}
         </div>
