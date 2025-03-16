@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import emailjs from "emailjs-com";
 import { gsap } from "gsap";
+import { Link } from "react-router-dom";
+
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -342,7 +344,14 @@ E-Mail: ${formData.email}
                 className="h-5 w-5 mt-1 mr-3 border-gray-300 rounded"
               />
               <label className="text-lg text-gray-400" htmlFor="accept">
-                Ich akzeptiere die Bedingungen
+                Ich akzeptiere die{" "}
+                <Link
+                  to="/privacy-policy"
+                  className="text-blue-400 hover:underline"
+                >
+                  Datenschutzbestimmungen
+                </Link>{" "}
+                und erkläre mich mit der Verarbeitung meiner Daten einverstanden
               </label>
             </div>
             {errors.terms && <p className="text-red-500">{errors.terms}</p>}

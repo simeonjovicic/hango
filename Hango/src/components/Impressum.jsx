@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const Impressum = () => {
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 pt-10">
+    <div id="impressuma" className="min-h-screen bg-gray-900 text-gray-100 pt-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -151,6 +151,24 @@ const Impressum = () => {
                   rel="noopener noreferrer"
                 >
                   ris.bka.gv.at
+                </a>
+              </p>
+            </section>
+
+            <section className="pt-4 border-t border-gray-700">
+              <h2 className="text-xl font-semibold text-gray-100 mb-2">
+                Icon Attribution
+              </h2>
+              <p className="text-gray-400">
+                <a
+                  href="https://www.flaticon.com/free-icons/performance"
+                  title="performance icons"
+                  className="text-blue-400 hover:text-blue-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Icons used in the About Us section created by Freepik -
+                  Flaticon
                 </a>
               </p>
             </section>

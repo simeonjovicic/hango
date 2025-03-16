@@ -104,7 +104,7 @@ const AboutUs = () => {
               className="flex-1 pt-6 pb-10 px-8 md:p-18 mr-0 md:mr-16 bg-gradient-to-br from-[#3D3539] to-[rgb(40,38,43)] rounded-2xl shadow-lg backdrop-blur-lg max-w-lg min-h-[250px] border-2 border-solid border-red-500"
             >
               {/* Subtitle */}
-              <h2 className="font-roboto text-white text-2xl md:text-4xl font-bold mb-6 mt-4">
+              <h2 className="font-roboto text-white text-[1.71rem] md:text-4xl font-bold mb-6 mt-4">
                 Wir helfen Ihnen bei:
               </h2>
 
@@ -117,7 +117,7 @@ const AboutUs = () => {
                 ].map((item, index) => (
                   <li
                     key={index}
-                    className="flex items-start"
+                    className="flex items-start font-semibold text-lg text-roboto"
                     ref={(el) => (listItemsRef.current[index] = el)}
                   >
                     <span className="text-red-500 text-xl mr-3">•</span>

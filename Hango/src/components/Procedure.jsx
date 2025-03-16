@@ -53,10 +53,12 @@ const Timeline = () => {
   const itemsRef = useRef([]);
   const markersRef = useRef([]);
   const lineRef = useRef(null);
+  const mobileItemsRef = useRef([]);
+  const mobileMarkersRef = useRef([]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate the title when scrolled into view
+      // Title animation
       if (titleRef.current) {
         gsap.fromTo(
           titleRef.current,
@@ -65,6 +67,7 @@ const Timeline = () => {
             opacity: 1,
             y: 0,
             duration: 0.8,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: titleRef.current,
               start: "top 80%",
@@ -74,45 +77,56 @@ const Timeline = () => {
         );
       }
 
-      if (!markersRef.current.length) return;
+      // Timeline line animation
+      if (markersRef.current.length) {
+        const firstMarker = markersRef.current[0];
+        const lastMarker = markersRef.current[markersRef.current.length - 1];
+        const firstMarkerOffset =
+          firstMarker.offsetTop + firstMarker.offsetHeight / 2;
+        const lastMarkerOffset =
+          lastMarker.offsetTop + lastMarker.offsetHeight / 2;
+        const totalHeight = lastMarkerOffset - firstMarkerOffset;
 
-      const firstMarker = markersRef.current[0];
-      const lastMarker = markersRef.current[markersRef.current.length - 1];
-      const firstMarkerOffset =
-        firstMarker.offsetTop + firstMarker.offsetHeight / 2;
-      const lastMarkerOffset =
-        lastMarker.offsetTop + lastMarker.offsetHeight / 2;
-      const totalHeight = lastMarkerOffset - firstMarkerOffset;
-
-      if (lineRef.current) {
-        lineRef.current.style.top = `${firstMarkerOffset}px`;
-        lineRef.current.style.backgroundColor = "#FF6B6B"; // Vibrant red
-        gsap.fromTo(
-          lineRef.current,
-          { height: 0 },
-          {
-            height: totalHeight,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top 80%",
-              end: "bottom 20%",
-              scrub: true,
-            },
-            duration: 1,
-          }
-        );
+        if (lineRef.current) {
+          lineRef.current.style.top = `${firstMarkerOffset}px`;
+          lineRef.current.style.backgroundColor = "#FF6B6B";
+          gsap.fromTo(
+            lineRef.current,
+            { height: 0 },
+            {
+              height: totalHeight,
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: "top 80%",
+                end: "bottom 20%",
+                scrub: true,
+              },
+              duration: 1,
+            }
+          );
+        }
       }
 
-      itemsRef.current.forEach((card) => {
+      // Desktop Animations
+      itemsRef.current.forEach((card, index) => {
         gsap.fromTo(
           card,
-          { opacity: 0, y: 50 },
+          {
+            opacity: 0,
+            y: 50,
+            scale: 0.95,
+            rotationX: -15,
+          },
           {
             opacity: 1,
             y: 0,
+            scale: 1,
+            rotationX: 0,
+            duration: 0.8,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 90%",
+              start: "top 85%",
               toggleActions: "play none none reverse",
             },
           }
@@ -122,12 +136,69 @@ const Timeline = () => {
       markersRef.current.forEach((marker) => {
         gsap.fromTo(
           marker,
-          { backgroundColor: "#2c3139" },
           {
+            scale: 0.8,
+            rotation: 45,
+            backgroundColor: "#2c3139",
+          },
+          {
+            scale: 1,
+            rotation: 0,
             backgroundColor: "#4A5568",
+            duration: 0.8,
+            ease: "elastic.out(1.2, 0.5)",
             scrollTrigger: {
               trigger: marker,
-              start: "top 75%",
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
+      // Mobile Animations
+      mobileItemsRef.current.forEach((card) => {
+        gsap.fromTo(
+          card,
+          {
+            opacity: 0,
+            y: 50,
+            scale: 0.9,
+            rotationZ: -5,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationZ: 0,
+            duration: 0.6,
+            ease: "back.out(1.2)",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 90%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
+      mobileMarkersRef.current.forEach((marker) => {
+        gsap.fromTo(
+          marker,
+          {
+            scale: 0,
+            rotation: 90,
+            backgroundColor: "#2c3139",
+          },
+          {
+            scale: 1,
+            rotation: 0,
+            backgroundColor: "#4A5568",
+            duration: 0.8,
+            ease: "elastic.out(1, 0.5)",
+            scrollTrigger: {
+              trigger: marker,
+              start: "top 85%",
               toggleActions: "play none none reverse",
             },
           }
@@ -163,13 +234,13 @@ const Timeline = () => {
               <div className="block md:hidden">
                 <div className="flex flex-col items-center">
                   <div
-                    ref={(el) => (markersRef.current[index] = el)}
+                    ref={(el) => (mobileMarkersRef.current[index] = el)}
                     className="w-10 h-10 rounded-full bg-[#4A5568] flex items-center justify-center text-xl font-bold text-red border-2 mb-6"
                   >
                     {event.number}
                   </div>
                   <div
-                    ref={(el) => (itemsRef.current[index] = el)}
+                    ref={(el) => (mobileItemsRef.current[index] = el)}
                     className="bg-[#272e3c] p-6 rounded-lg shadow-lg w-full max-w-md mx-auto border-2 border-[#f0b349]"
                   >
                     <h2 className="text-2xl font-bold text-[#FFD166] mb-4">

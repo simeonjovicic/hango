@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { HashLink as Link } from "react-router-hash-link";
+import { Link as RouterLink } from "react-router-dom"; // Import regular Link
 
 const Footer = () => {
   return (
@@ -17,24 +18,57 @@ const Footer = () => {
 
           {/* Navigation Links */}
           <nav className="flex flex-wrap justify-center gap-6 md:gap-10 text-base md:text-lg">
-            <a href="#home" className="hover:text-gray-200 transition py-1">
-              Home
-            </a>
-            <a href="#über-uns" className="hover:text-gray-200 transition py-1">
-              Über Uns
-            </a>
-            <a href="#ablauf" className="hover:text-gray-200 transition py-1">
-              Ablauf
-            </a>
-            <a href="#kontakt" className="hover:text-gray-200 transition py-1">
-              Kontakt
-            </a>
+            {/* HashLinks for same-page navigation */}
             <Link
+              to="/#home"
+              className="hover:text-gray-200 transition py-1"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              Home
+            </Link>
+            <Link
+              to="/#über-uns"
+              className="hover:text-gray-200 transition py-1"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              Über Uns
+            </Link>
+            <Link
+              to="/#ablauf"
+              className="hover:text-gray-200 transition py-1"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              Ablauf
+            </Link>
+            <Link
+              to="/#kontakt"
+              className="hover:text-gray-200 transition py-1"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              Kontakt
+            </Link>
+
+            {/* Regular Links for separate pages */}
+            <RouterLink
               to="/impressum"
               className="hover:text-gray-200 transition py-1"
             >
               Impressum
-            </Link>
+            </RouterLink>
+            <RouterLink
+              to="/privacy-policy"
+              className="hover:text-gray-200 transition py-1"
+            >
+              Privacy Policy
+            </RouterLink>
           </nav>
         </div>
 
