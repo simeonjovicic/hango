@@ -7,11 +7,11 @@ export default {
         blue: "#2997FF",
         gray: {
           DEFAULT: "#86868b",
-          100: "#94928d",
-          200: "#afafaf",
-          300: "#42424570",
+          100: "#1d1d1f",
+          200: "#424245",
+          300: "#e5e5ea70",
         },
-        zinc: "#101010",
+        zinc: "#f5f5f7",
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],

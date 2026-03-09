@@ -28,21 +28,21 @@ const timelineData = [
   {
     number: "03",
     year: "2022",
-    title: "Entwicklung",
+    title: "Entwicklung & SEO",
     description: [
-      "Umsetzung des Designs in Code.",
+      "Umsetzung des Designs in responsiven Code.",
       "Implementierung der gewünschten Features.",
-      "Regelmäßige Tests und Qualitätssicherung.",
+      "Integration von SEO-Best-Practices von Beginn an.",
     ],
   },
   {
     number: "04",
     year: "2023",
-    title: "Wartung",
+    title: "Wartung & Marketing",
     description: [
       "Regelmäßige Updates und Performance-Optimierung.",
       "Bugfixes und Sicherheitsupdates.",
-      "Fortlaufende Weiterentwicklung je nach Nutzerfeedback.",
+      "Aufsetzen und Verwalten gezielter Ad-Kampagnen.",
     ],
   },
 ];
@@ -139,12 +139,12 @@ const Timeline = () => {
           {
             scale: 0.8,
             rotation: 45,
-            backgroundColor: "#2c3139",
+            backgroundColor: "#ffffff",
           },
           {
             scale: 1,
             rotation: 0,
-            backgroundColor: "#4A5568",
+            backgroundColor: "#f5f5f7",
             duration: 0.8,
             ease: "elastic.out(1.2, 0.5)",
             scrollTrigger: {
@@ -188,12 +188,12 @@ const Timeline = () => {
           {
             scale: 0,
             rotation: 90,
-            backgroundColor: "#2c3139",
+            backgroundColor: "#ffffff",
           },
           {
             scale: 1,
             rotation: 0,
-            backgroundColor: "#4A5568",
+            backgroundColor: "#f5f5f7",
             duration: 0.8,
             ease: "elastic.out(1, 0.5)",
             scrollTrigger: {
@@ -212,13 +212,13 @@ const Timeline = () => {
   return (
     <div
       ref={containerRef}
-      className="pt-24 lg:pt-40 relative w-full bg-[#28262B] text-white min-h-screen"
+      className="pt-24 lg:pt-40 relative w-full bg-[#f5f5f7] text-black min-h-screen"
       id="ablauf"
     >
       <div className="flex flex-col items-center py-16">
         <h1
           ref={titleRef}
-          className="text-5xl font-roboto font-bold mb-16 bg-gradient-to-t from-[#e0a33b] to-[#ffd87d] bg-clip-text text-transparent"
+          className="text-5xl font-roboto font-bold mb-16 text-black"
         >
           Unser Ablauf
         </h1>
@@ -235,15 +235,15 @@ const Timeline = () => {
                 <div className="flex flex-col items-center">
                   <div
                     ref={(el) => (mobileMarkersRef.current[index] = el)}
-                    className="w-10 h-10 rounded-full bg-[#4A5568] flex items-center justify-center text-xl font-bold text-red border-2 mb-6"
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl font-bold text-red border-2 border-gray-300 mb-6"
                   >
                     {event.number}
                   </div>
                   <div
                     ref={(el) => (mobileItemsRef.current[index] = el)}
-                    className="bg-[#272e3c] p-6 rounded-lg shadow-lg w-full max-w-md mx-auto border-2 border-[#f0b349]"
+                    className="bg-white p-6 rounded-lg shadow-sm w-full max-w-md mx-auto border border-gray-200"
                   >
-                    <h2 className="text-2xl font-bold text-[#FFD166] mb-4">
+                    <h2 className="text-2xl font-bold text-black mb-4">
                       {event.title}
                     </h2>
                     <ul className="mt-2 list-disc list-inside text-gray-200 text-sm space-y-3">
@@ -261,9 +261,9 @@ const Timeline = () => {
                   <div className="flex justify-end pr-4">
                     <div
                       ref={(el) => (itemsRef.current[index] = el)}
-                      className="bg-[#272e3c] p-8 rounded-lg shadow-lg w-[33rem] max-w-[600px] border-2 border-[#f0b349]"
+                      className="bg-white p-8 rounded-lg shadow-sm w-[33rem] max-w-[600px] border border-gray-200"
                     >
-                      <h2 className="text-2xl font-roboto font-bold text-[#FFD166]">
+                      <h2 className="text-2xl font-roboto font-bold text-black">
                         {event.title}
                       </h2>
                       <ul className="mt-2 list-disc list-inside text-gray-200 text-lg space-y-2">
@@ -279,7 +279,7 @@ const Timeline = () => {
                 <div className="flex justify-center relative">
                   <div
                     ref={(el) => (markersRef.current[index] = el)}
-                    className="w-10 h-10 rounded-full bg-[#4A5568] flex items-center justify-center text-xl font-bold text-red border-2"
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl font-bold text-red border-2 border-gray-300"
                   >
                     {event.number}
                   </div>
@@ -288,9 +288,9 @@ const Timeline = () => {
                   <div className="flex justify-start pl-4">
                     <div
                       ref={(el) => (itemsRef.current[index] = el)}
-                      className="bg-[#272e3c] p-6 rounded-lg shadow-lg max-w-[800px] border-2 border-[#f0b349]"
+                      className="bg-white p-6 rounded-lg shadow-sm max-w-[800px] border border-gray-200"
                     >
-                      <h2 className="text-2xl font-roboto font-bold text-[#FFD166]">
+                      <h2 className="text-2xl font-roboto font-bold text-black">
                         {event.title}
                       </h2>
                       <ul className="mt-2 list-disc list-inside text-gray-200 text-lg space-y-2">

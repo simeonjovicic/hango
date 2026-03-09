@@ -113,22 +113,21 @@ function Hero() {
 
   return (
     <div ref={heroRef} className="flex flex-col" id="home">
-      <section className="pt-40 lg:md:pt-0 h-[30rem] md:h-screen w-full bg-gradient-to-t from-[#473D3D] via-[#28262B] to-[#28262B] flex items-center justify-start relative">
+      <section className="pt-40 lg:md:pt-0 h-[30rem] md:h-screen w-full bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#ffffff] flex items-center justify-start relative">
         <div className="flex flex-col items-start gap-8 max-w-3xl mt-10 md:mt-0 md:mb-10 px-6  lg:md:ml-20">
           {/* Text Content */}
           <div className="flex flex-col gap-4">
             <h1
               ref={textRef}
-              className="font-roboto text-[2.6rem] max-w-[50rem] lg:md:max-w-[40rem] sm:text-4xl md:text-6xl lg:text-[4rem] font-extrabold text-white leading-tight"
+              className="font-roboto text-[2.6rem] max-w-[50rem] lg:md:max-w-[40rem] sm:text-4xl md:text-6xl lg:text-[4rem] font-extrabold text-black leading-tight"
             >
-              Ihre Webdesign Agentur in Wien
+              Ihre Digitalagentur in Wien
             </h1>
             <p
               ref={subtitleRef}
-              className="font-inter text-[1.3rem] md:text-xl lg:text-[1.5rem] text-gray-200 max-w-[21.5rem] lg:md:max-w-[38rem]"
+              className="font-inter text-[1.3rem] md:text-xl lg:text-[1.5rem] text-gray-600 max-w-[21.5rem] lg:md:max-w-[38rem]"
             >
-              Auf der Suche nach einer professionellen Webseite? Bei uns sind
-              Sie richtig!
+              Auf der Suche nach einer professionellen Webseite, SEO, modernem UI oder gezielter Werbung? Bei uns sind Sie richtig!
             </p>
           </div>
 
@@ -140,11 +139,11 @@ function Hero() {
                 className="
                   w-screen max-w-[21.5rem] lg:md:w-fit py-[.7rem] lg:md:px-4 sm:px-6 lg:md:py-3 sm:py-3
                   relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gray-500/20
-                  before:content-[''] before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-white before:to-gray-700 before:rounded-xl
-                  after:content-[''] after:absolute after:inset-[2px] after:z-10 after:bg-[#28262B] after:rounded-lg hover:after:bg-[#373438]
+                  before:content-[''] before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-black before:to-gray-400 before:rounded-xl
+                  after:content-[''] after:absolute after:inset-[2px] after:z-10 after:bg-[#ffffff] after:rounded-lg hover:after:bg-[#f5f5f7]
                 "
               >
-                <span className="font-inter relative z-20 text-[1.21rem]  md:text-lg">
+                <span className="font-inter relative z-20 text-[1.21rem]  md:text-lg text-black">
                   Mehr Erfahren
                 </span>
               </button>

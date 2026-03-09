@@ -1,3 +1,3 @@
 
 
-export const navLists = ["Home", "Über Uns", "Ablauf"];
+export const navLists = ["Home", "Über Uns", "Services", "Referenzen", "Ablauf", "FAQ"];

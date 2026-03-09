@@ -133,21 +133,21 @@ E-Mail: ${formData.email}
   };
 
   return (
-    <div className="pt-16 md:pt-40 relative min-h-[182vh] lg:md:min-h-[147vh] w-full bg-gradient-to-t to-[#28262B] via-[#3F404F] from-[#3F404F] text-white">
+    <div className="pt-16 md:pt-40 relative min-h-[182vh] lg:md:min-h-[147vh] w-full bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#f5f5f7] text-black">
       <h1 className="text-center text-3xl md:text-5xl font-roboto font-extrabold mb-10">
         Kontaktieren Sie uns!
       </h1>
 
-      <div className="max-w-8xl mx-4 md:mx-40 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 p-4 md:p-16 bg-black/30 rounded-xl shadow-2xl backdrop-blur-md">
+      <div className="max-w-8xl mx-4 md:mx-40 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 p-4 md:p-16 bg-white/50 rounded-xl shadow-sm border border-gray-200 backdrop-blur-md">
         <div className="space-y-10">
           <h2 className="text-2xl md:text-3xl font-bold font-roboto">
             Kontaktmöglichkeiten
           </h2>
-          <div className="space-y-6 text-gray-200 text-lg">
-            <div className="group relative overflow-hidden bg-gradient-to-br from-blue-900/30 to-indigo-900/20 p-6 rounded-xl border border-blue-400/20 hover:border-blue-400/30 transition-all duration-300 shadow-lg hover:shadow-xl">
+          <div className="space-y-6 text-gray-700 text-lg">
+            <div className="group relative overflow-hidden bg-gradient-to-br from-blue-50/50 to-indigo-50/50 p-6 rounded-xl border border-blue-200 hover:border-blue-300 transition-all duration-300 shadow-sm hover:shadow-md">
               {/* Simplified background animation */}
               <div className="absolute inset-0 opacity-20">
-                <div className="absolute -top-1 -left-4 w-24 h-24 bg-blue-500 rounded-full blur-2xl opacity-20 animate-pulse-slow" />
+                <div className="absolute -top-1 -left-4 w-24 h-24 bg-blue-300 rounded-full blur-2xl opacity-20 animate-pulse-slow" />
               </div>
 
               <div className="relative flex items-center space-x-4">
@@ -171,7 +171,7 @@ E-Mail: ${formData.email}
 
                 {/* Simplified content */}
                 <div className="flex-1">
-                  <h3 className="text-[1.3rem] font-semibold text-blue-50 mb-2">
+                  <h3 className="text-[1.3rem] font-semibold text-blue-900 mb-2">
                     Garantierte Antwort innerhalb von 24h
                   </h3>
                   <p className="text-blue-300"></p>
@@ -240,7 +240,7 @@ E-Mail: ${formData.email}
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block mb-1 text-lg font-medium text-gray-200">
+                <label className="block mb-1 text-lg font-medium text-gray-900">
                   Vorname
                 </label>
                 <input
@@ -248,7 +248,7 @@ E-Mail: ${formData.email}
                   name="vorname"
                   value={formData.vorname}
                   onChange={handleChange}
-                  className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
                 />
                 {errors.vorname && (
                   <p className="text-red-500">{errors.vorname}</p>
@@ -256,7 +256,7 @@ E-Mail: ${formData.email}
               </div>
 
               <div>
-                <label className="block mb-1 text-lg font-medium text-gray-200">
+                <label className="block mb-1 text-lg font-medium text-gray-900">
                   Nachname
                 </label>
                 <input
@@ -264,7 +264,7 @@ E-Mail: ${formData.email}
                   name="nachname"
                   value={formData.nachname}
                   onChange={handleChange}
-                  className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
                 />
                 {errors.nachname && (
                   <p className="text-red-500">{errors.nachname}</p>
@@ -273,7 +273,7 @@ E-Mail: ${formData.email}
             </div>
 
             <div>
-              <label className="block mb-1 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-900">
                 E-Mail-Adresse
               </label>
               <input
@@ -281,13 +281,13 @@ E-Mail: ${formData.email}
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
               />
               {errors.email && <p className="text-red-500">{errors.email}</p>}
             </div>
 
             <div>
-              <label className="block mb-1 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-900">
                 Telefonnummer
               </label>
               <input
@@ -295,7 +295,7 @@ E-Mail: ${formData.email}
                 name="telefonnummer"
                 value={formData.telefonnummer}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
               />
               {errors.telefonnummer && (
                 <p className="text-red-500">{errors.telefonnummer}</p>
@@ -303,7 +303,7 @@ E-Mail: ${formData.email}
             </div>
 
             <div>
-              <label className="block mb-1 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-900">
                 Betreff
               </label>
               <input
@@ -311,7 +311,7 @@ E-Mail: ${formData.email}
                 name="betreff"
                 value={formData.betreff}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
               />
               {errors.betreff && (
                 <p className="text-red-500">{errors.betreff}</p>
@@ -319,7 +319,7 @@ E-Mail: ${formData.email}
             </div>
 
             <div>
-              <label className="block mb-1 text-lg font-medium text-gray-200">
+              <label className="block mb-1 text-lg font-medium text-gray-900">
                 Ihre Nachricht
               </label>
               <textarea
@@ -327,7 +327,7 @@ E-Mail: ${formData.email}
                 name="nachricht"
                 value={formData.nachricht}
                 onChange={handleChange}
-                className="block w-full rounded-md bg-gray-800 border border-gray-700 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="block w-full rounded-md bg-white border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-black"
               />
               {errors.nachricht && (
                 <p className="text-red-500">{errors.nachricht}</p>
@@ -343,7 +343,7 @@ E-Mail: ${formData.email}
                 onChange={handleChange}
                 className="h-5 w-5 mt-1 mr-3 border-gray-300 rounded"
               />
-              <label className="text-lg text-gray-400" htmlFor="accept">
+              <label className="text-lg text-gray-700" htmlFor="accept">
                 Ich akzeptiere die{" "}
                 <Link
                   to="/privacy-policy"

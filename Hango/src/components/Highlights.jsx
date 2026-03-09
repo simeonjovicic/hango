@@ -55,7 +55,7 @@ const Highlights = () => {
   }, []);
 
   return (
-    <div className="pt-32 md:lg:pt-0 min-h-screen md:h-[10rem] bg-gradient-to-t from-[#28262B] via-[#28262B] to-[#473D3D] text-white text-center">
+    <div className="pt-32 md:lg:pt-0 min-h-screen md:h-[10rem] bg-gradient-to-t from-[#f5f5f7] via-[#f5f5f7] to-[#ffffff] text-black text-center">
       <section className="h-[76rem] lg:md:h-[60rem] w-full flex flex-col items-center justify-center px-4 sm:px-8 pt-32 md:px-32 md:pt-0">
         {/* Title and Subtitle */}
         <div className="mb-4 lg:md:mb-16 max-w-5xl">
@@ -92,8 +92,8 @@ const Highlights = () => {
               Zeiteffizient
             </h2>
             <p className="text-gray-100 text-lg">
-              Anstatt sich selber qualvoll mit dem Technischen zu befassen,
-              arbeitet unser Team zeiteffizient an Ihren Begierden.
+              Anstatt sich selber qualvoll mit der Technik oder komplexen Werbekampagnen zu befassen,
+              arbeitet unser Team zeiteffizient an Ihrem digitalen Auftritt.
             </p>
           </div>
 
@@ -123,12 +123,12 @@ const Highlights = () => {
               width={120}
               className="opacity-90 mb-8 mx-auto"
             />
-            <h2 className="text-2xl font-bold mb-4font-roboto">
+            <h2 className="text-2xl font-bold mb-4 font-roboto">
               Weg zum Erfolg
             </h2>
             <p className="text-gray-100 text-lg">
-              Wir möchten Sie zur Spitze bringen! Je mehr Erfolg wir für Sie
-              sammeln, desto mehr Vertrauen gewinnen wir. Win-Win!
+              Wir möchten Sie zur Spitze bringen! Mit gezieltem SEO und smarten Ads
+              sammeln wir mehr Reichweite für Ihr Projekt. Win-Win!
             </p>
           </div>
         </div>

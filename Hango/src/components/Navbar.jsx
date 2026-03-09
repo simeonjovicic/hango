@@ -25,7 +25,7 @@ const Navbar = () => {
             height={20}
             className="lg:md:ml-8 ml-1 my-1 lg:md:w-[2.8rem]"
           />
-          <p className="font-menulis px-4 pl-2 pt-4 text-white hover:text-white text-[1.87rem] lg:md:text-4xl transition-all">
+          <p className="font-menulis px-4 pl-2 pt-4 text-black hover:text-black text-[1.87rem] lg:md:text-4xl transition-all">
             Hango
           </p>
         </Link>
@@ -38,7 +38,7 @@ const Navbar = () => {
             <Link
               key={nav}
               to={`/#${nav.toLowerCase()}`}
-              className="px-6 cursor-pointer text-white hover:text-white text-xl transition-all"
+              className="px-6 cursor-pointer text-black hover:text-gray-600 text-xl transition-all"
               scroll={(el) =>
                 el.scrollIntoView({ behavior: "smooth", block: "start" })
               }
@@ -73,7 +73,7 @@ const Navbar = () => {
           className="sm:hidden focus:outline-none"
         >
           <svg
-            className="w-6 h-6 text-white"
+            className="w-6 h-6 text-black"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -107,7 +107,7 @@ const Navbar = () => {
                 key={nav}
                 to={`/#${nav.toLowerCase()}`}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="px-4 py-2 text-white text-lg hover:text-gray-300 transition-all"
+                className="px-4 py-2 text-black text-lg hover:text-gray-600 transition-all bg-white/50 w-full text-center rounded-md my-1 backdrop-blur-md"
                 scroll={(el) =>
                   el.scrollIntoView({ behavior: "smooth", block: "start" })
                 }

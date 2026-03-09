@@ -71,7 +71,7 @@ const AboutUs = () => {
   return (
     <div
       ref={containerRef}
-      className="lg:md:h-[40rem] pb-32 lg:md:pt-16 bg-gradient-to-t from-[#473D3D] to-[#473D3D] md:px-16"
+      className="lg:md:h-[40rem] pb-32 lg:md:pt-16 bg-gradient-to-t from-[#f5f5f7] to-[#ffffff] md:px-16"
       id="über uns"
     >
       <section className="lg:md:h-[20rem] h-[37rem] pt-[25rem] lg:md:pt-64  w-full flex items-center justify-center px-4 md:px-8">
@@ -83,37 +83,38 @@ const AboutUs = () => {
               {/* Main Title */}
               <h1
                 ref={titleRef}
-                className="font-roboto max-w-8xl text-white text-3xl md:text-5xl font-extrabold leading-tight mb-6"
+                className="font-roboto max-w-8xl text-black text-3xl md:text-5xl font-extrabold leading-tight mb-6"
               >
-                Auf der Suche nach einer Website?
+                Bereit für den digitalen Aufstieg?
               </h1>
               {/* Paragraph */}
               <p
                 ref={textRef}
-                className="font-inter text-gray-200 text-[1.21rem] md:text-[1.45rem] lg:leading-[1.5] max-w-[40rem]"
+                className="font-inter text-gray-600 text-[1.21rem] md:text-[1.45rem] lg:leading-[1.5] max-w-[40rem]"
               >
-                Überlassen Sie uns die technische Umsetzung, damit Sie sich voll
+                Überlassen Sie uns die technische Umsetzung und Vermarktung, damit Sie sich voll
                 auf Ihr Kerngeschäft konzentrieren können. Genießen Sie den
-                Gewinn an wertvoller Zeit.
+                Gewinn an wertvoller Zeit und messbaren Erfolgen.
               </p>
             </div>
 
             {/* Right Column */}
             <div
               ref={cardRef}
-              className="flex-1 pt-6 pb-10 px-8 md:p-18 mr-0 md:mr-16 bg-gradient-to-br from-[#3D3539] to-[rgb(40,38,43)] rounded-2xl shadow-lg backdrop-blur-lg max-w-lg min-h-[250px] border-2 border-solid border-red-500"
+              className="flex-1 pt-6 pb-10 px-8 md:p-18 mr-0 md:mr-16 bg-gradient-to-br from-[#ffffff] to-[#f5f5f7] rounded-2xl shadow-xl shadow-gray-200/80 backdrop-blur-lg max-w-lg min-h-[250px] border border-gray-200 hover:border-red-200 hover:shadow-red-500/10 transition-all duration-300"
             >
               {/* Subtitle */}
-              <h2 className="font-roboto text-white text-[1.71rem] md:text-4xl font-bold mb-6 mt-4">
+              <h2 className="font-roboto text-black text-[1.71rem] md:text-4xl font-bold mb-6 mt-4">
                 Wir helfen Ihnen bei:
               </h2>
 
               {/* Bullet Points */}
               <ul className="space-y-4">
                 {[
-                  "Website Bauen/Aufrischung",
-                  "SEO Optimierung",
-                  "Website Wartung (Hosting und Domain-Name)",
+                  "Webentwicklung & Responsive UI",
+                  "Suchmaschinenoptimierung (SEO)",
+                  "Targeted Ads (Meta & Google AdWords)",
+                  "Website Wartung & Hosting",
                 ].map((item, index) => (
                   <li
                     key={index}
@@ -121,7 +122,7 @@ const AboutUs = () => {
                     ref={(el) => (listItemsRef.current[index] = el)}
                   >
                     <span className="text-red-500 text-xl mr-3">•</span>
-                    <span className="text-white text-2lg md:text-xl">
+                    <span className="text-black text-2lg md:text-xl">
                       {item}
                     </span>
                   </li>
