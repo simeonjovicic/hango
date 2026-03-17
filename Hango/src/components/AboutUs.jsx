@@ -71,10 +71,10 @@ const AboutUs = () => {
   return (
     <div
       ref={containerRef}
-      className="lg:md:h-[40rem] pb-32 lg:md:pt-16 bg-gradient-to-t from-[#f5f5f7] to-[#ffffff] md:px-16"
+      className="lg:md:h-[40rem] pb-16 md:pb-32 lg:md:pt-16 bg-gradient-to-t from-[#f5f5f7] to-[#ffffff] md:px-16"
       id="über uns"
     >
-      <section className="lg:md:h-[20rem] h-[37rem] pt-[25rem] lg:md:pt-64  w-full flex items-center justify-center px-4 md:px-8">
+      <section className="lg:md:h-[20rem] h-auto pt-16 md:pt-[25rem] lg:md:pt-64 w-full flex items-center justify-center px-4 md:px-8">
         <div className="mx-auto max-w-12xl w-full px-4 md:px-0">
           {/* Main Content Container */}
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center">

@@ -55,21 +55,21 @@ const Portfolio = () => {
     }, []);
 
     return (
-        <section id="referenzen" ref={containerRef} className="py-24 bg-[#ffffff] text-black w-full min-h-screen">
+        <section id="referenzen" ref={containerRef} className="py-14 md:py-24 bg-[#ffffff] text-black w-full min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Section Header */}
-                <div className="mb-20">
+                <div className="mb-10 md:mb-20">
                     <h2 className="text-sm font-bold tracking-wide text-gray-500 uppercase font-roboto">
                         Recent Projects
                     </h2>
-                    <h1 className="mt-2 text-4xl leading-tight font-extrabold text-gray-900 sm:text-5xl lg:text-6xl font-roboto">
+                    <h1 className="mt-2 text-3xl leading-tight font-extrabold text-gray-900 sm:text-5xl lg:text-6xl font-roboto">
                         Unsere Referenzen
                     </h1>
                 </div>
 
                 {/* Projects Grid */}
-                <div className="flex flex-col gap-24">
+                <div className="flex flex-col gap-14 md:gap-24">
                     {projects.map((project, index) => (
                         <a
                             key={index}
@@ -88,12 +88,12 @@ const Portfolio = () => {
                                 </span>
                             </div>
 
-                            <h4 className="text-2xl md:text-4xl font-extrabold text-black mb-8 font-roboto max-w-3xl leading-snug">
+                            <h4 className="text-xl md:text-4xl font-extrabold text-black mb-5 md:mb-8 font-roboto max-w-3xl leading-snug">
                                 {project.headline}
                             </h4>
 
                             {/* Composition Container (Hover Trigger) */}
-                            <div className={`group w-full pt-[65%] md:pt-[50%] rounded-t-[2rem] overflow-hidden relative bg-gray-200/50 backdrop-blur-xl border border-white/60 border-b-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500`}>
+                            <div className={`group w-full pt-[55%] md:pt-[50%] rounded-t-[1.5rem] md:rounded-t-[2rem] overflow-hidden relative bg-gray-200/50 backdrop-blur-xl border border-white/60 border-b-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500`}>
 
                                 {/* Desktop Browser Mockup */}
                                 <div className="absolute inset-x-4 top-4 -bottom-4 md:inset-x-10 md:top-10 transform scale-100 group-hover:scale-[1.02] transition-transform duration-700 ease-out flex flex-col origin-bottom">
@@ -129,13 +129,13 @@ const Portfolio = () => {
                                     </div>
                                 </div>
 
-                                {/* Mobile Mockup (iPhone Style) */}
-                                <div className="absolute -bottom-4 right-[5%] w-[26%] min-w-[100px] h-[90%] bg-black rounded-t-[2rem] md:rounded-t-[2.5rem] border-[6px] md:border-[10px] border-black border-b-0 shadow-2xl overflow-hidden transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-out z-20 origin-bottom flex flex-col">
+                                {/* Mobile Mockup (iPhone Style) — hidden on small screens */}
+                                <div className="hidden md:flex absolute -bottom-4 right-[5%] w-[26%] min-w-[100px] h-[90%] bg-black rounded-t-[2.5rem] border-[10px] border-black border-b-0 shadow-2xl overflow-hidden transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-out z-20 origin-bottom flex-col">
                                     {/* Dynamic Island / Notch */}
                                     <div className="absolute top-0 inset-x-0 flex justify-center z-30 pointer-events-none">
-                                        <div className="w-[45%] h-[14px] md:h-[20px] bg-black rounded-b-xl md:rounded-b-2xl"></div>
+                                        <div className="w-[45%] h-[20px] bg-black rounded-b-2xl"></div>
                                     </div>
-                                    <div className="flex-1 w-full bg-white relative overflow-hidden rounded-t-[1.2rem] md:rounded-t-[1.8rem]">
+                                    <div className="flex-1 w-full bg-white relative overflow-hidden rounded-t-[1.8rem]">
                                         <img
                                             src={project.mobileImg}
                                             alt={`Mobile view of ${project.domain}`}
@@ -146,12 +146,12 @@ const Portfolio = () => {
                                 </div>
 
                                 {/* Overlay to dim slightly until hover */}
-                                <div className="absolute inset-x-0 top-0 bottom-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none rounded-t-[2rem]" />
+                                <div className="absolute inset-x-0 top-0 bottom-0 bg-black/10 md:group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none rounded-t-[1.5rem] md:rounded-t-[2rem]" />
                             </div>
 
                             {/* Bottom "View Project" link */}
-                            <div className="mt-8 flex items-center text-red-600 font-semibold font-inter hover:translate-x-2 transition-transform duration-300">
-                                <span className="text-lg">View project</span>
+                            <div className="mt-5 md:mt-8 flex items-center text-red-600 font-semibold font-inter hover:translate-x-2 transition-transform duration-300">
+                                <span className="text-base md:text-lg">View project</span>
                                 <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
@@ -159,9 +159,9 @@ const Portfolio = () => {
 
                             {/* Testimonial */}
                             {project.testimonial && (
-                                <div className="mt-6 border-l-4 border-red-500 pl-5">
-                                    <p className="text-gray-600 italic font-inter text-base md:text-lg leading-relaxed">{project.testimonial}</p>
-                                    <p className="mt-2 text-sm font-semibold text-gray-900">{project.author}</p>
+                                <div className="mt-4 md:mt-6 border-l-4 border-red-500 pl-4 md:pl-5">
+                                    <p className="text-gray-600 italic font-inter text-sm md:text-lg leading-relaxed">{project.testimonial}</p>
+                                    <p className="mt-1 md:mt-2 text-xs md:text-sm font-semibold text-gray-900">{project.author}</p>
                                 </div>
                             )}
                         </a>

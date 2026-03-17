@@ -55,8 +55,8 @@ const Highlights = () => {
   }, []);
 
   return (
-    <div className="pt-32 md:lg:pt-0 min-h-screen md:h-[10rem] bg-gradient-to-t from-[#f5f5f7] via-[#f5f5f7] to-[#ffffff] text-black text-center">
-      <section className="h-[76rem] lg:md:h-[60rem] w-full flex flex-col items-center justify-center px-4 sm:px-8 pt-32 md:px-32 md:pt-0">
+    <div className="pt-16 md:pt-32 md:lg:pt-0 min-h-fit md:min-h-screen md:h-[10rem] bg-gradient-to-t from-[#f5f5f7] via-[#f5f5f7] to-[#ffffff] text-black text-center">
+      <section className="h-auto md:h-[76rem] lg:md:h-[60rem] w-full flex flex-col items-center justify-center px-4 sm:px-8 pt-8 md:pt-32 pb-16 md:pb-0 md:px-32 md:pt-0">
         {/* Title and Subtitle */}
         <div className="mb-4 lg:md:mb-16 max-w-5xl">
           <h1
@@ -67,7 +67,7 @@ const Highlights = () => {
           </h1>
           <p
             ref={subtitleRef}
-            className="text-[1.21rem] md:text-2xl text-gray-200 mt-4 mb-8"
+            className="text-base md:text-2xl text-gray-500 mt-3 md:mt-4 mb-6 md:mb-8"
           >
             Anstatt sich in technischen Details zu verlieren, übernimmt unser
             Team effizient alle Aufgaben – so bleibt Ihnen mehr Zeit für das
@@ -91,7 +91,7 @@ const Highlights = () => {
             <h2 className="text-2xl font-bold mb-4 font-roboto">
               Zeiteffizient
             </h2>
-            <p className="text-gray-100 text-lg">
+            <p className="text-gray-500 text-base md:text-lg">
               Anstatt sich selber qualvoll mit der Technik oder komplexen Werbekampagnen zu befassen,
               arbeitet unser Team zeiteffizient an Ihrem digitalen Auftritt.
             </p>
@@ -109,7 +109,7 @@ const Highlights = () => {
               className="opacity-90 mb-8 mx-auto"
             />
             <h2 className="text-2xl font-bold mb-4 font-roboto">Sicherheit</h2>
-            <p className="text-gray-100 text-lg">
+            <p className="text-gray-500 text-base md:text-lg">
               Unsere Websites sind modern ausgestattet und dadurch gegen DDoS
               Cyber-Attacken geschützt.
             </p>
@@ -126,7 +126,7 @@ const Highlights = () => {
             <h2 className="text-2xl font-bold mb-4 font-roboto">
               Weg zum Erfolg
             </h2>
-            <p className="text-gray-100 text-lg">
+            <p className="text-gray-500 text-base md:text-lg">
               Wir möchten Sie zur Spitze bringen! Mit gezieltem SEO und smarten Ads
               sammeln wir mehr Reichweite für Ihr Projekt. Win-Win!
             </p>

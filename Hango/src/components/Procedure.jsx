@@ -4,313 +4,240 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const timelineData = [
-  {
-    number: "01",
-    year: "2020",
-    title: "Besprechung",
-    description: [
-      "Besprechung der Anforderungen, Ziele und Wünsche.",
-      "Klärung offener Fragen und Festlegung des Projektumfangs.",
-      "Festlegung des Zeitplans und der nächsten Schritte.",
-    ],
-  },
-  {
-    number: "02",
-    year: "2021",
-    title: "Design",
-    description: [
-      "Erstellung erster Designvorschläge (Layout, Farben, Typografie).",
-      "Einholung von Feedback und iterative Anpassung.",
-      "Finale Freigabe des Designs nach Überarbeitung.",
-    ],
-  },
-  {
-    number: "03",
-    year: "2022",
-    title: "Entwicklung & SEO",
-    description: [
-      "Umsetzung des Designs in responsiven Code.",
-      "Implementierung der gewünschten Features.",
-      "Integration von SEO-Best-Practices von Beginn an.",
-    ],
-  },
-  {
-    number: "04",
-    year: "2023",
-    title: "Wartung & Marketing",
-    description: [
-      "Regelmäßige Updates und Performance-Optimierung.",
-      "Bugfixes und Sicherheitsupdates.",
-      "Aufsetzen und Verwalten gezielter Ad-Kampagnen.",
-    ],
-  },
+const steps = [
+    {
+        number: "01",
+        title: "Kostenlose Erstberatung",
+        description:
+            "In einem unverbindlichen Gespräch analysieren wir den Ist-Zustand Ihrer Online-Präsenz. Gemeinsam besprechen wir Ihre Ziele, Erwartungen und den Umfang des Projekts — und Sie erhalten ein maßgeschneidertes Angebot.",
+    },
+    {
+        number: "02",
+        title: "Strategie & Konzept",
+        description:
+            "Wir analysieren Ihre Zielgruppe und erarbeiten eine klare digitale Strategie. Anhand eines Prototyps sehen Sie bereits, wie Ihre neue Website aufgebaut sein wird — bevor eine einzige Zeile Code geschrieben wird.",
+    },
+    {
+        number: "03",
+        title: "Design & Entwicklung",
+        description:
+            "Ihr Designentwurf wird so lange verfeinert, bis jedes Detail stimmt. Danach entwickeln wir Ihre Website responsive, schnell und SEO-optimiert. Kleine Animationen und durchdachte Details verleihen ihr das gewisse Etwas.",
+    },
+    {
+        number: "04",
+        title: "Go-Live & Betreuung",
+        description:
+            "Wir zeigen Ihnen, wie Sie Ihre Website selbst verwalten — kein technisches Know-how nötig. Dann schalten wir gemeinsam live. Danach bleiben wir an Ihrer Seite für Wartung, Updates und Marketing.",
+    },
 ];
 
-const Timeline = () => {
-  const containerRef = useRef(null);
-  const titleRef = useRef(null);
-  const itemsRef = useRef([]);
-  const markersRef = useRef([]);
-  const lineRef = useRef(null);
-  const mobileItemsRef = useRef([]);
-  const mobileMarkersRef = useRef([]);
+const Procedure = () => {
+    const containerRef = useRef(null);
+    const progressLineRef = useRef(null);
+    const stepRefs = useRef([]);
+    const dotRefs = useRef([]);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      // Title animation
-      if (titleRef.current) {
-        gsap.fromTo(
-          titleRef.current,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: titleRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
+    useLayoutEffect(() => {
+        const isMobile = window.innerWidth < 1024;
 
-      // Timeline line animation
-      if (markersRef.current.length) {
-        const firstMarker = markersRef.current[0];
-        const lastMarker = markersRef.current[markersRef.current.length - 1];
-        const firstMarkerOffset =
-          firstMarker.offsetTop + firstMarker.offsetHeight / 2;
-        const lastMarkerOffset =
-          lastMarker.offsetTop + lastMarker.offsetHeight / 2;
-        const totalHeight = lastMarkerOffset - firstMarkerOffset;
+        const ctx = gsap.context(() => {
+            if (!isMobile) {
+                // Desktop: Progress line grows as you scroll
+                gsap.fromTo(
+                    progressLineRef.current,
+                    { scaleY: 0 },
+                    {
+                        scaleY: 1,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: containerRef.current,
+                            start: "top 40%",
+                            end: "bottom 60%",
+                            scrub: true,
+                        },
+                    }
+                );
 
-        if (lineRef.current) {
-          lineRef.current.style.top = `${firstMarkerOffset}px`;
-          lineRef.current.style.backgroundColor = "#FF6B6B";
-          gsap.fromTo(
-            lineRef.current,
-            { height: 0 },
-            {
-              height: totalHeight,
-              scrollTrigger: {
-                trigger: containerRef.current,
-                start: "top 80%",
-                end: "bottom 20%",
-                scrub: true,
-              },
-              duration: 1,
+                // Desktop: cards slide in with scale
+                stepRefs.current.forEach((step) => {
+                    if (!step) return;
+                    gsap.fromTo(
+                        step,
+                        { opacity: 0, y: 60, scale: 0.97 },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            duration: 0.8,
+                            ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: step,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse",
+                            },
+                        }
+                    );
+                });
+
+                // Desktop: Dots pop in
+                dotRefs.current.forEach((dot) => {
+                    if (!dot) return;
+                    gsap.fromTo(
+                        dot,
+                        { scale: 0 },
+                        {
+                            scale: 1,
+                            duration: 0.5,
+                            ease: "back.out(3)",
+                            scrollTrigger: {
+                                trigger: dot,
+                                start: "top 80%",
+                                toggleActions: "play none none reverse",
+                            },
+                        }
+                    );
+                });
+            } else {
+                // Mobile: simple fade in, staggered
+                stepRefs.current.forEach((step) => {
+                    if (!step) return;
+                    gsap.fromTo(
+                        step,
+                        { opacity: 0, y: 30 },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.6,
+                            ease: "power2.out",
+                            scrollTrigger: {
+                                trigger: step,
+                                start: "top 90%",
+                                toggleActions: "play none none none",
+                            },
+                        }
+                    );
+                });
             }
-          );
-        }
-      }
+        }, containerRef);
 
-      // Desktop Animations
-      itemsRef.current.forEach((card, index) => {
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            y: 50,
-            scale: 0.95,
-            rotationX: -15,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            rotationX: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
+        return () => ctx.revert();
+    }, []);
 
-      markersRef.current.forEach((marker) => {
-        gsap.fromTo(
-          marker,
-          {
-            scale: 0.8,
-            rotation: 45,
-            backgroundColor: "#ffffff",
-          },
-          {
-            scale: 1,
-            rotation: 0,
-            backgroundColor: "#f5f5f7",
-            duration: 0.8,
-            ease: "elastic.out(1.2, 0.5)",
-            scrollTrigger: {
-              trigger: marker,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-
-      // Mobile Animations
-      mobileItemsRef.current.forEach((card) => {
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            y: 50,
-            scale: 0.9,
-            rotationZ: -5,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            rotationZ: 0,
-            duration: 0.6,
-            ease: "back.out(1.2)",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 90%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-
-      mobileMarkersRef.current.forEach((marker) => {
-        gsap.fromTo(
-          marker,
-          {
-            scale: 0,
-            rotation: 90,
-            backgroundColor: "#ffffff",
-          },
-          {
-            scale: 1,
-            rotation: 0,
-            backgroundColor: "#f5f5f7",
-            duration: 0.8,
-            ease: "elastic.out(1, 0.5)",
-            scrollTrigger: {
-              trigger: marker,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <div
-      ref={containerRef}
-      className="pt-24 lg:pt-40 relative w-full bg-[#f5f5f7] text-black min-h-screen"
-      id="ablauf"
-    >
-      <div className="flex flex-col items-center py-16">
-        <h1
-          ref={titleRef}
-          className="text-5xl font-roboto font-bold mb-16 text-black"
+    return (
+        <div
+            ref={containerRef}
+            className="py-16 md:py-32 relative w-full bg-[#f5f5f7] text-black"
+            id="ablauf"
         >
-          Unser Ablauf
-        </h1>
-        <div className="relative w-full max-w-7xl flex flex-col gap-6 pb-16">
-          <div
-            ref={lineRef}
-            className="absolute left-1/2 transform -translate-x-1/2 w-1"
-            style={{ height: 0 }}
-          ></div>
-          {timelineData.map((event, index) => (
-            <div key={index} className="p-4">
-              {/* Mobile Layout */}
-              <div className="block md:hidden">
-                <div className="flex flex-col items-center">
-                  <div
-                    ref={(el) => (mobileMarkersRef.current[index] = el)}
-                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl font-bold text-red border-2 border-gray-300 mb-6"
-                  >
-                    {event.number}
-                  </div>
-                  <div
-                    ref={(el) => (mobileItemsRef.current[index] = el)}
-                    className="bg-white p-6 rounded-lg shadow-sm w-full max-w-md mx-auto border border-gray-200"
-                  >
-                    <h2 className="text-2xl font-bold text-black mb-4">
-                      {event.title}
-                    </h2>
-                    <ul className="mt-2 list-disc list-inside text-gray-200 text-sm space-y-3">
-                      {event.description.map((point, i) => (
-                        <li key={i}>{point}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-              {/* Desktop Layout */}
-              <div className="hidden md:grid grid-cols-[1fr_auto_1fr] gap-x-12 items-center">
-                {index % 2 === 0 ? (
-                  <div className="flex justify-end pr-4">
-                    <div
-                      ref={(el) => (itemsRef.current[index] = el)}
-                      className="bg-white p-8 rounded-lg shadow-sm w-[33rem] max-w-[600px] border border-gray-200"
-                    >
-                      <h2 className="text-2xl font-roboto font-bold text-black">
-                        {event.title}
-                      </h2>
-                      <ul className="mt-2 list-disc list-inside text-gray-200 text-lg space-y-2">
-                        {event.description.map((point, i) => (
-                          <li key={i}>{point}</li>
-                        ))}
-                      </ul>
+                {/* ===== MOBILE LAYOUT ===== */}
+                <div className="block lg:hidden">
+                    {/* Mobile Header */}
+                    <div className="text-center mb-10">
+                        <p className="text-xs font-bold tracking-wide text-red-500 uppercase mb-2 font-inter">
+                            Projektablauf
+                        </p>
+                        <h1 className="text-3xl font-extrabold text-gray-900 font-roboto leading-tight mb-3">
+                            Ihre Website in{" "}
+                            <span className="text-red-500">4 Schritten</span>
+                        </h1>
+                        <p className="text-gray-500 text-base font-inter leading-relaxed max-w-sm mx-auto">
+                            Größtmöglicher Mehrwert, kleinstmöglicher Zeitaufwand.
+                        </p>
                     </div>
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-                <div className="flex justify-center relative">
-                  <div
-                    ref={(el) => (markersRef.current[index] = el)}
-                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl font-bold text-red border-2 border-gray-300"
-                  >
-                    {event.number}
-                  </div>
+
+                    {/* Mobile Steps — simple stacked cards */}
+                    <div className="flex flex-col gap-5">
+                        {steps.map((step, index) => (
+                            <div
+                                key={index}
+                                ref={(el) => (stepRefs.current[index] = el)}
+                                className="bg-[#1a1a2e] rounded-xl p-5 shadow-md border border-gray-800"
+                            >
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="text-red-500 text-2xl font-extrabold font-roboto">{step.number}</span>
+                                    <h3 className="text-lg font-bold text-white font-roboto">{step.title}</h3>
+                                </div>
+                                <p className="text-gray-400 font-inter leading-relaxed text-sm">
+                                    {step.description}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-                {index % 2 !== 0 ? (
-                  <div className="flex justify-start pl-4">
-                    <div
-                      ref={(el) => (itemsRef.current[index] = el)}
-                      className="bg-white p-6 rounded-lg shadow-sm max-w-[800px] border border-gray-200"
-                    >
-                      <h2 className="text-2xl font-roboto font-bold text-black">
-                        {event.title}
-                      </h2>
-                      <ul className="mt-2 list-disc list-inside text-gray-200 text-lg space-y-2">
-                        {event.description.map((point, i) => (
-                          <li key={i}>{point}</li>
-                        ))}
-                      </ul>
+
+                {/* ===== DESKTOP LAYOUT ===== */}
+                <div className="hidden lg:flex flex-row gap-20">
+
+                    {/* LEFT — Sticky Header */}
+                    <div className="w-[38%] sticky top-32 self-start">
+                        <p className="text-sm font-bold tracking-wide text-red-500 uppercase mb-3 font-inter">
+                            // Projektablauf
+                        </p>
+                        <h1 className="text-[3.5rem] font-extrabold text-gray-900 font-roboto leading-tight mb-6">
+                            Ihre Website in{" "}
+                            <span className="relative inline-block">
+                                <span className="relative z-10 text-white">4 Schritten</span>
+                                <span className="absolute inset-0 bg-red-500 -skew-y-1 rounded-md z-0 opacity-90" />
+                            </span>
+                        </h1>
+                        <p className="text-gray-500 text-xl font-inter leading-relaxed max-w-md">
+                            Unser Prozess ist so aufgebaut, dass Sie den größtmöglichen Mehrwert für den kleinstmöglichen Zeitaufwand bekommen.
+                        </p>
                     </div>
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </div>
+
+                    {/* RIGHT — Scrolling Steps with vertical line */}
+                    <div className="w-[62%] relative">
+                        {/* Vertical line track */}
+                        <div className="absolute left-7 top-0 bottom-0 w-[2px] bg-gray-300 rounded-full" />
+                        <div
+                            ref={progressLineRef}
+                            className="absolute left-7 top-0 bottom-0 w-[2px] bg-gradient-to-b from-red-500 to-red-600 rounded-full origin-top"
+                            style={{ scaleY: 0 }}
+                        />
+
+                        <div className="flex flex-col gap-16">
+                            {steps.map((step, index) => (
+                                <div
+                                    key={index}
+                                    className="relative flex items-start gap-8"
+                                >
+                                    {/* Dot on the line */}
+                                    <div
+                                        ref={(el) => (dotRefs.current[index] = el)}
+                                        className="relative z-10 shrink-0 w-14 h-14 rounded-full bg-white border-[3px] border-red-500 flex items-center justify-center shadow-lg"
+                                    >
+                                        <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
+
+                                    {/* Step Card */}
+                                    <div
+                                        ref={(el) => (stepRefs.current[index + 4] = el)}
+                                        className="flex-1 bg-[#1a1a2e] rounded-2xl p-8 shadow-lg border border-gray-800 hover:border-red-500/30 hover:shadow-xl transition-all duration-300 group"
+                                    >
+                                        <p className="text-red-500 text-4xl font-extrabold font-roboto mb-3">
+                                            {step.number}
+                                        </p>
+                                        <h3 className="text-2xl font-bold text-white font-roboto mb-3 group-hover:text-red-400 transition-colors">
+                                            {step.title}
+                                        </h3>
+                                        <p className="text-gray-400 font-inter leading-relaxed text-lg">
+                                            {step.description}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                </div>
             </div>
-          ))}
+            <div id="contact"></div>
         </div>
-      </div>
-      <div id="contact"></div>
-    </div>
-  );
+    );
 };
 
-export default Timeline;
+export default Procedure;
