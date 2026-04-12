@@ -35,6 +35,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./Hango/dist/
-          server-dir: public_html/
+          server-dir: /home/u391805817/domains/hango.at/public_html/
           port: 21
           timeout: 90000
