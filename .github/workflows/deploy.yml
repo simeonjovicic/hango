@@ -31,10 +31,11 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: hango.at
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./Hango/dist/
           server-dir: public_html/
           port: 21
+          protocol: ftps
           timeout: 90000
