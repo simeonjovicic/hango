@@ -74,7 +74,7 @@ const AboutUs = () => {
       className="lg:md:h-[40rem] pb-16 md:pb-32 lg:md:pt-16 bg-gradient-to-t from-[#f5f5f7] to-[#ffffff] md:px-16"
       id="über uns"
     >
-      <section className="lg:md:h-[20rem] h-auto pt-16 md:pt-[25rem] lg:md:pt-64 w-full flex items-center justify-center px-4 md:px-8">
+      <section className="lg:md:h-[20rem] h-auto pt-32 md:pt-[25rem] lg:md:pt-64 w-full flex items-center justify-center px-4 md:px-8">
         <div className="mx-auto max-w-12xl w-full px-4 md:px-0">
           {/* Main Content Container */}
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
@@ -83,7 +83,8 @@ const AboutUs = () => {
               {/* Main Title */}
               <h1
                 ref={titleRef}
-                className="font-roboto max-w-8xl text-black text-3xl md:text-5xl font-extrabold leading-tight mb-6"
+                className="font-roboto max-w-8xl text-black text-3xl md:text-5xl font-extrabold leading-tight mb-6 break-words"
+                style={{ hyphens: 'auto' }}
               >
                 Bereit für den digitalen Aufstieg?
               </h1>
@@ -101,7 +102,7 @@ const AboutUs = () => {
             {/* Right Column */}
             <div
               ref={cardRef}
-              className="flex-1 pt-6 pb-10 px-8 md:p-18 mr-0 md:mr-16 bg-gradient-to-br from-[#ffffff] to-[#f5f5f7] rounded-2xl shadow-xl shadow-gray-200/80 backdrop-blur-lg max-w-lg min-h-[250px] border border-gray-200 hover:border-red-200 hover:shadow-red-500/10 transition-all duration-300"
+              className="flex-1 pt-6 pb-10 px-6 md:px-12 md:py-18 mr-0 md:mr-16 bg-gradient-to-br from-[#ffffff] to-[#f5f5f7] rounded-2xl shadow-xl shadow-gray-200/80 backdrop-blur-lg max-w-lg min-h-[250px] border border-gray-200 hover:border-red-200 hover:shadow-red-500/10 transition-all duration-300"
             >
               {/* Subtitle */}
               <h2 className="font-roboto text-black text-[1.71rem] md:text-4xl font-bold mb-6 mt-4">

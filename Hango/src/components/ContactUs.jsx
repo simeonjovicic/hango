@@ -361,7 +361,7 @@ E-Mail: ${formData.email}
                 ref={buttonRef}
                 type="submit"
                 disabled={isSending}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md px-8 py-4"
+                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-500 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 text-white font-semibold rounded-md px-8 py-4"
               >
                 {isSent ? "Gesendet!" : isSending ? "Sende..." : "Abschicken"}
               </button>

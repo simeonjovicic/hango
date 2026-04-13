@@ -96,7 +96,7 @@ const Portfolio = () => {
                             <div className={`group w-full pt-[55%] md:pt-[50%] rounded-t-[1.5rem] md:rounded-t-[2rem] overflow-hidden relative bg-gray-200/50 backdrop-blur-xl border border-white/60 border-b-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500`}>
 
                                 {/* Desktop Browser Mockup */}
-                                <div className="absolute inset-x-4 top-4 -bottom-4 md:inset-x-10 md:top-10 transform scale-100 group-hover:scale-[1.02] transition-transform duration-700 ease-out flex flex-col origin-bottom">
+                                <div className="absolute inset-x-3 top-3 -bottom-3 md:inset-x-10 md:top-10 transform scale-100 group-hover:scale-[1.02] transition-transform duration-700 ease-out flex flex-col origin-bottom">
                                     <div className="w-full h-full bg-[#1e1e1e] rounded-t-xl md:rounded-t-2xl flex flex-col shadow-2xl overflow-hidden border border-[#333] border-b-0">
 
                                         {/* Browser Top Bar */}

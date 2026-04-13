@@ -113,8 +113,8 @@ function Hero() {
 
   return (
     <div ref={heroRef} className="flex flex-col" id="home">
-      <section className="pt-40 lg:md:pt-0 h-[30rem] md:h-screen w-full bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#ffffff] flex items-center justify-start relative">
-        <div className="flex flex-col items-start gap-8 max-w-3xl mt-10 md:mt-0 md:mb-10 px-6  lg:md:ml-20">
+      <section className="pt-32 lg:md:pt-0 min-h-screen md:h-screen w-full bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#ffffff] flex items-center justify-center md:justify-start relative pb-12">
+        <div className="flex flex-col items-center md:items-start text-center md:text-left gap-8 max-w-3xl mt-10 md:mt-0 md:mb-10 px-6 lg:md:ml-20">
           {/* Text Content */}
           <div className="flex flex-col gap-4">
             <h1
@@ -132,12 +132,12 @@ function Hero() {
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a href="#über uns">
+          <div className="flex flex-col sm:flex-row gap-4 w-full max-w-[21.5rem] lg:md:max-w-none items-center md:items-start">
+            <a href="#über uns" className="w-full lg:md:w-fit">
               <button
                 ref={learnButtonRef}
                 className="
-                  w-screen max-w-[21.5rem] lg:md:w-fit py-[.7rem] lg:md:px-4 sm:px-6 lg:md:py-3 sm:py-3
+                   w-full max-w-[21.5rem] lg:md:w-fit py-[.7rem] lg:md:px-4 sm:px-6 lg:md:py-3 sm:py-3
                   relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gray-500/20
                   before:content-[''] before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-black before:to-gray-400 before:rounded-xl
                   after:content-[''] after:absolute after:inset-[2px] after:z-10 after:bg-[#ffffff] after:rounded-lg hover:after:bg-[#f5f5f7]
@@ -149,11 +149,11 @@ function Hero() {
               </button>
             </a>
 
-            <a href="#contact">
+            <a href="#contact" className="w-full lg:md:w-fit">
               <button
                 ref={contactButtonRef}
                 className="
-                  w-screen max-w-[21.5rem]  lg:md:w-fit py-[.7rem]  px-2 lg:md:px-[1rem] sm:px-[1.5rem] lg:md:py-[.7rem] sm:py-[.8rem]
+                   w-full max-w-[21.5rem]  lg:md:w-fit py-[.7rem]  px-2 lg:md:px-[1rem] sm:px-[1.5rem] lg:md:py-[.7rem] sm:py-[.8rem]
                   bg-gradient-to-r from-red-500 to-red-600 hover:from-red-500 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 rounded-lg
                 "
               >

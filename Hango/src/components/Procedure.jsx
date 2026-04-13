@@ -153,7 +153,7 @@ const Procedure = () => {
                             <div
                                 key={index}
                                 ref={(el) => (stepRefs.current[index] = el)}
-                                className="bg-[#1a1a2e] rounded-xl p-5 shadow-md border border-gray-800"
+                                className="bg-[#1a1a2e] rounded-xl p-4 sm:p-5 shadow-md border border-gray-800"
                             >
                                 <div className="flex items-center gap-3 mb-2">
                                     <span className="text-red-500 text-2xl font-extrabold font-roboto">{step.number}</span>

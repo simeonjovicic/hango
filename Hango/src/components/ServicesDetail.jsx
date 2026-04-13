@@ -91,12 +91,12 @@ const ServicesDetail = () => {
                             ref={(el) => (cardsRef.current[index] = el)}
                             className="relative group rounded-2xl p-[2px] bg-gradient-to-br from-gray-200 to-gray-300 hover:from-red-400 hover:to-red-600 transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-red-500/10"
                         >
-                            <div className="h-full bg-[#f5f5f7] group-hover:bg-white rounded-2xl p-8 flex flex-col justify-between transition-colors duration-300">
+                            <div className="h-full bg-[#f5f5f7] group-hover:bg-white rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-colors duration-300">
                                 <div>
                                     <div className="mb-5 w-14 h-14 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center group-hover:shadow-md group-hover:border-red-100 transition-all duration-300">
                                         {service.icon}
                                     </div>
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-1 font-roboto">{service.title}</h3>
+                                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 font-roboto leading-tight break-words" style={{ hyphens: 'auto' }}>{service.title}</h3>
                                     <p className="text-sm font-semibold text-red-500 mb-4">{service.subtitle}</p>
                                     <p className="text-gray-600 mb-6 font-inter leading-relaxed">
                                         {service.description}
