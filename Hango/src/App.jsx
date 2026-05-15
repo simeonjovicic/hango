@@ -9,11 +9,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Impressum from "./components/Impressum";
 import Privacy_Policy from "./components/Privacy-Policy";
 import Landingpage from "./components/Landingpage";
+import HangoLoader from "./components/HangoLoader";
+import { useState } from "react";
 
 const App = () => {
+  const [loaded, setLoaded] = useState(false);
   return (
     <Router>
-      <main>
+      {!loaded && <HangoLoader onComplete={() => setLoaded(true)} />}
+      <main style={{ opacity: loaded ? 1 : 0, transition: "opacity 400ms ease-out" }}>
         <Navbar />
 
         <Routes>

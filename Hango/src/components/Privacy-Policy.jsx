@@ -151,9 +151,9 @@ const PrivacyPolicy = () => {
             <div className="pt-8">
               <Link
                 to="/"
-                className="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="inline-flex items-center px-6 py-3 border border-gray-800 shadow-sm text-base font-medium rounded-md text-white bg-gray-900 hover:bg-black transition-colors"
               >
-                <p className="text-gray-700">← Zurück zur Startseite</p>
+                <p>← Zurück zur Startseite</p>
               </Link>
             </div>
           </div>
