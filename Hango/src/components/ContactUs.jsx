@@ -85,6 +85,27 @@ const ContactUs = () => {
 
   return (
     <div className="relative w-full bg-[#f5f5f7] text-gray-900 overflow-hidden py-24 md:py-32">
+      {isSent && (
+        <div className="contact-success-modal-overlay" role="status" aria-live="polite">
+          <div className="contact-success-modal">
+            <div className="contact-success-progress" />
+            <span className="contact-success-icon contact-success-icon-lg" aria-hidden="true">
+              <svg className="contact-success-ring" viewBox="0 0 44 44" fill="none">
+                <circle cx="22" cy="22" r="19" />
+              </svg>
+              <svg className="contact-success-check contact-success-check-lg" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12.5l4.2 4.2L19 7" />
+              </svg>
+            </span>
+            <div className="relative text-center">
+              <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-emerald-700">Nachricht gesendet</p>
+              <h3 className="mt-3 text-2xl font-extrabold text-gray-950">Danke für Ihre Anfrage</h3>
+              <p className="mt-3 text-base leading-7 text-gray-600">Wir haben Ihre Nachricht erhalten und melden uns zeitnah bei Ihnen.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
           
@@ -179,19 +200,6 @@ const ContactUs = () => {
                 )}
               </button>
 
-              {isSent && (
-                <div className="flex items-center gap-4 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-green-800 shadow-sm animate-success-slide">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-500 text-white animate-success-pop">
-                    <svg className="h-6 w-6 animate-success-draw" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </span>
-                  <div>
-                    <p className="font-bold text-green-950">Nachricht gesendet</p>
-                    <p className="text-sm text-green-700">Danke, wir melden uns so schnell wie möglich.</p>
-                  </div>
-                </div>
-              )}
             </form>
           </div>
 

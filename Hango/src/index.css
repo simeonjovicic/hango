@@ -37,50 +37,167 @@ canvas {
   animation: fade-in-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes success-slide {
+@keyframes success-card-in {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(10px) scale(0.985);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes success-pop {
+@keyframes success-icon-in {
   0% {
-    transform: scale(0.55);
+    opacity: 0;
+    transform: scale(0.72);
   }
-  70% {
-    transform: scale(1.12);
+  65% {
+    opacity: 1;
+    transform: scale(1.06);
   }
   100% {
+    opacity: 1;
     transform: scale(1);
   }
 }
 
-@keyframes success-draw {
+@keyframes success-ring-draw {
   from {
-    stroke-dasharray: 28;
-    stroke-dashoffset: 28;
+    stroke-dashoffset: 120;
   }
   to {
-    stroke-dasharray: 28;
     stroke-dashoffset: 0;
   }
 }
 
-.animate-success-slide {
-  animation: success-slide 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+@keyframes success-check-draw {
+  from {
+    stroke-dashoffset: 26;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.animate-success-pop {
-  animation: success-pop 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+@keyframes success-progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
 
-.animate-success-draw {
-  animation: success-draw 650ms ease-out both;
+.contact-success-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 1rem;
+  background:
+    linear-gradient(135deg, rgba(236, 253, 245, 0.98), rgba(240, 253, 250, 0.94)),
+    #ecfdf5;
+  padding: 1rem 1.125rem;
+  box-shadow: 0 16px 34px rgba(15, 118, 110, 0.1);
+  animation: success-card-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.contact-success-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(17, 24, 39, 0.32);
+  backdrop-filter: blur(10px);
+  animation: success-card-in 260ms ease-out both;
+}
+
+.contact-success-modal {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 1.15rem;
+  width: min(100%, 26rem);
+  overflow: hidden;
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(236, 253, 245, 0.96)),
+    #ffffff;
+  padding: 2rem;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.24);
+  animation: success-card-in 520ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+}
+
+.contact-success-progress {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 42%;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.16), transparent);
+  animation: success-progress 1.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  pointer-events: none;
+}
+
+.contact-success-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 25%, #34d399, #059669);
+  color: white;
+  box-shadow: 0 10px 24px rgba(5, 150, 105, 0.28);
+  animation: success-icon-in 560ms cubic-bezier(0.34, 1.56, 0.64, 1) 90ms both;
+}
+
+.contact-success-icon-lg {
+  width: 4.25rem;
+  height: 4.25rem;
+}
+
+.contact-success-ring {
+  position: absolute;
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  transform: rotate(-90deg);
+}
+
+.contact-success-ring circle {
+  stroke: rgba(255, 255, 255, 0.94);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: success-ring-draw 760ms ease-out 140ms both;
+}
+
+.contact-success-check {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.contact-success-check-lg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.contact-success-check path {
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: success-check-draw 520ms cubic-bezier(0.22, 1, 0.36, 1) 420ms both;
 }
 
 /* Hango — moving glossy shine across the gradient text */
