@@ -37,6 +37,33 @@ canvas {
   animation: fade-in-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* Hango — moving glossy shine across the gradient text */
+@keyframes hango-shine {
+  0%   { background-position: 200% 50%; }
+  60%  { background-position: -80% 50%; }
+  100% { background-position: -80% 50%; }
+}
+
+.hango-shine {
+  background-image: linear-gradient(
+    100deg,
+    #b91c1c 0%,
+    #ef4444 30%,
+    #fca5a5 46%,
+    #ffffff 50%,
+    #fca5a5 54%,
+    #ef4444 70%,
+    #b91c1c 100%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: hango-shine 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
 /* Apple iOS 26 Liquid Glass — refraction via SVG displacement + isolated backdrop lens */
 .liquid-glass-btn {
   appearance: none;
@@ -78,15 +105,35 @@ canvas {
 }
 
 .liquid-glass-btn:hover .liquid-glass-lens {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 18%), transparent),
+    inset 1.8px 3px 0 -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 100%), transparent),
+    inset -2px -2px 0 -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, white calc(var(--glass-reflex-light) * 70%), transparent),
+    inset -0.3px -1px 4px 0 color-mix(in srgb, black calc(var(--glass-reflex-dark) * 14%), transparent),
+    inset -1.5px 2.5px 0 -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 22%), transparent),
+    inset 0 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 22%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 12%), transparent),
+    0 3px 10px 0 color-mix(in srgb, black calc(var(--glass-reflex-dark) * 14%), transparent),
+    0 12px 28px 0 color-mix(in srgb, black calc(var(--glass-reflex-dark) * 12%), transparent);
 }
-
-.liquid-glass-btn:hover { transform: scale(1.06); }
-.liquid-glass-btn:active { transform: scale(0.95); transition-duration: 0.15s; }
 
 .liquid-glass-content {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
-  transition: color 400ms cubic-bezier(1, 0, 0.4, 1);
+  transition: transform 450ms cubic-bezier(0.34, 1.4, 0.64, 1), color 400ms cubic-bezier(1, 0, 0.4, 1);
+}
+
+.liquid-glass-btn:hover .liquid-glass-content {
+  transform: scale(1.18);
+}
+
+.liquid-glass-btn[data-dir="prev"]:hover .liquid-glass-content { transform: scale(1.18) translateX(-2px); }
+.liquid-glass-btn[data-dir="next"]:hover .liquid-glass-content { transform: scale(1.18) translateX(2px); }
+
+.liquid-glass-btn:active .liquid-glass-content {
+  transform: scale(0.92);
+  transition-duration: 0.12s;
 }
 
 .screen-max-width {

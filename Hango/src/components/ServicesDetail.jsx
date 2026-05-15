@@ -1,7 +1,7 @@
 import React, { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useAnimationControls } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,6 +45,8 @@ const services = [
 const TiltCard = ({ service }) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
+    const controls = useAnimationControls();
+    const clickAccum = useRef({ count: 0, lastClick: 0, accumulatedFlips: 0 });
 
     const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
     const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
@@ -54,14 +56,8 @@ const TiltCard = ({ service }) => {
 
     const handleMouseMove = (e) => {
         const rect = e.currentTarget.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        const xPct = mouseX / width - 0.5;
-        const yPct = mouseY / height - 0.5;
-        x.set(xPct);
-        y.set(yPct);
+        x.set((e.clientX - rect.left) / rect.width - 0.5);
+        y.set((e.clientY - rect.top) / rect.height - 0.5);
     };
 
     const handleMouseLeave = () => {
@@ -69,18 +65,79 @@ const TiltCard = ({ service }) => {
         y.set(0);
     };
 
+    const handleClick = async (e) => {
+        const now = Date.now();
+        const acc = clickAccum.current;
+
+        if (now - acc.lastClick > 900) {
+            acc.count = 0;
+            acc.accumulatedFlips = 0;
+        }
+        acc.count += 1;
+        acc.lastClick = now;
+
+        const rect = e.currentTarget.getBoundingClientRect();
+        const cx = e.clientX - rect.left - rect.width / 2;
+        const cy = e.clientY - rect.top - rect.height / 2;
+        const dirX = -Math.sign(cx) || 1;
+        const dirY = -Math.sign(cy) || 1;
+
+        // SPAM → FLIP: 3rd+ rapid click triggers a full Y-axis flip
+        if (acc.count >= 3) {
+            acc.accumulatedFlips += 1;
+            const totalRotation = 360 * acc.accumulatedFlips * dirX;
+
+            await controls.start({
+                x: dirX * 30,
+                y: dirY * 20,
+                z: -500,
+                rotateY: totalRotation,
+                rotateZ: dirX * 20,
+                scale: 0.72,
+                transition: { duration: 0.55, ease: [0.32, 0, 0.4, 1] },
+            });
+            controls.start({
+                x: 0, y: 0, z: 0, rotateY: 0, rotateZ: 0, scale: 1,
+                transition: { type: "spring", stiffness: 160, damping: 20, mass: 1.8 },
+            });
+        } else {
+            // TANK PUSH — standhaft: kleiner Push, bouncy return
+            const intensity = Math.min(acc.count, 3);
+            await controls.start({
+                x: dirX * (22 + intensity * 6),
+                y: dirY * (16 + intensity * 4),
+                z: -(240 + intensity * 50),
+                rotateZ: dirX * (7 + intensity * 3),
+                scale: 0.88 - intensity * 0.02,
+                transition: { duration: 0.28, ease: [0.45, 0, 0.55, 1] },
+            });
+            // Bouncy spring back — overshoots and settles with weight
+            controls.start({
+                x: 0, y: 0, z: 0, rotateZ: 0, scale: 1,
+                transition: { type: "spring", stiffness: 280, damping: 9, mass: 1.3, restDelta: 0.001 },
+            });
+        }
+    };
+
     return (
         <motion.div
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
-            }}
-            className="relative h-full group rounded-2xl p-[2px] bg-gradient-to-br from-gray-200 to-gray-300 hover:from-red-400 hover:to-red-600 transition-colors duration-500 shadow-sm hover:shadow-xl hover:shadow-red-500/20 cursor-pointer"
+            onClick={handleClick}
+            animate={controls}
+            className="relative h-full cursor-pointer"
+            style={{ transformStyle: "preserve-3d", height: "100%" }}
         >
-            <div 
+            <motion.div
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                    rotateX,
+                    rotateY,
+                    transformStyle: "preserve-3d",
+                    height: "100%",
+                }}
+                className="group h-full rounded-2xl p-[2px] bg-gradient-to-br from-gray-200 to-gray-300 hover:from-red-400 hover:to-red-600 transition-colors duration-500 shadow-sm hover:shadow-xl hover:shadow-red-500/20"
+            >
+            <div
                 className="h-full bg-[#f5f5f7] group-hover:bg-white rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-colors duration-300"
                 style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
             >
@@ -105,6 +162,7 @@ const TiltCard = ({ service }) => {
                     ))}
                 </ul>
             </div>
+            </motion.div>
         </motion.div>
     );
 };
@@ -145,7 +203,7 @@ const ServicesDetail = () => {
                 <div className="text-center mb-16">
                     <h2 className="text-sm font-bold tracking-wide text-red-500 uppercase">Unsere Expertise</h2>
                     <h1 className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-5xl font-roboto">
-                        Mehr Kunden mit <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">Hango</span>
+                        Mehr Kunden mit <span className="hango-shine">Hango</span>
                     </h1>
                     <p className="mt-4 max-w-2xl text-xl text-gray-600 mx-auto font-inter">
                         Wir bieten ganzheitliche digitale Lösungen, um Ihre Präsenz im Internet zu maximieren und Ihren Umsatz nachhaltig zu steigern.
