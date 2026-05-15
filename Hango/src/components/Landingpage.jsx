@@ -28,9 +28,9 @@ const Landingpage = () => {
         <TeamStory />
       </section>
 
-      <section id="highlights">
+      {/* <section id="highlights">
         <Highlights />
-      </section>
+      </section> */}
 
       <section id="services">
         <ServicesDetail />

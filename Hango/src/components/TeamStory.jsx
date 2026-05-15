@@ -77,28 +77,28 @@ const TeamStory = () => {
                     <div ref={rightRef} className="flex-1 flex flex-col gap-6">
                         {[
                             {
-                                icon: "🤝",
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>,
                                 title: "Persönlicher Kontakt",
                                 desc: "Ihr redet immer direkt mit uns — nicht mit einem Support-Bot oder einer Hotline.",
                             },
                             {
-                                icon: "🔥",
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500"><path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" /></svg>,
                                 title: "Echte Leidenschaft",
                                 desc: "Webdesign und Marketing ist nicht unser Job, es ist das, womit wir aufgewachsen sind.",
                             },
                             {
-                                icon: "⚡",
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>,
                                 title: "Junges Mindset",
                                 desc: "Wir kennen aktuelle Trends aus erster Hand — kein veraltetes Agentur-Denken.",
                             },
                             {
-                                icon: "📈",
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>,
                                 title: "Messbare Ergebnisse",
                                 desc: "Wir liefern nicht nur schöne Webseiten, sondern auch Traffic, Leads und Umsatz.",
                             },
                         ].map((item, i) => (
                             <div key={i} className="flex items-start gap-4 bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-red-100 transition-all duration-300">
-                                <span className="text-2xl shrink-0">{item.icon}</span>
+                                <span className="shrink-0 flex items-center justify-center bg-red-50 p-2.5 rounded-lg border border-red-100">{item.icon}</span>
                                 <div>
                                     <p className="font-bold text-gray-900 font-roboto">{item.title}</p>
                                     <p className="text-gray-500 text-sm font-inter mt-1">{item.desc}</p>
