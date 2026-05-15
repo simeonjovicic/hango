@@ -3,7 +3,6 @@ import emailjs from "emailjs-com";
 import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 
-
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     vorname: "",
@@ -18,355 +17,164 @@ const ContactUs = () => {
   const [errors, setErrors] = useState({});
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
-
-  // Reference to the submit button for GSAP animation
   const buttonRef = useRef(null);
 
   useEffect(() => {
     if (isSent) {
-      // Play a quick scale animation on the button
       gsap.fromTo(
         buttonRef.current,
         { scale: 1 },
-        {
-          scale: 1.2,
-          duration: 0.2,
-          yoyo: true,
-          repeat: 1,
-        }
+        { scale: 1.05, duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out" }
       );
-
-      // Revert "Gesendet!" status after 2 seconds
-      const timer = setTimeout(() => {
-        setIsSent(false);
-      }, 2000);
-
+      const timer = setTimeout(() => setIsSent(false), 3000);
       return () => clearTimeout(timer);
     }
   }, [isSent]);
 
-  // Validation function
   const validateForm = () => {
     let newErrors = {};
-
-    if (!formData.vorname.trim())
-      newErrors.vorname = "Vorname ist erforderlich";
-    if (!formData.nachname.trim())
-      newErrors.nachname = "Nachname ist erforderlich";
-    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-      newErrors.email = "Ungültige E-Mail-Adresse";
-    if (!formData.telefonnummer.match(/^\+?[0-9\s-]{7,15}$/))
-      newErrors.telefonnummer = "Ungültige Telefonnummer";
-    if (!formData.betreff.trim())
-      newErrors.betreff = "Betreff ist erforderlich";
-    if (!formData.nachricht.trim())
-      newErrors.nachricht = "Nachricht darf nicht leer sein";
-    if (!formData.terms)
-      newErrors.terms = "Bitte akzeptieren Sie die Bedingungen";
-
+    if (!formData.vorname.trim()) newErrors.vorname = "Pflichtfeld";
+    if (!formData.nachname.trim()) newErrors.nachname = "Pflichtfeld";
+    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Ungültige E-Mail";
+    if (!formData.telefonnummer.match(/^\+?[0-9\s-]{7,15}$/)) newErrors.telefonnummer = "Ungültige Nummer";
+    if (!formData.betreff.trim()) newErrors.betreff = "Pflichtfeld";
+    if (!formData.nachricht.trim()) newErrors.nachricht = "Pflichtfeld";
+    if (!formData.terms) newErrors.terms = "Bitte akzeptieren";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+    if (errors[name]) setErrors({ ...errors, [name]: null });
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     setIsSending(true);
 
-    // Match the keys in your code to the placeholders in your EmailJS template
     const templateParams = {
-      to_name: "Flowbite Support",
+      to_name: "Hango Support",
       from_name: `${formData.vorname} ${formData.nachname}`,
-      message: `
-Betreff: ${formData.betreff}
-Nachricht: ${formData.nachricht}
-
-Telefonnummer: ${formData.telefonnummer}
-E-Mail: ${formData.email}
-      `,
+      message: `Betreff: ${formData.betreff}\nNachricht: ${formData.nachricht}\n\nTelefonnummer: ${formData.telefonnummer}\nE-Mail: ${formData.email}`,
     };
 
-    console.log("Sending email with:", templateParams);
-
     emailjs
-      .send(
-        "service_mn1xjte", // Replace with your EmailJS Service ID
-        "template_n65hvxf", // Replace with your EmailJS Template ID
-        templateParams, // Pass the object with matching placeholder keys
-        "cRQL4WjpEK6oZIUHO" // Replace with your EmailJS Public Key (User ID)
-      )
+      .send("service_mn1xjte", "template_n65hvxf", templateParams, "cRQL4WjpEK6oZIUHO")
       .then(
-        (response) => {
-          alert("Nachricht erfolgreich gesendet!");
-          setFormData({
-            vorname: "",
-            nachname: "",
-            email: "",
-            telefonnummer: "",
-            betreff: "",
-            nachricht: "",
-            terms: false,
-          });
+        () => {
+          setFormData({ vorname: "", nachname: "", email: "", telefonnummer: "", betreff: "", nachricht: "", terms: false });
           setErrors({});
           setIsSending(false);
           setIsSent(true);
         },
-        (error) => {
-          alert(
-            "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
-          );
+        () => {
+          alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
           setIsSending(false);
         }
       );
   };
 
   return (
-    <div className="pt-16 md:pt-40 relative min-h-[182vh] lg:md:min-h-[147vh] w-full bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#f5f5f7] text-black">
-      <h1 className="text-center text-3xl md:text-5xl font-roboto font-extrabold mb-10">
-        Kontaktieren Sie uns!
-      </h1>
-
-      <div className="max-w-8xl mx-4 md:mx-40 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 p-4 md:p-16 bg-white/50 rounded-xl shadow-sm border border-gray-200 backdrop-blur-md">
-        <div className="space-y-10">
-          <h2 className="text-2xl md:text-3xl font-bold font-roboto">
-            Kontaktmöglichkeiten
-          </h2>
-          <div className="space-y-6 text-gray-700 text-lg">
-            <div className="group relative overflow-hidden bg-gradient-to-br from-blue-50/50 to-indigo-50/50 p-6 rounded-xl border border-blue-200 hover:border-blue-300 transition-all duration-300 shadow-sm hover:shadow-md">
-              {/* Simplified background animation */}
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute -top-1 -left-4 w-24 h-24 bg-blue-300 rounded-full blur-2xl opacity-20 animate-pulse-slow" />
-              </div>
-
-              <div className="relative flex items-center space-x-4">
-                {/* Icon container */}
-                <div className="flex-shrink-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-9 w-9 text-blue-400 transition-transform duration-300"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-
-                {/* Simplified content */}
-                <div className="flex-1">
-                  <h3 className="text-[1.3rem] font-semibold text-blue-900 mb-2">
-                    Garantierte Antwort innerhalb von 24h
-                  </h3>
-                  <p className="text-blue-300"></p>
-                </div>
-              </div>
-
-              {/* Subtle hover effect */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute -inset-12 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/30 to-transparent transform -skew-x-12 w-1/3 shine-animation" />
-                </div>
-              </div>
+    <div className="relative w-full bg-[#f5f5f7] text-gray-900 overflow-hidden py-24 md:py-32">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+          
+          {/* Left Column: Typography & Info */}
+          <div className="flex flex-col justify-center space-y-10">
+            <div>
+              <p className="text-red-500 font-bold tracking-widest uppercase text-sm mb-4">Starten wir ein Projekt</p>
+              <h2 className="text-4xl md:text-6xl font-extrabold font-roboto leading-tight mb-6 text-gray-900">
+                Bereit für das <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">nächste Level?</span>
+              </h2>
+              <p className="text-gray-600 text-lg md:text-xl font-inter max-w-md leading-relaxed">
+                Lassen Sie uns gemeinsam Ihre digitale Präsenz transformieren. Schreiben Sie uns eine Nachricht, wir melden uns innerhalb von 24 Stunden.
+              </p>
             </div>
 
-            {/* Email */}
-            <a
-              href="mailto:business@hango.at"
-              className="flex items-center hover:text-blue-400 transition-colors group hover:text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 mr-3 text-gray-400 group-hover:text-blue-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              <span>business@hango.at</span>
-            </a>
+            <div className="space-y-8 pt-8 border-t border-gray-200">
+              <a href="mailto:business@hango.at" className="group flex items-center space-x-6">
+                <div className="w-14 h-14 rounded-full border border-gray-200 bg-white flex items-center justify-center group-hover:border-red-300 transition-colors duration-500 shadow-sm">
+                  <svg className="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">E-Mail</p>
+                  <p className="text-xl font-medium text-gray-900 group-hover:text-red-500 transition-colors duration-500">business@hango.at</p>
+                </div>
+              </a>
 
-            {/* Phone */}
-            <a
-              href="tel:+436605722674"
-              className="flex items-center hover:text-blue-400 transition-colors group"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 mr-3 text-gray-400 group-hover:text-blue-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                />
-              </svg>
-              <span>+43 660 5722 674</span>
-            </a>
+              <a href="tel:+436605722674" className="group flex items-center space-x-6">
+                <div className="w-14 h-14 rounded-full border border-gray-200 bg-white flex items-center justify-center group-hover:border-red-300 transition-colors duration-500 shadow-sm">
+                  <svg className="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">Telefon</p>
+                  <p className="text-xl font-medium text-gray-900 group-hover:text-red-500 transition-colors duration-500">+43 660 5722 674</p>
+                </div>
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-8">
-          <h2 className="text-2xl md:text-3xl font-bold font-roboto">
-            Kontaktieren Sie uns
-          </h2>
-
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block mb-1 text-lg font-medium text-gray-900">
-                  Vorname
-                </label>
-                <input
-                  type="text"
-                  name="vorname"
-                  value={formData.vorname}
-                  onChange={handleChange}
-                  className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
-                />
-                {errors.vorname && (
-                  <p className="text-red-500">{errors.vorname}</p>
-                )}
+          {/* Right Column: The Form */}
+          <div className="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-12 shadow-2xl shadow-gray-200/50 relative">
+            <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="relative">
+                  <input type="text" name="vorname" value={formData.vorname} onChange={handleChange} placeholder="Vorname" className="w-full bg-transparent border-b-2 border-gray-400 py-3 text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300" />
+                  {errors.vorname && <p className="absolute -bottom-5 left-0 text-xs text-red-500">{errors.vorname}</p>}
+                </div>
+                <div className="relative">
+                  <input type="text" name="nachname" value={formData.nachname} onChange={handleChange} placeholder="Nachname" className="w-full bg-transparent border-b-2 border-gray-400 py-3 text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300" />
+                  {errors.nachname && <p className="absolute -bottom-5 left-0 text-xs text-red-500">{errors.nachname}</p>}
+                </div>
               </div>
 
-              <div>
-                <label className="block mb-1 text-lg font-medium text-gray-900">
-                  Nachname
-                </label>
-                <input
-                  type="text"
-                  name="nachname"
-                  value={formData.nachname}
-                  onChange={handleChange}
-                  className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
-                />
-                {errors.nachname && (
-                  <p className="text-red-500">{errors.nachname}</p>
-                )}
+              <div className="relative">
+                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="E-Mail Adresse" className="w-full bg-transparent border-b-2 border-gray-400 py-3 text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300" />
+                {errors.email && <p className="absolute -bottom-5 left-0 text-xs text-red-500">{errors.email}</p>}
               </div>
-            </div>
 
-            <div>
-              <label className="block mb-1 text-lg font-medium text-gray-900">
-                E-Mail-Adresse
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
-              />
-              {errors.email && <p className="text-red-500">{errors.email}</p>}
-            </div>
+              <div className="relative">
+                <input type="text" name="telefonnummer" value={formData.telefonnummer} onChange={handleChange} placeholder="Telefonnummer" className="w-full bg-transparent border-b-2 border-gray-400 py-3 text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300" />
+                {errors.telefonnummer && <p className="absolute -bottom-5 left-0 text-xs text-red-500">{errors.telefonnummer}</p>}
+              </div>
 
-            <div>
-              <label className="block mb-1 text-lg font-medium text-gray-900">
-                Telefonnummer
-              </label>
-              <input
-                type="text"
-                name="telefonnummer"
-                value={formData.telefonnummer}
-                onChange={handleChange}
-                className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
-              />
-              {errors.telefonnummer && (
-                <p className="text-red-500">{errors.telefonnummer}</p>
-              )}
-            </div>
+              <div className="relative">
+                <input type="text" name="betreff" value={formData.betreff} onChange={handleChange} placeholder="Betreff" className="w-full bg-transparent border-b-2 border-gray-400 py-3 text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300" />
+                {errors.betreff && <p className="absolute -bottom-5 left-0 text-xs text-red-500">{errors.betreff}</p>}
+              </div>
 
-            <div>
-              <label className="block mb-1 text-lg font-medium text-gray-900">
-                Betreff
-              </label>
-              <input
-                type="text"
-                name="betreff"
-                value={formData.betreff}
-                onChange={handleChange}
-                className="block w-full rounded-md bg-white border border-gray-300 p-2 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
-              />
-              {errors.betreff && (
-                <p className="text-red-500">{errors.betreff}</p>
-              )}
-            </div>
+              <div className="relative">
+                <textarea rows={3} name="nachricht" value={formData.nachricht} onChange={handleChange} placeholder="Wie können wir Ihnen helfen?" className="w-full bg-transparent border-b-2 border-gray-400 py-3 text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300 resize-none" />
+                {errors.nachricht && <p className="absolute -bottom-5 left-0 text-xs text-red-500">{errors.nachricht}</p>}
+              </div>
 
-            <div>
-              <label className="block mb-1 text-lg font-medium text-gray-900">
-                Ihre Nachricht
-              </label>
-              <textarea
-                rows={3}
-                name="nachricht"
-                value={formData.nachricht}
-                onChange={handleChange}
-                className="block w-full rounded-md bg-white border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-black"
-              />
-              {errors.nachricht && (
-                <p className="text-red-500">{errors.nachricht}</p>
-              )}
-            </div>
+              <div className="relative flex items-start pt-4">
+                <div className="flex items-center h-5 mt-1">
+                  <input id="terms" type="checkbox" name="terms" checked={formData.terms} onChange={handleChange} className="w-5 h-5 bg-transparent border-gray-300 rounded text-red-500 focus:ring-red-500 focus:ring-offset-white cursor-pointer" />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label htmlFor="terms" className="text-gray-800 font-medium cursor-pointer text-base">
+                    Ich stimme den <Link to="/privacy-policy" className="text-gray-900 hover:text-red-500 transition-colors underline decoration-gray-300 underline-offset-4">Datenschutzbestimmungen</Link> zu und erkläre mich mit der Verarbeitung meiner Daten einverstanden.
+                  </label>
+                </div>
+                {errors.terms && <p className="absolute -bottom-5 left-8 text-xs text-red-500">{errors.terms}</p>}
+              </div>
 
-            <div className="flex items-start">
-              <input
-                id="accept"
-                type="checkbox"
-                name="terms"
-                checked={formData.terms}
-                onChange={handleChange}
-                className="h-5 w-5 mt-1 mr-3 border-gray-300 rounded"
-              />
-              <label className="text-lg text-gray-700" htmlFor="accept">
-                Ich akzeptiere die{" "}
-                <Link
-                  to="/privacy-policy"
-                  className="text-blue-400 hover:underline"
-                >
-                  Datenschutzbestimmungen
-                </Link>{" "}
-                und erkläre mich mit der Verarbeitung meiner Daten einverstanden
-              </label>
-            </div>
-            {errors.terms && <p className="text-red-500">{errors.terms}</p>}
-
-            <div className="flex justify-end">
-              <button
-                ref={buttonRef}
-                type="submit"
-                disabled={isSending}
-                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-500 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 text-white font-semibold rounded-md px-8 py-4"
-              >
-                {isSent ? "Gesendet!" : isSending ? "Sende..." : "Abschicken"}
+              <button ref={buttonRef} type="submit" disabled={isSending} className="w-full mt-6 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white transition-all duration-300 font-extrabold tracking-widest uppercase py-4 rounded-xl flex justify-center items-center group shadow-xl shadow-red-500/30 hover:shadow-red-500/50 transform hover:-translate-y-1">
+                <span className="mr-3">{isSent ? "Erfolgreich Gesendet" : isSending ? "Wird gesendet..." : "Nachricht Senden"}</span>
+                {!isSent && !isSending && (
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                )}
+                {isSent && (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                )}
               </button>
-            </div>
-          </form>
+            </form>
+          </div>
+
         </div>
       </div>
     </div>
@@ -374,5 +182,3 @@ E-Mail: ${formData.email}
 };
 
 export default ContactUs;
-
-

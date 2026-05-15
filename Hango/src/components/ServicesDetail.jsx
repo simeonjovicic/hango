@@ -1,6 +1,7 @@
 import React, { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,6 +42,73 @@ const services = [
     },
 ];
 
+const TiltCard = ({ service }) => {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+    const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["25deg", "-25deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-25deg", "25deg"]);
+
+    const handleMouseMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+            }}
+            className="relative h-full group rounded-2xl p-[2px] bg-gradient-to-br from-gray-200 to-gray-300 hover:from-red-400 hover:to-red-600 transition-colors duration-500 shadow-sm hover:shadow-xl hover:shadow-red-500/20 cursor-pointer"
+        >
+            <div 
+                className="h-full bg-[#f5f5f7] group-hover:bg-white rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-colors duration-300"
+                style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
+            >
+                <div style={{ transform: "translateZ(40px)" }}>
+                    <div className="mb-5 w-14 h-14 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center group-hover:shadow-md group-hover:border-red-100 transition-all duration-300">
+                        {service.icon}
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 font-roboto leading-tight break-words" style={{ hyphens: 'auto' }}>{service.title}</h3>
+                    <p className="text-sm font-semibold text-red-500 mb-4">{service.subtitle}</p>
+                    <p className="text-gray-600 mb-6 font-inter leading-relaxed">
+                        {service.description}
+                    </p>
+                </div>
+                <ul className="space-y-3" style={{ transform: "translateZ(25px)" }}>
+                    {service.features.map((feature, i) => (
+                        <li key={i} className="flex items-start text-gray-800 font-medium">
+                            <svg className="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {feature}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </motion.div>
+    );
+};
+
 const ServicesDetail = () => {
     const containerRef = useRef(null);
     const cardsRef = useRef([]);
@@ -71,7 +139,7 @@ const ServicesDetail = () => {
         <section
             id="services"
             ref={containerRef}
-            className="py-24 bg-[#ffffff] text-black w-full"
+            className="py-24 bg-[#ffffff] text-black w-full overflow-hidden perspective-[1000px]"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
@@ -84,35 +152,10 @@ const ServicesDetail = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8" style={{ perspective: "1500px" }}>
                     {services.map((service, index) => (
-                        <div
-                            key={index}
-                            ref={(el) => (cardsRef.current[index] = el)}
-                            className="relative group rounded-2xl p-[2px] bg-gradient-to-br from-gray-200 to-gray-300 hover:from-red-400 hover:to-red-600 transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-red-500/10"
-                        >
-                            <div className="h-full bg-[#f5f5f7] group-hover:bg-white rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-colors duration-300">
-                                <div>
-                                    <div className="mb-5 w-14 h-14 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center group-hover:shadow-md group-hover:border-red-100 transition-all duration-300">
-                                        {service.icon}
-                                    </div>
-                                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 font-roboto leading-tight break-words" style={{ hyphens: 'auto' }}>{service.title}</h3>
-                                    <p className="text-sm font-semibold text-red-500 mb-4">{service.subtitle}</p>
-                                    <p className="text-gray-600 mb-6 font-inter leading-relaxed">
-                                        {service.description}
-                                    </p>
-                                </div>
-                                <ul className="space-y-3">
-                                    {service.features.map((feature, i) => (
-                                        <li key={i} className="flex items-start text-gray-800 font-medium">
-                                            <svg className="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                        <div key={index} ref={(el) => (cardsRef.current[index] = el)}>
+                            <TiltCard service={service} />
                         </div>
                     ))}
                 </div>
