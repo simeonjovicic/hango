@@ -9,12 +9,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Impressum from "./components/Impressum";
 import Privacy_Policy from "./components/Privacy-Policy";
 import Landingpage from "./components/Landingpage";
+import JumpScare from "./components/JumpScare";
 
 const App = () => {
   return (
     <Router>
       <main>
         <Navbar />
+        <JumpScare />
 
         <Routes>
           {/* Main page route */}
