@@ -58,6 +58,10 @@ const ContactUs = () => {
     const templateParams = {
       to_name: "Hango Support",
       from_name: `${formData.vorname} ${formData.nachname}`,
+      from_email: formData.email,
+      reply_to: formData.email,
+      phone: formData.telefonnummer,
+      subject: formData.betreff,
       message: `Betreff: ${formData.betreff}\nNachricht: ${formData.nachricht}\n\nTelefonnummer: ${formData.telefonnummer}\nE-Mail: ${formData.email}`,
     };
 
@@ -70,8 +74,10 @@ const ContactUs = () => {
           setIsSending(false);
           setIsSent(true);
         },
-        () => {
-          alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
+        (error) => {
+          console.error("EmailJS send failed:", error);
+          const message = error?.text || error?.message || "Bitte versuchen Sie es erneut.";
+          alert(`Fehler beim Senden: ${message}`);
           setIsSending(false);
         }
       );
@@ -147,7 +153,7 @@ const ContactUs = () => {
               </div>
 
               <div className="relative">
-                <textarea rows={3} name="nachricht" value={formData.nachricht} onChange={handleChange} placeholder="Wie können wir Ihnen helfen?" className="w-full bg-transparent border-b-2 border-gray-400 py-3 text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300 resize-none" />
+                <textarea rows={2} name="nachricht" value={formData.nachricht} onChange={handleChange} placeholder="Wie können wir Ihnen helfen?" className="w-full bg-transparent border-b-2 border-gray-400 pt-8 pb-2 min-h-[6.25rem] text-gray-900 text-lg font-medium placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors duration-300 resize-none leading-7" />
                 {errors.nachricht && <p className="absolute -bottom-5 left-0 text-xs text-red-500">{errors.nachricht}</p>}
               </div>
 
@@ -172,6 +178,20 @@ const ContactUs = () => {
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                 )}
               </button>
+
+              {isSent && (
+                <div className="flex items-center gap-4 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-green-800 shadow-sm animate-success-slide">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-500 text-white animate-success-pop">
+                    <svg className="h-6 w-6 animate-success-draw" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="font-bold text-green-950">Nachricht gesendet</p>
+                    <p className="text-sm text-green-700">Danke, wir melden uns so schnell wie möglich.</p>
+                  </div>
+                </div>
+              )}
             </form>
           </div>
 

@@ -52,7 +52,8 @@ const Landingpage = () => {
         <FAQ />
       </section>
 
-      <section id="kontakt">
+      <section id="contact">
+        <div id="kontakt" />
         <ContactUs />
       </section>
     </>

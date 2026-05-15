@@ -235,7 +235,6 @@ const Procedure = () => {
 
                 </div>
             </div>
-            <div id="contact"></div>
         </div>
     );
 };
