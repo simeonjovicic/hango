@@ -410,6 +410,11 @@ canvas {
   transition: width 140ms linear;
 }
 
+.portfolio-carousel-progress-fill {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+}
+
 .screen-max-width {
   margin-inline-start: auto;
   margin-inline-end: auto;

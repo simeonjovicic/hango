@@ -1,7 +1,10 @@
-import React, { useRef, useLayoutEffect, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HashLink } from 'react-router-hash-link';
+import { useAutoCarousel } from '../hooks/useAutoCarousel';
+
+const PORTFOLIO_CAROUSEL_INTERVAL = 7500;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -139,18 +142,15 @@ const Portfolio = () => {
     const infoPanelRef = useRef(null);
     const infoPanelContentRef = useRef(null);
     const infoPanelTimelineRef = useRef(null);
-    const [activeIndex, setActiveIndex] = useState(0);
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [visibleProject, setVisibleProject] = useState(null);
+    const [progress, setProgress] = useState(0);
     const len = projects.length;
 
-    const next = useCallback(() => {
-        setActiveIndex((p) => (p + 1) % len);
-    }, [len]);
-
-    const prev = useCallback(() => {
-        setActiveIndex((p) => (p - 1 + len) % len);
-    }, [len]);
+    const { activeIndex, next, prev, goTo, pause, resume } = useAutoCarousel(len, {
+        interval: PORTFOLIO_CAROUSEL_INTERVAL,
+        enabled: len > 1,
+    });
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
@@ -168,6 +168,33 @@ const Portfolio = () => {
         }, containerRef);
         return () => ctx.revert();
     }, []);
+
+    useEffect(() => {
+        if (len <= 1 || hoveredIndex !== null || visibleProject !== null) return undefined;
+
+        setProgress(0);
+        const started = performance.now();
+        let frameId = 0;
+
+        const tick = (now) => {
+            const elapsed = now - started;
+            setProgress(Math.min(100, (elapsed / PORTFOLIO_CAROUSEL_INTERVAL) * 100));
+            if (elapsed < PORTFOLIO_CAROUSEL_INTERVAL) {
+                frameId = requestAnimationFrame(tick);
+            }
+        };
+
+        frameId = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(frameId);
+    }, [activeIndex, len, hoveredIndex, visibleProject]);
+
+    useEffect(() => {
+        if (hoveredIndex !== null || visibleProject !== null) {
+            pause();
+        } else {
+            resume();
+        }
+    }, [hoveredIndex, visibleProject, pause, resume]);
 
     useEffect(() => {
         const onKey = (e) => {
@@ -360,7 +387,7 @@ const Portfolio = () => {
                                     key={project.slug}
                                     onClick={() => {
                                         if (!isActive) {
-                                            setActiveIndex(index);
+                                            goTo(index);
                                         }
                                     }}
                                     className="absolute top-1/2 left-1/2 w-[77%] md:w-[61%] will-change-transform"
@@ -440,8 +467,32 @@ const Portfolio = () => {
                         )}
                     </div>
 
-                    <div className="mt-8 md:mt-10 flex items-center justify-end">
-                        <div className="text-[0.65rem] font-extrabold uppercase tracking-[0.28em] text-gray-500 tabular-nums">
+                    <div className="mt-8 flex flex-col gap-3 md:mt-10 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                        <div className="min-w-0 flex-1 sm:max-w-md">
+                            <div className="carousel-progress-shell h-0.5 md:h-1">
+                                <div
+                                    className="portfolio-carousel-progress-fill carousel-progress-fill h-full"
+                                    style={{ width: `${progress}%`, transition: 'width 80ms linear' }}
+                                />
+                            </div>
+                            <div className="mt-2.5 flex justify-center gap-1.5 sm:justify-start">
+                                {projects.map((project, index) => (
+                                    <button
+                                        key={project.slug}
+                                        type="button"
+                                        onClick={() => goTo(index)}
+                                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                                            index === activeIndex
+                                                ? 'w-5 bg-red-500'
+                                                : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                                        }`}
+                                        aria-label={`Projekt ${index + 1}: ${project.domain}`}
+                                        aria-current={index === activeIndex ? 'true' : undefined}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="text-center text-[0.65rem] font-extrabold uppercase tracking-[0.28em] text-gray-500 tabular-nums sm:text-right">
                             {String(activeIndex + 1).padStart(2, '0')} / {String(len).padStart(2, '0')}
                         </div>
                     </div>
