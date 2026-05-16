@@ -39,7 +39,7 @@ const WELCOME_VARIANTS = [
 const SUGGESTIONS = [
   "Welche Services bietet ihr?",
   "Wie läuft ein Webdesign-Projekt ab?",
-  "Wie hilft mir SEO?",
+  "Wie laufen eure Ads-Kampagnen?",
   "Wie kann ich euch kontaktieren?",
 ];
 
