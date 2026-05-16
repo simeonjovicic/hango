@@ -20,17 +20,18 @@ const Landingpage = () => {
         <Hero />
       </section>
 
-      <section id="über-uns">
+      {/* <section id="über-uns">
         <AboutUs />
-      </section>
-
-      <section id="team">
-        <TeamStory />
-      </section>
+      </section> */}
 
       {/* <section id="highlights">
         <Highlights />
       </section> */}
+
+      
+      <section id="referenzen">
+        <Portfolio />
+      </section>
 
       <section id="services">
         <ServicesDetail />
@@ -40,8 +41,8 @@ const Landingpage = () => {
         <Stats />
       </section>
 
-      <section id="referenzen">
-        <Portfolio />
+      <section id="team">
+        <TeamStory />
       </section>
 
       <section id="ablauf">
