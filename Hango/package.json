@@ -13,8 +13,6 @@
     "@gsap/react": "^2.1.0",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
-    "@sentry/react": "^7.106.0",
-    "@sentry/vite-plugin": "^2.14.3",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.5.0",
     "gsap": "^3.12.5",

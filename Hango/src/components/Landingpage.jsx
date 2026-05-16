@@ -11,6 +11,7 @@ import ContactUs from "./ContactUs";
 import Navbar from "./Navbar";
 import Stats from "./Stats";
 import TeamStory from "./TeamStory";
+import ChatWidget from "./ChatWidget";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const Landingpage = ({ ready = true }) => {
@@ -57,6 +58,8 @@ const Landingpage = ({ ready = true }) => {
         <div id="kontakt" />
         <ContactUs />
       </section>
+
+      <ChatWidget />
     </>
   );
 }
