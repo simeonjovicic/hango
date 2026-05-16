@@ -39,7 +39,7 @@ const HangoLoader = ({ onComplete }) => {
         const finish = () => {
             gsap.to(containerRef.current, {
                 opacity: 0,
-                duration: 0.55,
+                duration: 0.5,
                 ease: "power2.out",
                 onComplete: () => {
                     setRemoved(true);
@@ -56,7 +56,7 @@ const HangoLoader = ({ onComplete }) => {
                 {
                     opacity: 1,
                     scale: 1,
-                    duration: 0.5,
+                    duration: 0.6,
                     ease: "power2.out",
                     stagger: 0.1,
                     onComplete: () => gsap.delayedCall(0.3, finish),
@@ -95,55 +95,55 @@ const HangoLoader = ({ onComplete }) => {
         tl.fromTo(
             svgWrapperRef.current,
             { opacity: 0, scale: 0.96 },
-            { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }
+            { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
         )
             .to(
                 paths,
                 {
                     strokeDashoffset: 0,
-                    duration: 1.0,
+                    duration: 0.7,
                     ease: "power2.inOut",
-                    stagger: { each: 0.004, from: "start" },
+                    stagger: { each: 0.003, from: "start" },
                 },
-                "-=0.3"
+                "-=0.25"
             )
             .to(
                 paths,
                 {
                     fillOpacity: 1,
-                    duration: 0.4,
+                    duration: 0.28,
                     ease: "power2.out",
-                    stagger: 0.003,
+                    stagger: 0.002,
                 },
-                "-=0.3"
+                "-=0.25"
             )
             // Word "Hango" — same draw + fill style
             .fromTo(
                 wordTextRef.current,
                 { opacity: 0, y: 8 },
-                { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-                "-=0.2"
+                { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
+                "-=0.15"
             )
             .to(
                 wordTextRef.current,
                 {
                     strokeDashoffset: 0,
-                    duration: 0.75,
+                    duration: 0.55,
                     ease: "power2.inOut",
                 },
-                "-=0.3"
+                "-=0.2"
             )
             .to(
                 wordTextRef.current,
                 {
                     fillOpacity: 1,
-                    duration: 0.35,
+                    duration: 0.25,
                     ease: "power2.out",
                 },
-                "-=0.2"
+                "-=0.15"
             )
             // Hold completed mark briefly before fade out
-            .to({}, { duration: 0.25 });
+            .to({}, { duration: 0.12 });
     }, [onComplete]);
 
     // Lock body scroll while loader visible

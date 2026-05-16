@@ -74,7 +74,7 @@ const TeamStory = () => {
                     </div>
 
                     {/* Right — Values */}
-                    <div ref={rightRef} className="flex-1 flex flex-col gap-6">
+                    <div ref={rightRef} className="flex-1 flex flex-col gap-2 md:gap-6">
                         {[
                             {
                                 icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>,
@@ -97,11 +97,13 @@ const TeamStory = () => {
                                 desc: "Wir liefern nicht nur schöne Webseiten, sondern auch Traffic, Leads und Umsatz.",
                             },
                         ].map((item, i) => (
-                            <div key={i} className="flex items-start gap-4 bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-red-100 transition-all duration-300">
-                                <span className="shrink-0 flex items-center justify-center bg-red-50 p-2.5 rounded-lg border border-red-100">{item.icon}</span>
-                                <div>
-                                    <p className="font-bold text-gray-900 font-roboto">{item.title}</p>
-                                    <p className="text-gray-500 text-sm font-inter mt-1">{item.desc}</p>
+                            <div key={i} className="flex items-center gap-2.5 md:items-start md:gap-4 bg-white rounded-lg md:rounded-xl p-3 md:p-5 border border-gray-100 shadow-sm md:hover:shadow-md md:hover:border-red-100 transition-all duration-300">
+                                <span className="shrink-0 flex items-center justify-center bg-red-50 p-1.5 md:p-2.5 rounded-md md:rounded-lg border border-red-100 [&_svg]:w-4 [&_svg]:h-4 md:[&_svg]:w-6 md:[&_svg]:h-6">
+                                    {item.icon}
+                                </span>
+                                <div className="min-w-0 flex-1">
+                                    <p className="font-bold text-gray-900 font-roboto text-sm md:text-base leading-snug">{item.title}</p>
+                                    <p className="text-gray-500 text-xs md:text-sm font-inter mt-0.5 md:mt-1 leading-snug">{item.desc}</p>
                                 </div>
                             </div>
                         ))}

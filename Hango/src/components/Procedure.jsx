@@ -34,15 +34,17 @@ const steps = [
 const Procedure = () => {
     const containerRef = useRef(null);
     const progressLineRef = useRef(null);
-    const stepRefs = useRef([]);
+    const mobileStepRefs = useRef([]);
+    const desktopStepRefs = useRef([]);
     const dotRefs = useRef([]);
 
     useLayoutEffect(() => {
-        const isMobile = window.innerWidth < 1024;
-
         const ctx = gsap.context(() => {
-            if (!isMobile) {
-                // Desktop: Progress line grows as you scroll
+            const mm = gsap.matchMedia();
+
+            mm.add("(min-width: 1024px)", () => {
+                if (!progressLineRef.current || !containerRef.current) return;
+
                 gsap.fromTo(
                     progressLineRef.current,
                     { scaleY: 0 },
@@ -58,8 +60,7 @@ const Procedure = () => {
                     }
                 );
 
-                // Desktop: cards slide in with scale
-                stepRefs.current.forEach((step) => {
+                desktopStepRefs.current.forEach((step) => {
                     if (!step) return;
                     gsap.fromTo(
                         step,
@@ -79,7 +80,6 @@ const Procedure = () => {
                     );
                 });
 
-                // Desktop: Dots pop in
                 dotRefs.current.forEach((dot) => {
                     if (!dot) return;
                     gsap.fromTo(
@@ -97,9 +97,10 @@ const Procedure = () => {
                         }
                     );
                 });
-            } else {
-                // Mobile: simple fade in, staggered
-                stepRefs.current.forEach((step) => {
+            });
+
+            mm.add("(max-width: 1023px)", () => {
+                mobileStepRefs.current.forEach((step) => {
                     if (!step) return;
                     gsap.fromTo(
                         step,
@@ -117,10 +118,15 @@ const Procedure = () => {
                         }
                     );
                 });
-            }
+            });
         }, containerRef);
 
-        return () => ctx.revert();
+        const refreshId = requestAnimationFrame(() => ScrollTrigger.refresh());
+
+        return () => {
+            cancelAnimationFrame(refreshId);
+            ctx.revert();
+        };
     }, []);
 
     return (
@@ -138,11 +144,11 @@ const Procedure = () => {
                         <p className="text-xs font-bold tracking-wide text-red-500 uppercase mb-2 font-inter">
                             Projektablauf
                         </p>
-                        <h1 className="text-3xl font-extrabold text-gray-900 font-roboto leading-tight mb-3">
+                        <h1 className="mb-3 font-roboto text-2xl font-extrabold leading-tight text-gray-900">
                             Ihre Website in{" "}
                             <span className="text-red-500">4 Schritten</span>
                         </h1>
-                        <p className="text-gray-500 text-base font-inter leading-relaxed max-w-sm mx-auto">
+                        <p className="mx-auto max-w-sm font-inter text-sm leading-relaxed text-gray-500">
                             Größtmöglicher Mehrwert, kleinstmöglicher Zeitaufwand.
                         </p>
                     </div>
@@ -152,14 +158,14 @@ const Procedure = () => {
                         {steps.map((step, index) => (
                             <div
                                 key={index}
-                                ref={(el) => (stepRefs.current[index] = el)}
+                                ref={(el) => (mobileStepRefs.current[index] = el)}
                                 className="bg-[#1a1a2e] rounded-xl p-4 sm:p-5 shadow-md border border-gray-800"
                             >
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="text-red-500 text-2xl font-extrabold font-roboto">{step.number}</span>
-                                    <h3 className="text-lg font-bold text-white font-roboto">{step.title}</h3>
+                                    <span className="font-roboto text-xl font-extrabold text-red-500">{step.number}</span>
+                                    <h3 className="font-roboto text-lg font-bold text-white">{step.title}</h3>
                                 </div>
-                                <p className="text-gray-400 font-inter leading-relaxed text-sm">
+                                <p className="font-inter text-sm leading-relaxed text-gray-400">
                                     {step.description}
                                 </p>
                             </div>
@@ -215,7 +221,7 @@ const Procedure = () => {
 
                                     {/* Step Card */}
                                     <div
-                                        ref={(el) => (stepRefs.current[index + 4] = el)}
+                                        ref={(el) => (desktopStepRefs.current[index] = el)}
                                         className="flex-1 bg-[#1a1a2e] rounded-2xl p-8 shadow-lg border border-gray-800 hover:border-red-500/30 hover:shadow-xl transition-all duration-300 group"
                                     >
                                         <p className="text-red-500 text-4xl font-extrabold font-roboto mb-3">

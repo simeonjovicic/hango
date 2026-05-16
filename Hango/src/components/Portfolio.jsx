@@ -1,6 +1,7 @@
 import React, { useRef, useLayoutEffect, useState, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { HashLink } from 'react-router-hash-link';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -267,38 +268,42 @@ const Portfolio = () => {
         <section
             id="referenzen"
             ref={containerRef}
-            className="py-14 md:py-24 bg-white text-black w-full overflow-hidden"
+            className="relative min-h-[100dvh] py-12 sm:py-14 md:py-24 lg:py-28 bg-white text-black w-full overflow-hidden"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="mb-8 md:mb-10 max-w-4xl">
-                    <p className="text-xs md:text-sm font-extrabold tracking-[0.28em] text-red-600 uppercase font-inter">
+                <div className="mb-10 md:mb-16 lg:mb-20 md:max-w-5xl lg:max-w-6xl">
+                    <p className="text-[0.7rem] sm:text-xs md:text-sm lg:text-base font-extrabold tracking-[0.3em] md:tracking-[0.34em] text-red-600 uppercase font-inter">
                         Ausgewählte Arbeiten
                     </p>
-                    <h1 className="mt-4 text-3xl leading-[0.98] font-extrabold text-gray-950 sm:text-5xl lg:text-[3.45rem] font-roboto">
-                        Digitale Auftritte mit Substanz.
+                    <h1 className="mt-4 md:mt-6 text-[2.65rem] sm:text-5xl md:text-7xl lg:text-[5.25rem] xl:text-[6rem] leading-[1.02] md:leading-[0.92] font-black tracking-tight text-gray-950 font-roboto">
+                        Wir machen Ihre Webseite{" "}
+                        <span className="text-red-600">einzigartig.</span>
                     </h1>
-                    <p className="mt-5 max-w-2xl text-sm md:text-base leading-7 text-gray-600 font-inter">
-                        Websites, Markenauftritte und Systeme, die visuell präzise wirken und im Alltag zuverlässig performen.
+                    <p className="mt-5 md:mt-8 max-w-2xl md:max-w-3xl text-base md:text-xl lg:text-2xl leading-relaxed md:leading-8 text-gray-600 font-inter">
+                        Websites, Markenauftritte und Systeme — visuell präzise, im Alltag zuverlässig. Scrollen Sie durch unsere Referenzen.
                     </p>
-                </div>
 
-                {/* SVG displacement filter for liquid glass refraction */}
-                <svg className="absolute w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
-                    <filter id="liquid-glass-filter" primitiveUnits="objectBoundingBox">
-                        <feImage
-                            result="map"
-                            width="100%"
-                            height="100%"
-                            x="0"
-                            y="0"
-                            href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23808080'/%3E%3Cstop offset='100%25' stop-color='%23ffffff'/%3E%3C/radialGradient%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3C/svg%3E"
-                            preserveAspectRatio="none"
-                        />
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="0.01" result="blur" />
-                        <feDisplacementMap in="blur" in2="map" scale="0.35" xChannelSelector="R" yChannelSelector="G" />
-                    </filter>
-                </svg>
+                    <div className="mt-7 md:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 w-full sm:w-auto max-w-md md:max-w-none">
+                        <HashLink smooth to="#kontakt" className="block w-full sm:w-auto sm:order-2">
+                            <button
+                                type="button"
+                                className="w-full sm:w-auto py-3.5 md:py-4 px-7 md:px-9 rounded-xl md:rounded-2xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-inter text-base md:text-lg font-bold shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300 active:scale-[0.98]"
+                            >
+                                Jetzt kontaktieren
+                            </button>
+                        </HashLink>
+                        <HashLink smooth to="#services" className="block w-full sm:w-auto sm:order-1">
+                            <button
+                                type="button"
+                                className="w-full sm:w-auto py-3.5 md:py-4 px-7 md:px-9 relative overflow-hidden rounded-xl md:rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-gray-500/20 before:content-[''] before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-black before:to-gray-400 before:rounded-xl md:before:rounded-2xl after:content-[''] after:absolute after:inset-[2px] after:z-10 after:bg-white after:rounded-[0.6rem] md:after:rounded-[0.85rem] hover:after:bg-[#f5f5f7]"
+                            >
+                                <span className="font-inter relative z-20 text-base md:text-lg font-bold text-black">
+                                    Mehr erfahren
+                                </span>
+                            </button>
+                        </HashLink>
+                    </div>
+                </div>
 
                 {/* Carousel */}
                 <div
@@ -441,34 +446,25 @@ const Portfolio = () => {
                         </div>
                     </div>
 
-                    {/* Liquid Glass Nav arrows */}
                     <button
+                        type="button"
                         onClick={prev}
                         aria-label="Vorheriges Projekt"
-                        data-dir="prev"
-                        className="carousel-nav carousel-nav-left absolute left-0 md:-left-2 top-1/2 -translate-y-1/2 z-40 cursor-pointer"
+                        className="portfolio-carousel-btn portfolio-carousel-btn--prev absolute left-1 sm:left-2 md:-left-1 top-1/2 z-40"
                     >
-                        <span className="carousel-nav-ring" />
-                        <span className="carousel-nav-glass" />
-                        <span className="carousel-nav-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.5 6.5L9 12l6.5 5.5" />
-                            </svg>
-                        </span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
                     </button>
                     <button
+                        type="button"
                         onClick={next}
                         aria-label="Nächstes Projekt"
-                        data-dir="next"
-                        className="carousel-nav carousel-nav-right absolute right-0 md:-right-2 top-1/2 -translate-y-1/2 z-40 cursor-pointer"
+                        className="portfolio-carousel-btn portfolio-carousel-btn--next absolute right-1 sm:right-2 md:-right-1 top-1/2 z-40"
                     >
-                        <span className="carousel-nav-ring" />
-                        <span className="carousel-nav-glass" />
-                        <span className="carousel-nav-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 6.5L15 12l-6.5 5.5" />
-                            </svg>
-                        </span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
                     </button>
                 </div>
 

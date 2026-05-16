@@ -11,12 +11,21 @@ import Privacy_Policy from "./components/Privacy-Policy";
 import Landingpage from "./components/Landingpage";
 import HangoLoader from "./components/HangoLoader";
 import { useState } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const App = () => {
   const [loaded, setLoaded] = useState(false);
+
+  const handleLoadComplete = () => {
+    setLoaded(true);
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+  };
+
   return (
     <Router>
-      {!loaded && <HangoLoader onComplete={() => setLoaded(true)} />}
+      {!loaded && <HangoLoader onComplete={handleLoadComplete} />}
       <main style={{ opacity: loaded ? 1 : 0, transition: "opacity 400ms ease-out" }}>
         <Navbar />
 
@@ -25,7 +34,7 @@ const App = () => {
           <Route
             path="/"
             element={
-              <Landingpage/>
+              <Landingpage ready={loaded} />
             }
           />
 

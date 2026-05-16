@@ -37,7 +37,7 @@ const FAQ = () => {
                     opacity: 1,
                     y: 0,
                     stagger: 0.15,
-                    duration: 0.7,
+                    duration: 0.4,
                     ease: "power2.out",
                     scrollTrigger: {
                         trigger: containerRef.current,
@@ -55,13 +55,13 @@ const FAQ = () => {
     };
 
     return (
-        <section id="faq" ref={containerRef} className="py-24 bg-[#f5f5f7] text-black w-full">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl font-roboto">
+        <section id="faq" ref={containerRef} className="w-full bg-[#f5f5f7] py-12 text-black md:py-24">
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                <div className="mb-10 text-center md:mb-16">
+                    <h2 className="font-roboto text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl">
                         Häufig gestellte Fragen (FAQ)
                     </h2>
-                    <p className="mt-4 text-xl text-gray-600 font-inter">
+                    <p className="mt-4 font-inter text-base text-gray-600 md:text-xl">
                         Alles, was Sie über unsere Dienstleistungen wissen müssen.
                     </p>
                 </div>
@@ -74,10 +74,10 @@ const FAQ = () => {
                             className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300"
                         >
                             <button
-                                className="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none"
+                                className="flex w-full items-center justify-between px-4 py-4 text-left focus:outline-none md:px-6 md:py-5"
                                 onClick={() => toggleFAQ(index)}
                             >
-                                <span className="font-semibold text-lg text-gray-900 font-roboto">{faq.question}</span>
+                                <span className="font-roboto text-lg font-semibold text-gray-900 md:text-xl">{faq.question}</span>
                                 <span className="ml-6 flex-shrink-0">
                                     <svg
                                         className={`w-6 h-6 text-red-500 transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""

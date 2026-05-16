@@ -7,17 +7,17 @@ const Footer = () => {
     <footer className="relative w-full bg-gradient-to-b from-[#0a0a0a] via-[#0f0f0f] to-black text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section: Branding and Navigation */}
-        <div className="flex flex-col md:flex-row justify-between items-center py-8 md:py-14">
+        <div className="flex flex-col items-center justify-between gap-4 py-5 md:flex-row md:gap-0 md:py-14">
           {/* Branding */}
-          <div className="text-center md:text-left mb-8 md:mb-0">
-            <h2 className="text-3xl md:text-4xl font-extrabold">Hango</h2>
-            <p className="text-lg md:text-xl mt-2 text-gray-400">
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl font-extrabold md:text-4xl">Hango</h2>
+            <p className="mt-1 text-sm text-gray-400 md:mt-2 md:text-xl">
               Ihre Digitalagentur
             </p>
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-wrap justify-center gap-6 md:gap-10 text-base md:text-lg">
+          <nav className="flex flex-wrap justify-center gap-4 text-sm md:gap-10 md:text-lg">
             {/* Regular Links for separate pages */}
             <RouterLink
               to="/impressum"
@@ -35,8 +35,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-800 pt-6 pb-8 text-center">
-          <p className="text-sm md:text-base text-gray-500">
+        <div className="border-t border-gray-800 pt-4 pb-5 text-center md:pt-6 md:pb-8">
+          <p className="text-xs text-gray-500 md:text-base">
             &copy; {new Date().getFullYear()} Hango. All rights reserved.
           </p>
         </div>

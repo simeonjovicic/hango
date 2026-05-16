@@ -13,11 +13,11 @@ import Stats from "./Stats";
 import TeamStory from "./TeamStory";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const Landingpage = () => {
+const Landingpage = ({ ready = true }) => {
   return (
     <>
       <section id="home">
-        <Hero />
+        <Hero ready={ready} />
       </section>
 
       {/* <section id="über-uns">

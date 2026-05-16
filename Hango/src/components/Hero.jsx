@@ -6,8 +6,6 @@ import {
   useSpring,
   useMotionValue,
 } from "framer-motion";
-import { HashLink } from "react-router-hash-link";
-
 const IMG_WIDTH = 60;
 const IMG_HEIGHT = 110;
 const TOTAL_IMAGES = 18;
@@ -125,8 +123,8 @@ function FlipCard({
         scale,
         opacity,
         position: "absolute",
-        width: IMG_WIDTH,
-        height: IMG_HEIGHT,
+        width: isMobile ? 48 : IMG_WIDTH,
+        height: isMobile ? 88 : IMG_HEIGHT,
         transformStyle: "preserve-3d",
         perspective: "1000px",
       }}
@@ -167,7 +165,7 @@ function FlipCard({
   );
 }
 
-function Hero() {
+function Hero({ ready = true }) {
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef(null);
 
@@ -211,6 +209,8 @@ function Hero() {
   }, []);
 
   useEffect(() => {
+    if (!ready) return;
+
     const t1 = setTimeout(() => {
       animate(phaseProgress, 1, { duration: 0.9, ease: [0.22, 1, 0.36, 1] });
     }, 300);
@@ -225,7 +225,7 @@ function Hero() {
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [phaseProgress]);
+  }, [phaseProgress, ready]);
 
   useEffect(() => {
     const handleWheel = (e) => {
@@ -311,21 +311,20 @@ function Hero() {
   );
 
   return (
-    <>
-      <section
+    <section
         ref={containerRef}
-        className="relative w-full h-screen bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#ffffff] overflow-hidden"
+        className="relative w-full h-[100dvh] sm:h-screen bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#ffffff] overflow-hidden"
       >
         <div className="relative flex h-full w-full flex-col items-center justify-center">
           <motion.div
             style={{ opacity: introTextOpacity }}
             className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none text-center px-4"
           >
-            <h1 className="font-roboto text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-black max-w-sm md:max-w-md leading-tight">
+            <h1 className="max-w-[20rem] font-roboto text-[2rem] font-extrabold leading-[1.02] tracking-tight text-black sm:max-w-lg sm:text-4xl md:text-5xl">
               Sehen Sie <span className="text-red-600">selbst.</span>
             </h1>
-            <p className="font-inter mt-4 text-[11px] md:text-xs font-bold tracking-[0.3em] text-gray-500">
-              SCROLLEN ZUM ENTDECKEN
+            <p className="font-inter mt-5 sm:mt-5 text-sm sm:text-sm font-semibold tracking-[0.22em] sm:tracking-[0.28em] text-gray-500">
+              Nach unten scrollen
             </p>
           </motion.div>
 
@@ -347,81 +346,6 @@ function Hero() {
         </div>
       </section>
 
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-center bg-gradient-to-t from-[#ffffff] via-[#f5f5f7] to-[#ffffff] px-4 overflow-hidden">
-        <div className="flex flex-col justify-center items-center w-[280px] sm:w-[360px] md:w-[640px] lg:w-[820px] z-10">
-          <motion.h1
-            className="font-roboto text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-center w-full leading-tight tracking-tight font-extrabold text-black"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            Wir machen Ihre Webseite{" "}
-            <span className="text-red-600">einzigartig.</span>
-          </motion.h1>
-
-          <motion.p
-            className="font-inter text-base sm:text-lg md:text-xl lg:text-2xl text-center text-gray-600 max-w-[40rem] pt-6 sm:pt-8 md:pt-10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-          >
-            Ihre Digitalagentur in Wien — professionelle Webseiten, SEO,
-            modernes UI und gezielte Werbung. Bei uns sind Sie richtig.
-          </motion.p>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center mt-10 sm:mt-12 md:mt-14 w-full max-w-[24rem] sm:max-w-none">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              whileHover={{ scale: 1.05 }}
-              className="w-full sm:w-auto"
-            >
-              <HashLink smooth to="#über-uns" className="block w-full">
-                <button
-                  className="
-                    w-full sm:w-auto py-3 px-6 md:px-8
-                    relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gray-500/20
-                    before:content-[''] before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:from-black before:to-gray-400 before:rounded-xl
-                    after:content-[''] after:absolute after:inset-[2px] after:z-10 after:bg-white after:rounded-lg hover:after:bg-[#f5f5f7]
-                  "
-                >
-                  <span className="font-inter relative z-20 text-lg md:text-xl text-black">
-                    Mehr Erfahren
-                  </span>
-                </button>
-              </HashLink>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.05 }}
-              className="w-full sm:w-auto"
-            >
-              <HashLink smooth to="#kontakt" className="block w-full">
-                <button
-                  className="
-                    w-full sm:w-auto py-3 px-6 md:px-8 rounded-xl
-                    bg-gradient-to-r from-red-500 to-red-600 hover:from-red-500 hover:to-red-700
-                    transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50
-                  "
-                >
-                  <span className="font-inter text-lg md:text-xl text-white">
-                    Jetzt Kontaktieren
-                  </span>
-                </button>
-              </HashLink>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-    </>
   );
 }
 

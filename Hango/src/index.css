@@ -335,98 +335,64 @@ canvas {
   transition-duration: 0.12s;
 }
 
-.carousel-nav {
-  position: absolute;
-  width: 3.25rem;
-  height: 3.25rem;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  color: rgba(20, 20, 20, 0.84);
-  opacity: 0.72;
+/* Portfolio carousel controls */
+.portfolio-carousel-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #424245;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transform: translateY(-50%);
   transition:
-    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 320ms ease,
-    filter 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.3s ease,
+    background-color 0.25s ease;
 }
 
-.carousel-nav::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.56));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+.portfolio-carousel-btn svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.carousel-nav-ring {
-  position: absolute;
-  inset: 0.42rem;
-  border-radius: inherit;
-  border: 1px solid rgba(18, 18, 18, 0.12);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
-  opacity: 0.88;
-  pointer-events: none;
-}
-
-.carousel-nav-glass {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.62), transparent 38%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.04));
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.32),
-    inset 0 -8px 20px rgba(0, 0, 0, 0.08),
-    0 10px 24px rgba(15, 23, 42, 0.08);
-  opacity: 0.78;
-  transition: opacity 320ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 420ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.carousel-nav-icon {
-  position: relative;
-  z-index: 1;
-  width: 0.95rem;
-  height: 0.95rem;
-  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 320ms ease;
-}
-
-.carousel-nav-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.carousel-nav:hover {
-  opacity: 1;
+.portfolio-carousel-btn:hover {
+  color: #dc2626;
+  border-color: rgba(220, 38, 38, 0.22);
+  box-shadow: 0 6px 22px rgba(239, 68, 68, 0.16);
   transform: translateY(-50%) scale(1.06);
 }
 
-.carousel-nav:hover .carousel-nav-glass {
-  opacity: 1;
-  transform: scale(1.03);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.42),
-    inset 0 -10px 24px rgba(0, 0, 0, 0.1),
-    0 16px 34px rgba(15, 23, 42, 0.12);
+.portfolio-carousel-btn--prev:hover svg {
+  transform: translateX(-2px);
 }
 
-.carousel-nav:hover .carousel-nav-icon {
-  transform: translateX(1px);
+.portfolio-carousel-btn--next:hover svg {
+  transform: translateX(2px);
 }
 
-.carousel-nav-left:hover .carousel-nav-icon {
-  transform: translateX(-1px);
+.portfolio-carousel-btn:active {
+  transform: translateY(-50%) scale(0.96);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 }
 
-.carousel-nav:active {
-  transform: translateY(-50%) scale(0.98);
+@media (min-width: 768px) {
+  .portfolio-carousel-btn {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .portfolio-carousel-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
 
 .carousel-progress-shell {

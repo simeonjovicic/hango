@@ -39,7 +39,6 @@ const Impressum = () => {
               </h2>
               <div className="space-y-1 text-gray-600">
                 <p>UID-Nummer: ATU81775624</p>
-                <p>Gewerbebehörde: [Bitte hier eintragen]</p>
                 <p>Mitglied der Wirtschaftskammer Österreich (WKO)</p>
               </div>
             </section>
