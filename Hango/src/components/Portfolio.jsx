@@ -138,34 +138,10 @@ const Portfolio = () => {
     const infoPanelRef = useRef(null);
     const infoPanelContentRef = useRef(null);
     const infoPanelTimelineRef = useRef(null);
-    const autoplayTimerRef = useRef(null);
-    const autoplayStartRef = useRef(0);
-    const autoplayRafRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [visibleProject, setVisibleProject] = useState(null);
-    const [autoplayProgress, setAutoplayProgress] = useState(0);
     const len = projects.length;
-    const AUTOPLAY_DURATION = 6200;
-
-    const restartAutoplay = useCallback(() => {
-        if (autoplayTimerRef.current) clearTimeout(autoplayTimerRef.current);
-        if (autoplayRafRef.current) cancelAnimationFrame(autoplayRafRef.current);
-
-        autoplayStartRef.current = performance.now();
-        setAutoplayProgress(0);
-
-        const tick = () => {
-            const elapsed = performance.now() - autoplayStartRef.current;
-            setAutoplayProgress(Math.min(elapsed / AUTOPLAY_DURATION, 1));
-            autoplayRafRef.current = requestAnimationFrame(tick);
-        };
-
-        autoplayRafRef.current = requestAnimationFrame(tick);
-        autoplayTimerRef.current = setTimeout(() => {
-            setActiveIndex((p) => (p + 1) % len);
-        }, AUTOPLAY_DURATION);
-    }, [len]);
 
     const next = useCallback(() => {
         setActiveIndex((p) => (p + 1) % len);
@@ -200,14 +176,6 @@ const Portfolio = () => {
         window.addEventListener('keydown', onKey);
         return () => window.removeEventListener('keydown', onKey);
     }, [next, prev]);
-
-    useEffect(() => {
-        restartAutoplay();
-        return () => {
-            if (autoplayTimerRef.current) clearTimeout(autoplayTimerRef.current);
-            if (autoplayRafRef.current) cancelAnimationFrame(autoplayRafRef.current);
-        };
-    }, [activeIndex, restartAutoplay]);
 
     const active = projects[activeIndex];
     const hoveredProject = hoveredIndex === activeIndex ? active : null;
@@ -281,7 +249,7 @@ const Portfolio = () => {
             }
             if (infoPanelTimelineRef.current) {
                 gsap.set(infoPanelRef.current, { pointerEvents: 'auto' });
-                infoPanelTimelineRef.current.play(0);
+                infoPanelTimelineRef.current.timeScale(1).play(0);
             }
             return;
         }
@@ -289,7 +257,7 @@ const Portfolio = () => {
         if (!visibleProject) return;
 
         if (infoPanelTimelineRef.current) {
-            infoPanelTimelineRef.current.reverse();
+            infoPanelTimelineRef.current.timeScale(3.5).reverse();
         } else {
             setVisibleProject(null);
         }
@@ -338,6 +306,23 @@ const Portfolio = () => {
                     style={{ perspective: '2200px', perspectiveOrigin: '50% 50%' }}
                     onMouseLeave={() => setHoveredIndex(null)}
                 >
+                    {/* Active project URL — hover to reveal the detail panel */}
+                    <div className="mb-6 md:mb-8 hidden md:flex items-center justify-center">
+                        <button
+                            type="button"
+                            onMouseEnter={() => setHoveredIndex(activeIndex)}
+                            onMouseLeave={() => setHoveredIndex(null)}
+                            onFocus={() => setHoveredIndex(activeIndex)}
+                            onBlur={() => setHoveredIndex(null)}
+                            aria-label={`Details zu ${active.domain} anzeigen`}
+                            className="group inline-flex items-center gap-3 cursor-pointer text-xs md:text-sm font-semibold tracking-[0.22em] uppercase text-gray-500 hover:text-red-600 focus:text-red-600 focus:outline-none transition-colors font-inter"
+                        >
+                            <span className="h-px w-8 bg-current opacity-40 transition-all group-hover:w-12 group-hover:opacity-100" />
+                            <span className="border-b border-dashed border-current/40 pb-0.5">{active.domain}</span>
+                            <span className="h-px w-8 bg-current opacity-40 transition-all group-hover:w-12 group-hover:opacity-100" />
+                        </button>
+                    </div>
+
                     {/* Stage */}
                     <div
                         className="relative h-[270px] sm:h-[395px] md:h-[535px] flex items-center justify-center select-none transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -373,7 +358,6 @@ const Portfolio = () => {
                                             setActiveIndex(index);
                                         }
                                     }}
-                                    onMouseEnter={() => setHoveredIndex(isActive ? index : null)}
                                     className="absolute top-1/2 left-1/2 w-[77%] md:w-[61%] will-change-transform"
                                     style={{
                                         transform: `translate(-50%, -50%) translate3d(${tx}%, 0, ${tz}px) rotateY(${rotY}deg) scale(${scale})`,
@@ -451,13 +435,7 @@ const Portfolio = () => {
                         )}
                     </div>
 
-                    <div className="mt-8 md:mt-10 flex items-center gap-4">
-                        <div className="carousel-progress-shell flex-1">
-                            <div
-                                className="carousel-progress-fill"
-                                style={{ width: `${Math.max(4, Math.min(100, autoplayProgress * 100))}%` }}
-                            />
-                        </div>
+                    <div className="mt-8 md:mt-10 flex items-center justify-end">
                         <div className="text-[0.65rem] font-extrabold uppercase tracking-[0.28em] text-gray-500 tabular-nums">
                             {String(activeIndex + 1).padStart(2, '0')} / {String(len).padStart(2, '0')}
                         </div>
