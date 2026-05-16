@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Add a slug here once /public/portfolio/handy-{slug}.png exists.
 // Projects not listed fall back to the iphone-frame.png + {slug}-mobile.png composition.
-const HANDY_AVAILABLE = new Set(['sham', 'oasespa', 'fem', 'minicrm', 'misterm']);
+const HANDY_AVAILABLE = new Set(['sham', 'oasespa', 'fem', 'minicrm', 'misterm', 'sivar']);
 
 const projects = [
     {
@@ -53,6 +53,14 @@ const projects = [
         description: 'Eine markante Webpräsenz, die handwerkliche Kompetenz mit hochwertiger digitaler Wirkung übersetzt.',
         link: 'https://city-barbershop.simeon-jovicic.workers.dev',
     },
+    {
+        slug: 'sivar',
+        domain: 'Sivar',
+        category: 'Brand & Web',
+        headline: 'Ein digitaler Auftritt mit Charakter und Klarheit.',
+        description: 'Eine moderne Markenpräsenz, die Identität, Qualität und Wiedererkennung präzise auf den Punkt bringt.',
+        link: '#',
+    },
 ];
 
 // Per-project handy size scale (1 = default 18% width / 190px max)
@@ -62,6 +70,7 @@ const HANDY_SCALE = {
     fem: 1.21,
     minicrm: 1.32,
     misterm: 1.21,
+    sivar: 1.21,
 };
 
 const ProjectCard = ({ project }) => {
