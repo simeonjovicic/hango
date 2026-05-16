@@ -24,7 +24,7 @@ const services = [
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
             </svg>
         ),
-        title: "Performance Marketing",
+        title: "Online Marketing",
         subtitle: "Meta & Google Ads",
         description: "Erreichen Sie Ihre genaue Zielgruppe mit profitablen Werbekampagnen. Wir managen Ihr Budget so, dass sich jeder Cent in Reichweite verwandelt.",
         features: ["Targeted Ads Setup", "A/B Testing", "Conversion Tracking"],

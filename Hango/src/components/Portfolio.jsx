@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import React, { useRef, useLayoutEffect, useState, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -14,6 +14,7 @@ const projects = [
         domain: 'shamsweets.at',
         category: 'Food & E-Commerce',
         headline: 'Authentischer Geschmack, online erlebbar gemacht.',
+        description: 'Ein präziser digitaler Auftritt, der Vertrauen, Genuss und Kaufbereitschaft auf den ersten Blick verdichtet.',
         link: 'https://shamsweets.at',
     },
     {
@@ -21,6 +22,7 @@ const projects = [
         domain: 'oasespa.at',
         category: 'Health & Beauty',
         headline: 'Digitale Ruheoase für entspannte Kunden.',
+        description: 'Eine ruhige Premium-Präsenz, die Atmosphäre, Termininteresse und Markenwert souverän zusammenführt.',
         link: 'https://oasespa.at',
     },
     {
@@ -28,6 +30,7 @@ const projects = [
         domain: 'fembeauty.at',
         category: 'Beauty & Wellness',
         headline: 'Eleganz, die online genauso wirkt wie im Studio.',
+        description: 'Ein fein kuratierter Auftritt, der Ästhetik, Klarheit und gehobenes Vertrauen elegant verbindet.',
         link: 'https://fembeauty.at',
     },
     {
@@ -35,6 +38,7 @@ const projects = [
         domain: 'MiniCRM',
         category: 'SaaS & Business Tool',
         headline: 'Kundenmanagement, einfach und übersichtlich.',
+        description: 'Ein fokussiertes Interface, geschaffen für Übersicht, Geschwindigkeit und professionelle tägliche Nutzung.',
         link: '#',
     },
     {
@@ -42,6 +46,7 @@ const projects = [
         domain: 'Mister M',
         category: 'Service & Handwerk',
         headline: 'Vertrauen schaffen mit klarer Online-Präsenz.',
+        description: 'Eine markante Webpräsenz, die handwerkliche Kompetenz mit hochwertiger digitaler Wirkung übersetzt.',
         link: 'https://city-barbershop.simeon-jovicic.workers.dev',
     },
 ];
@@ -130,11 +135,45 @@ const ProjectCard = ({ project }) => {
 
 const Portfolio = () => {
     const containerRef = useRef(null);
+    const infoPanelRef = useRef(null);
+    const infoPanelContentRef = useRef(null);
+    const infoPanelTimelineRef = useRef(null);
+    const autoplayTimerRef = useRef(null);
+    const autoplayStartRef = useRef(0);
+    const autoplayRafRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const [visibleProject, setVisibleProject] = useState(null);
+    const [autoplayProgress, setAutoplayProgress] = useState(0);
     const len = projects.length;
+    const AUTOPLAY_DURATION = 6200;
 
-    const next = () => setActiveIndex((p) => (p + 1) % len);
-    const prev = () => setActiveIndex((p) => (p - 1 + len) % len);
+    const restartAutoplay = useCallback(() => {
+        if (autoplayTimerRef.current) clearTimeout(autoplayTimerRef.current);
+        if (autoplayRafRef.current) cancelAnimationFrame(autoplayRafRef.current);
+
+        autoplayStartRef.current = performance.now();
+        setAutoplayProgress(0);
+
+        const tick = () => {
+            const elapsed = performance.now() - autoplayStartRef.current;
+            setAutoplayProgress(Math.min(elapsed / AUTOPLAY_DURATION, 1));
+            autoplayRafRef.current = requestAnimationFrame(tick);
+        };
+
+        autoplayRafRef.current = requestAnimationFrame(tick);
+        autoplayTimerRef.current = setTimeout(() => {
+            setActiveIndex((p) => (p + 1) % len);
+        }, AUTOPLAY_DURATION);
+    }, [len]);
+
+    const next = useCallback(() => {
+        setActiveIndex((p) => (p + 1) % len);
+    }, [len]);
+
+    const prev = useCallback(() => {
+        setActiveIndex((p) => (p - 1 + len) % len);
+    }, [len]);
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
@@ -160,9 +199,101 @@ const Portfolio = () => {
         };
         window.addEventListener('keydown', onKey);
         return () => window.removeEventListener('keydown', onKey);
-    }, []);
+    }, [next, prev]);
+
+    useEffect(() => {
+        restartAutoplay();
+        return () => {
+            if (autoplayTimerRef.current) clearTimeout(autoplayTimerRef.current);
+            if (autoplayRafRef.current) cancelAnimationFrame(autoplayRafRef.current);
+        };
+    }, [activeIndex, restartAutoplay]);
 
     const active = projects[activeIndex];
+    const hoveredProject = hoveredIndex === activeIndex ? active : null;
+    const isInfoVisible = visibleProject !== null;
+
+    useLayoutEffect(() => {
+        const panel = infoPanelRef.current;
+        const content = infoPanelContentRef.current;
+        if (!panel || !content) return;
+
+        const children = Array.from(content.children);
+        const tl = gsap.timeline({
+            paused: true,
+            defaults: { ease: 'expo.out' },
+            onReverseComplete: () => {
+                gsap.set(panel, { pointerEvents: 'none' });
+                setVisibleProject(null);
+            },
+        });
+
+        gsap.set(panel, {
+            autoAlpha: 0,
+            x: 86,
+            yPercent: -50,
+            rotateY: -22,
+            rotateX: 8,
+            scale: 0.9,
+            filter: 'blur(18px)',
+            transformPerspective: 1200,
+            pointerEvents: 'auto',
+        });
+        gsap.set(children, { autoAlpha: 0, y: 18, rotateX: -10, transformOrigin: '50% 50%' });
+
+        tl.to(panel, {
+            autoAlpha: 1,
+            x: 0,
+            yPercent: -50,
+            rotateY: 0,
+            rotateX: 0,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 0.72,
+        }, 0);
+        tl.to(children, {
+            autoAlpha: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 0.56,
+            stagger: 0.09,
+            ease: 'power3.out',
+        }, 0.10);
+
+        infoPanelTimelineRef.current = tl;
+
+        if (isInfoVisible) {
+            gsap.set(panel, { pointerEvents: 'auto' });
+            tl.play(0);
+        } else {
+            tl.progress(1);
+        }
+
+        return () => {
+            tl.kill();
+        };
+    }, [isInfoVisible, activeIndex]);
+
+    useEffect(() => {
+        if (hoveredProject) {
+            if (visibleProject?.slug !== hoveredProject.slug) {
+                setVisibleProject(hoveredProject);
+            }
+            if (infoPanelTimelineRef.current) {
+                gsap.set(infoPanelRef.current, { pointerEvents: 'auto' });
+                infoPanelTimelineRef.current.play(0);
+            }
+            return;
+        }
+
+        if (!visibleProject) return;
+
+        if (infoPanelTimelineRef.current) {
+            infoPanelTimelineRef.current.reverse();
+        } else {
+            setVisibleProject(null);
+        }
+    }, [hoveredProject, visibleProject]);
 
     return (
         <section
@@ -172,39 +303,16 @@ const Portfolio = () => {
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="mb-6 md:mb-8">
-                    <h2 className="text-sm font-bold tracking-wide text-gray-500 uppercase font-roboto">
-                        Recent Projects
-                    </h2>
-                    <h1 className="mt-2 text-3xl leading-tight font-extrabold text-gray-900 sm:text-5xl lg:text-6xl font-roboto">
-                        Unsere Referenzen
+                <div className="mb-8 md:mb-10 max-w-4xl">
+                    <p className="text-xs md:text-sm font-extrabold tracking-[0.28em] text-red-600 uppercase font-inter">
+                        Ausgewählte Arbeiten
+                    </p>
+                    <h1 className="mt-4 text-3xl leading-[0.98] font-extrabold text-gray-950 sm:text-5xl lg:text-[3.45rem] font-roboto">
+                        Digitale Auftritte mit Substanz.
                     </h1>
-                </div>
-
-                {/* Active project info — above the carousel, tight to images */}
-                <div className="mb-[-8px] md:mb-[-16px] max-w-3xl mx-auto text-center min-h-[90px] md:min-h-[110px]">
-                    <div key={active.slug} className="animate-fade-in-up">
-                        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-center gap-1 sm:gap-4 mb-1 md:mb-2 font-inter">
-                            {active.link === '#' ? (
-                                <span className="text-xl md:text-2xl font-bold text-gray-900">{active.domain}</span>
-                            ) : (
-                                <a
-                                    href={active.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xl md:text-2xl font-bold text-gray-900 hover:text-red-600 transition-colors"
-                                >
-                                    {active.domain}
-                                </a>
-                            )}
-                            <span className="text-sm md:text-base font-medium text-gray-500">
-                                {active.category}
-                            </span>
-                        </div>
-                        <h4 className="text-xl md:text-3xl font-extrabold text-black font-roboto leading-snug">
-                            {active.headline}
-                        </h4>
-                    </div>
+                    <p className="mt-5 max-w-2xl text-sm md:text-base leading-7 text-gray-600 font-inter">
+                        Websites, Markenauftritte und Systeme, die visuell präzise wirken und im Alltag zuverlässig performen.
+                    </p>
                 </div>
 
                 {/* SVG displacement filter for liquid glass refraction */}
@@ -225,9 +333,19 @@ const Portfolio = () => {
                 </svg>
 
                 {/* Carousel */}
-                <div className="relative" style={{ perspective: '2200px', perspectiveOrigin: '50% 50%' }}>
+                <div
+                    className="relative pt-2 md:pt-4"
+                    style={{ perspective: '2200px', perspectiveOrigin: '50% 50%' }}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                >
                     {/* Stage */}
-                    <div className="relative h-[260px] sm:h-[380px] md:h-[520px] flex items-center justify-center select-none" style={{ transformStyle: 'preserve-3d' }}>
+                    <div
+                        className="relative h-[270px] sm:h-[395px] md:h-[535px] flex items-center justify-center select-none transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                        style={{
+                            transformStyle: 'preserve-3d',
+                            transform: isInfoVisible ? 'translateX(-12.8%)' : 'translateX(0)',
+                        }}
+                    >
                         {projects.map((project, index) => {
                             let offset = index - activeIndex;
                             if (offset > len / 2) offset -= len;
@@ -237,22 +355,28 @@ const Portfolio = () => {
                             const isActive = distance === 0;
 
                             // 3D positioning — cards rotate as they move outward (like a carousel cylinder)
-                            const tx = direction * (distance === 1 ? 62 : distance === 2 ? 105 : 150); // % of own width
-                            const tz = isActive ? 0 : distance === 1 ? -180 : -360; // depth in px (negative = further back)
-                            const rotY = direction * (distance === 1 ? -28 : distance === 2 ? -38 : -42); // degrees
-                            const blur = isActive ? 0 : distance === 1 ? 5 : 10;
-                            const brightness = isActive ? 1 : distance === 1 ? 0.92 : 0.85;
-                            const saturate = isActive ? 1 : distance === 1 ? 0.75 : 0.55;
+                            const tx = direction * (distance === 1 ? 82 : distance === 2 ? 145 : 190); // % of own width
+                            const tz = isActive ? 40 : distance === 1 ? -220 : -430; // depth in px (negative = further back)
+                            const rotY = direction * (distance === 1 ? -31 : distance === 2 ? -42 : -48); // degrees
+                            const scale = isActive ? 1.03 : distance === 1 ? 0.83 : 0.72;
+                            const blur = isActive ? 0 : distance === 1 ? 5.5 : 10;
+                            const brightness = isActive ? 1 : distance === 1 ? 0.9 : 0.8;
+                            const saturate = isActive ? 1 : distance === 1 ? 0.7 : 0.5;
                             const opacityVal = isActive ? 1 : distance >= 3 ? 0 : 1;
                             const zIndex = 30 - distance;
 
                             return (
                                 <div
                                     key={project.slug}
-                                    onClick={() => !isActive && setActiveIndex(index)}
+                                    onClick={() => {
+                                        if (!isActive) {
+                                            setActiveIndex(index);
+                                        }
+                                    }}
+                                    onMouseEnter={() => setHoveredIndex(isActive ? index : null)}
                                     className="absolute top-1/2 left-1/2 w-[77%] md:w-[61%] will-change-transform"
                                     style={{
-                                        transform: `translate(-50%, -50%) translate3d(${tx}%, 0, ${tz}px) rotateY(${rotY}deg)`,
+                                        transform: `translate(-50%, -50%) translate3d(${tx}%, 0, ${tz}px) rotateY(${rotY}deg) scale(${scale})`,
                                         filter: `blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
                                         opacity: opacityVal,
                                         zIndex,
@@ -270,17 +394,87 @@ const Portfolio = () => {
                         })}
                     </div>
 
+                    <div
+                        ref={infoPanelRef}
+                        className="pointer-events-none absolute right-0 top-1/2 z-50 hidden w-[min(26rem,38vw)] md:block"
+                        style={{ opacity: 0, transformStyle: 'preserve-3d' }}
+                    >
+                        {visibleProject && (
+                            <div className="relative" style={{ transformStyle: 'preserve-3d' }}>
+                                <div className="absolute inset-3 rounded-[1.9rem] bg-black/35 blur-2xl" style={{ transform: 'translateZ(-44px)' }} />
+                                <div className="absolute -inset-px rounded-[1.75rem] bg-gradient-to-br from-white/55 via-slate-200/20 to-black/30" style={{ transform: 'translateZ(-2px)' }} />
+                                <div
+                                    ref={infoPanelContentRef}
+                                    className="relative overflow-hidden rounded-[1.75rem] border border-white/15 bg-[linear-gradient(145deg,#1a1a1a_0%,#070707_48%,#101010_100%)] p-8 text-white shadow-[0_42px_110px_rgba(0,0,0,0.5)]"
+                                    style={{ transform: 'translateZ(34px)', transformStyle: 'preserve-3d' }}
+                                >
+                                    <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+                                    <div className="absolute inset-y-6 right-0 w-px bg-gradient-to-b from-transparent via-white/40 to-transparent" />
+                                    <div className="absolute -right-24 -top-28 h-56 w-56 rounded-full bg-white/12 blur-3xl" />
+                                    <div className="absolute -bottom-28 -left-24 h-56 w-56 rounded-full bg-white/12 blur-3xl" />
+                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.16),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.09),transparent_36%)]" />
+
+                                    <div className="relative flex items-center justify-between gap-4" style={{ transform: 'translateZ(32px)' }}>
+                                        <span className="inline-flex w-fit border border-white/15 bg-white/[0.07] px-3 py-1.5 text-[0.66rem] font-extrabold uppercase tracking-[0.22em] text-white/72 backdrop-blur">
+                                            {visibleProject.category}
+                                        </span>
+                                        <span className="h-px flex-1 bg-gradient-to-r from-white/35 via-white/55 to-transparent" />
+                                    </div>
+                                    <div className="relative mt-6" style={{ transform: 'translateZ(48px)' }}>
+                                        {visibleProject.link === '#' ? (
+                                            <h3 className="portfolio-panel-title text-4xl font-extrabold tracking-tight font-roboto">
+                                                {visibleProject.domain}
+                                            </h3>
+                                        ) : (
+                                            <a
+                                                href={visibleProject.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="portfolio-panel-title pointer-events-auto block text-4xl font-extrabold tracking-tight font-roboto"
+                                            >
+                                                {visibleProject.domain}
+                                            </a>
+                                        )}
+                                    </div>
+                                    <p className="relative mt-6 text-xl font-semibold leading-8 text-white font-inter" style={{ transform: 'translateZ(42px)' }}>
+                                        {visibleProject.headline}
+                                    </p>
+                                    <p className="relative mt-4 text-sm leading-7 text-white/64 font-inter" style={{ transform: 'translateZ(36px)' }}>
+                                        {visibleProject.description}
+                                    </p>
+                                    <div className="relative mt-8 flex items-center gap-3" style={{ transform: 'translateZ(30px)' }}>
+                                        <span className="h-px flex-1 bg-gradient-to-r from-white/45 via-white/30 to-transparent" />
+                                        <span className="text-[0.65rem] font-extrabold uppercase tracking-[0.24em] text-white/45">Selected Work</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="mt-8 md:mt-10 flex items-center gap-4">
+                        <div className="carousel-progress-shell flex-1">
+                            <div
+                                className="carousel-progress-fill"
+                                style={{ width: `${Math.max(4, Math.min(100, autoplayProgress * 100))}%` }}
+                            />
+                        </div>
+                        <div className="text-[0.65rem] font-extrabold uppercase tracking-[0.28em] text-gray-500 tabular-nums">
+                            {String(activeIndex + 1).padStart(2, '0')} / {String(len).padStart(2, '0')}
+                        </div>
+                    </div>
+
                     {/* Liquid Glass Nav arrows */}
                     <button
                         onClick={prev}
                         aria-label="Vorheriges Projekt"
                         data-dir="prev"
-                        className="liquid-glass-btn absolute left-0 md:-left-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 md:w-16 md:h-16 rounded-full isolate inline-flex items-center justify-center cursor-pointer"
+                        className="carousel-nav carousel-nav-left absolute left-0 md:-left-2 top-1/2 -translate-y-1/2 z-40 cursor-pointer"
                     >
-                        <span className="liquid-glass-lens absolute inset-0 -z-10 rounded-full pointer-events-none" />
-                        <span className="liquid-glass-content relative z-10 flex items-center justify-center">
-                            <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                        <span className="carousel-nav-ring" />
+                        <span className="carousel-nav-glass" />
+                        <span className="carousel-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.5 6.5L9 12l6.5 5.5" />
                             </svg>
                         </span>
                     </button>
@@ -288,27 +482,16 @@ const Portfolio = () => {
                         onClick={next}
                         aria-label="Nächstes Projekt"
                         data-dir="next"
-                        className="liquid-glass-btn absolute right-0 md:-right-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 md:w-16 md:h-16 rounded-full isolate inline-flex items-center justify-center cursor-pointer"
+                        className="carousel-nav carousel-nav-right absolute right-0 md:-right-2 top-1/2 -translate-y-1/2 z-40 cursor-pointer"
                     >
-                        <span className="liquid-glass-lens absolute inset-0 -z-10 rounded-full pointer-events-none" />
-                        <span className="liquid-glass-content relative z-10 flex items-center justify-center">
-                            <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        <span className="carousel-nav-ring" />
+                        <span className="carousel-nav-glass" />
+                        <span className="carousel-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 6.5L15 12l-6.5 5.5" />
                             </svg>
                         </span>
                     </button>
-                </div>
-
-                {/* Indicators */}
-                <div className="mt-2 md:mt-3 flex justify-center gap-2">
-                    {projects.map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setActiveIndex(i)}
-                            aria-label={`Projekt ${i + 1}`}
-                            className={`h-1.5 rounded-full transition-all duration-500 ${i === activeIndex ? 'w-10 bg-red-600' : 'w-1.5 bg-gray-300 hover:bg-gray-400'}`}
-                        />
-                    ))}
                 </div>
 
             </div>
