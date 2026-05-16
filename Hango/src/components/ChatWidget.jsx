@@ -1,6 +1,15 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const CONSENT_STORAGE_KEY = "hango-chat-consent-v1";
+const TEASER_DISMISS_KEY = "hango-chat-teaser-dismissed";
+
+const TEASER_VARIANTS = [
+  (n) => `Hi! Ich bin ${n}, dein KI-Assistent. Frag mich was zu Webdesign oder SEO.`,
+  (n) => `Servus, ${n} hier. Brauchst du Hilfe? Ich antworte sofort.`,
+  (n) => `Hallo! ${n} hier — ich bin ein KI-Chat und helfe gerne weiter.`,
+];
+
 const CHAT_API_URL =
   import.meta.env.VITE_CHAT_API_URL ||
   "https://falling-heart-60e1.simeon-jovicic.workers.dev";
@@ -95,6 +104,63 @@ function ChatWidget() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasConsent, setHasConsent] = useState(false);
+  const [showTeaser, setShowTeaser] = useState(false);
+
+  const teaserText = useMemo(
+    () => pickRandom(TEASER_VARIANTS)(botName),
+    [botName]
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      sessionStorage.removeItem(TEASER_DISMISS_KEY);
+    } catch {}
+    const t = setTimeout(() => setShowTeaser(true), 1800);
+    return () => clearTimeout(t);
+  }, []);
+
+  const dismissTeaser = useCallback(() => {
+    setShowTeaser(false);
+  }, []);
+
+  const openChat = useCallback(() => {
+    setIsOpen(true);
+    dismissTeaser();
+  }, [dismissTeaser]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const stored = localStorage.getItem(CONSENT_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.accepted) setHasConsent(true);
+      }
+    } catch {}
+  }, []);
+
+  const acceptConsent = useCallback(() => {
+    try {
+      localStorage.setItem(
+        CONSENT_STORAGE_KEY,
+        JSON.stringify({ accepted: true, ts: new Date().toISOString(), v: 1 })
+      );
+    } catch {}
+    setHasConsent(true);
+  }, []);
+
+  const revokeConsent = useCallback(() => {
+    try {
+      localStorage.removeItem(CONSENT_STORAGE_KEY);
+      sessionStorage.removeItem("hango-bot-name");
+    } catch {}
+    setHasConsent(false);
+    setMessages([welcome]);
+    setInput("");
+    setError(null);
+  }, [welcome]);
 
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
@@ -117,7 +183,7 @@ function ChatWidget() {
   const sendMessage = useCallback(
     async (text) => {
       const trimmed = text.trim();
-      if (!trimmed || isLoading) return;
+      if (!trimmed || isLoading || !hasConsent) return;
 
       const userMessage = { role: "user", content: trimmed };
       const history = [...messages.filter((m) => m !== welcome), userMessage];
@@ -163,7 +229,7 @@ function ChatWidget() {
         abortRef.current = null;
       }
     },
-    [messages, isLoading, welcome, botName]
+    [messages, isLoading, welcome, botName, hasConsent]
   );
 
   const handleSubmit = (e) => {
@@ -173,16 +239,80 @@ function ChatWidget() {
 
   return (
     <>
+      <AnimatePresence>
+        {showTeaser && !isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.95 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed bottom-10 right-[7rem] z-[60] max-w-[16rem]"
+          >
+            <button
+              type="button"
+              onClick={openChat}
+              className="group relative block w-full text-left rounded-2xl rounded-tr-md bg-white px-3.5 py-2.5 pr-7 shadow-[0_8px_28px_rgba(0,0,0,0.12)] ring-1 ring-black/5 hover:shadow-[0_10px_32px_rgba(220,38,38,0.18)] hover:-translate-y-0.5 transition-all"
+            >
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-red-500 to-rose-500 px-2 py-0.5 text-[0.6rem] font-bold text-white tracking-wide">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                  KI-CHAT
+                </span>
+                <span className="inline-flex items-center gap-1 text-[0.6rem] font-medium text-gray-400">
+                  ·
+                  <span className="relative inline-flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  </span>
+                  jetzt online
+                </span>
+              </div>
+              <p className="mt-1 font-inter text-[0.75rem] leading-snug text-gray-700">
+                {teaserText}
+              </p>
+              <span
+                role="button"
+                tabIndex={0}
+                aria-label="Hinweis schließen"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dismissTeaser();
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dismissTeaser();
+                  }
+                }}
+                className="absolute top-1.5 right-1.5 flex h-5 w-5 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              >
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </span>
+              <span
+                aria-hidden
+                className="absolute top-1/2 -right-[5px] -translate-y-1/2 h-2.5 w-2.5 rotate-45 bg-white shadow-[1px_-1px_0_rgba(0,0,0,0.04)]"
+              />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.button
         type="button"
-        onClick={() => setIsOpen((v) => !v)}
+        onClick={() => {
+          setIsOpen((v) => !v);
+          dismissTeaser();
+        }}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1.5, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         aria-label={isOpen ? "Chat schließen" : "Chat öffnen"}
-        className="fixed bottom-5 right-5 z-[60] h-14 w-14 rounded-full bg-red-600 text-white shadow-[0_8px_24px_rgba(220,38,38,0.4)] flex items-center justify-center hover:bg-red-700 transition-colors group"
+        className="fixed bottom-8 right-8 z-[60] h-14 w-14 rounded-full bg-red-600 text-white shadow-[0_8px_24px_rgba(220,38,38,0.4)] flex items-center justify-center hover:bg-red-700 transition-colors group"
       >
         <span className="absolute inset-0 -z-10 rounded-full bg-red-600 opacity-30 blur-xl transition-opacity group-hover:opacity-50" />
         <AnimatePresence mode="wait" initial={false}>
@@ -231,7 +361,7 @@ function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-24 right-5 z-[60] w-[calc(100vw-2.5rem)] max-w-sm h-[min(36rem,calc(100dvh-8rem))] rounded-2xl bg-white/95 backdrop-blur-xl shadow-2xl ring-1 ring-black/10 flex flex-col overflow-hidden"
+            className="fixed bottom-28 right-8 z-[60] w-[calc(100vw-4rem)] max-w-sm h-[min(36rem,calc(100dvh-9rem))] rounded-2xl bg-white/95 backdrop-blur-xl shadow-2xl ring-1 ring-black/10 flex flex-col overflow-hidden"
           >
             <header className="relative overflow-hidden border-b border-gray-100">
               <div className={`absolute inset-0 bg-gradient-to-br ${botProfile.gradient}`} />
@@ -258,9 +388,16 @@ function ChatWidget() {
               </div>
             </header>
 
+            {!hasConsent && (
+              <ConsentGate botName={botName} onAccept={acceptConsent} />
+            )}
+
             <div
               ref={scrollRef}
-              className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-gradient-to-b from-white to-[#fafafa]"
+              aria-hidden={!hasConsent}
+              className={`flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-gradient-to-b from-white to-[#fafafa] ${
+                !hasConsent ? "hidden" : ""
+              }`}
             >
               {messages.map((m, i) => (
                 <MessageBubble
@@ -301,7 +438,11 @@ function ChatWidget() {
               {error && <p className="text-xs text-red-600 px-1">{error}</p>}
             </div>
 
-            <div className="border-t border-gray-100 bg-white/80 backdrop-blur-md p-3">
+            <div
+              className={`border-t border-gray-100 bg-white/80 backdrop-blur-md p-3 ${
+                !hasConsent ? "hidden" : ""
+              }`}
+            >
               <form onSubmit={handleSubmit} className="flex items-end gap-2">
                 <div className="flex-1 relative">
                   <textarea
@@ -333,7 +474,14 @@ function ChatWidget() {
                 </button>
               </form>
               <p className="mt-2 px-1 text-[0.65rem] text-gray-400 leading-snug text-center">
-                Antworten können Fehler enthalten. Bitte keine persönlichen Daten eingeben.
+                Antworten können Fehler enthalten. Bitte keine persönlichen Daten eingeben.{" "}
+                <button
+                  type="button"
+                  onClick={revokeConsent}
+                  className="underline hover:text-red-600 transition-colors"
+                >
+                  Einwilligung widerrufen
+                </button>
               </p>
             </div>
           </motion.div>
@@ -368,6 +516,49 @@ function MessageBubble({ role, content, isStreaming, botName, botAvatar }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function ConsentGate({ botName, onAccept }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25 }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Chat starten"
+      className="flex-1 flex flex-col items-center justify-center text-center px-6 py-6 bg-gradient-to-b from-white to-[#fafafa]"
+    >
+      <h3 className="font-roboto text-base font-bold text-gray-900">
+        Bereit für ein Gespräch?
+      </h3>
+      <p className="mt-2 font-inter text-xs leading-relaxed text-gray-600 max-w-[16rem]">
+        Mit dem Klick auf „Los geht's" startest du den Chat mit {botName} und
+        stimmst der Verarbeitung deiner Nachrichten gemäß unserer{" "}
+        <a
+          href="/privacy-policy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-red-600 underline hover:text-red-700"
+        >
+          Datenschutzerklärung
+        </a>{" "}
+        zu.
+      </p>
+
+      <button
+        type="button"
+        onClick={onAccept}
+        className="mt-5 rounded-full bg-red-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-700 hover:scale-[1.02] active:scale-95 transition-all"
+      >
+        Los geht's
+      </button>
+
+      <p className="mt-3 font-inter text-[0.65rem] text-gray-400">
+        Jederzeit widerrufbar
+      </p>
+    </motion.div>
   );
 }
 

@@ -100,7 +100,102 @@ const PrivacyPolicy = () => {
 
             <section className="space-y-4 pt-4 border-t border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">
-                6. Speicherdauer
+                6. KI-Chatbot
+              </h2>
+              <div className="space-y-3 text-gray-600">
+                <p>
+                  Auf unserer Website setzen wir einen KI-gestützten Chatbot
+                  ein, der Ihnen Fragen zu unseren Services beantwortet. Die
+                  Nutzung des Chatbots ist freiwillig und erfolgt erst nach
+                  ausdrücklicher Einwilligung im Chatfenster.
+                </p>
+                <p className="font-medium text-gray-800">
+                  Verarbeitete Daten:
+                </p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Inhalt Ihrer Chat-Nachrichten</li>
+                  <li>
+                    Zeitstempel und IP-Adresse (zur Abwehr von Missbrauch /
+                    Rate-Limiting, anonymisiert nach kurzer Zeit)
+                  </li>
+                  <li>Pseudonymer Bot-Name aus Ihrer Browser-Session</li>
+                </ul>
+                <p className="font-medium text-gray-800">
+                  Eingesetzte Dienste (Auftragsverarbeiter / Drittanbieter):
+                </p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>
+                    <span className="font-medium">Cloudflare Workers</span>{" "}
+                    (Cloudflare, Inc., USA) – Hosting der Chat-Schnittstelle.
+                    Datenübermittlung in die USA auf Basis der EU-Standard­
+                    vertrags­klauseln.{" "}
+                    <a
+                      href="https://www.cloudflare.com/privacypolicy/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-700"
+                    >
+                      Datenschutzerklärung
+                    </a>
+                  </li>
+                  <li>
+                    <span className="font-medium">Groq, Inc.</span> (USA) –
+                    Verarbeitung der Nachrichten durch das Sprachmodell
+                    (Llama 3.3). Die Nachrichten werden ausschließlich zur
+                    Generierung der Antwort verarbeitet und laut Anbieter nicht
+                    zum Modelltraining verwendet.{" "}
+                    <a
+                      href="https://groq.com/privacy-policy/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-700"
+                    >
+                      Datenschutzerklärung
+                    </a>
+                  </li>
+                  <li>
+                    <span className="font-medium">DiceBear</span> – Generierung
+                    der Bot-Avatare über api.dicebear.com. Hierbei wird
+                    technisch bedingt Ihre IP-Adresse an den Anbieter
+                    übermittelt.
+                  </li>
+                </ul>
+                <p>
+                  <span className="font-medium text-gray-800">
+                    Rechtsgrundlage:
+                  </span>{" "}
+                  Art. 6 Abs. 1 lit. a DSGVO (Einwilligung) sowie Art. 49 Abs. 1
+                  lit. a DSGVO für die Übermittlung in die USA. Sie können Ihre
+                  Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen,
+                  indem Sie den Chat schließen und im Browser unter
+                  „Anwendungsdaten / Local Storage" die Einwilligung
+                  zurücksetzen oder uns per E-Mail kontaktieren.
+                </p>
+                <p>
+                  <span className="font-medium text-gray-800">Hinweise:</span>{" "}
+                  Bitte geben Sie im Chat keine sensiblen personenbezogenen
+                  Daten ein (z. B. Gesundheitsdaten, Passwörter, Bank- oder
+                  Ausweisdaten). KI-generierte Antworten können fehlerhaft sein
+                  und stellen keine rechtsverbindliche Auskunft dar. Es findet
+                  keine automatisierte Entscheidung im Sinne des Art. 22 DSGVO
+                  statt.
+                </p>
+                <p>
+                  <span className="font-medium text-gray-800">
+                    Speicherdauer:
+                  </span>{" "}
+                  Der Chatverlauf wird ausschließlich lokal in Ihrem Browser
+                  (Session Storage) gehalten und beim Schließen des Browsers
+                  gelöscht. Bei uns oder unseren Auftragsverarbeitern werden
+                  Inhalte nicht dauerhaft gespeichert; IP-Adressen werden nach
+                  spätestens 60 Minuten verworfen.
+                </p>
+              </div>
+            </section>
+
+            <section className="space-y-4 pt-4 border-t border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">
+                7. Speicherdauer
               </h2>
               <p className="text-gray-600">
                 Ihre Daten werden gelöscht, sobald sie für den Zweck ihrer
@@ -111,7 +206,7 @@ const PrivacyPolicy = () => {
 
             <section className="space-y-4 pt-4 border-t border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">
-                7. Ihre Rechte
+                8. Ihre Rechte
               </h2>
               <div className="space-y-2 text-gray-600">
                 <ul className="list-disc pl-6 space-y-2">
@@ -127,7 +222,7 @@ const PrivacyPolicy = () => {
 
             <section className="space-y-4 pt-4 border-t border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">
-                8. Sicherheitsmaßnahmen
+                9. Sicherheitsmaßnahmen
               </h2>
               <div className="space-y-2 text-gray-600">
                 <ul className="list-disc pl-6 space-y-2">
@@ -140,7 +235,7 @@ const PrivacyPolicy = () => {
 
             <section className="space-y-4 pt-4 border-t border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">
-                9. Änderungen dieser Policy
+                10. Änderungen dieser Policy
               </h2>
               <p className="text-gray-600">
                 Wir behalten uns vor, diese Datenschutzerklärung anzupassen. Die
