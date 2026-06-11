@@ -10,6 +10,7 @@ import Impressum from "./components/Impressum";
 import Privacy_Policy from "./components/Privacy-Policy";
 import Landingpage from "./components/Landingpage";
 import HangoLoader from "./components/HangoLoader";
+import SphereGallery from "./components/SphereGallery";
 import { useState } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -42,6 +43,8 @@ const App = () => {
           <Route path="/impressum" element={<Impressum />} />
           {/* Impressum route */}
           <Route path="/privacy-policy" element={<Privacy_Policy />} />
+          {/* Spherical gallery */}
+          <Route path="/gallery" element={<SphereGallery />} />
         </Routes>
 
         <Footer />
