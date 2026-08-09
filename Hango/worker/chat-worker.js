@@ -79,11 +79,23 @@ export default {
     const origin = request.headers.get("Origin");
     const cors = corsHeaders(origin);
 
+    // Die CORS-Header oben schützen nur Browser. Fremde Aufrufer würden sonst
+    // ungehindert durchlaufen und Groq-Tokens verbrauchen — hier hart ablehnen.
+    // Browser senden bei POST immer einen Origin, auch bei gleicher Domain.
+    if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+      return jsonError("Forbidden", 403, cors);
+    }
+
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: cors });
     }
     if (request.method !== "POST") {
       return new Response("Method Not Allowed", { status: 405, headers: cors });
+    }
+
+    if (!env.GROQ_API_KEY) {
+      console.error("GROQ_API_KEY ist nicht gesetzt");
+      return jsonError("Der Chat ist gerade nicht erreichbar.", 503, cors);
     }
 
     const ip = request.headers.get("CF-Connecting-IP") || "unknown";
@@ -134,8 +146,10 @@ export default {
     });
 
     if (!groqRes.ok) {
-      const text = await groqRes.text();
-      return jsonError(`Upstream error: ${text}`, 502, cors);
+      // Nur loggen, nicht ausliefern — die Antwort kann Kontingent- und
+      // Kontodetails enthalten und landet sonst im Browser des Besuchers.
+      console.error("Groq-Fehler", groqRes.status, await groqRes.text());
+      return jsonError("Der Chat ist gerade nicht erreichbar.", 502, cors);
     }
 
     return new Response(groqRes.body, {
