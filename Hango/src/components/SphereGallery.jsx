@@ -27,6 +27,23 @@ const PHI_LEN = THREE.MathUtils.degToRad(40); // card width
 const THETA_LEN = THREE.MathUtils.degToRad(26); // card height
 const COL_STEP = (Math.PI * 2) / COLS;
 
+/* ------------------------------------------------------------------ */
+/*  Camera                                                             */
+/*  Der FOV ist vertikal — auf schmalen Viewports wird der horizontale  */
+/*  Blickwinkel dadurch sehr eng. Auf Mobile deshalb weiter aufziehen.  */
+/* ------------------------------------------------------------------ */
+const FOV_DESKTOP = 60;
+const FOV_MOBILE = 84;
+const MOBILE_BREAKPOINT = 768;
+const INTRO_FOV_OFFSET = 32; // Start des Intro-Zooms, relativ zum Ruhe-FOV
+const INTRO_FOV_MAX = 100; // darüber wird das Bild unangenehm verzerrt
+const OPEN_FOV_RATIO = 38 / FOV_DESKTOP; // Eintauchen beim Öffnen, proportional
+
+const restingFov = () =>
+  window.innerWidth < MOBILE_BREAKPOINT ? FOV_MOBILE : FOV_DESKTOP;
+
+const introFov = () => Math.min(restingFov() + INTRO_FOV_OFFSET, INTRO_FOV_MAX);
+
 // browser window: 88px toolbar + 1024x576 (16:9) viewport
 const TEX_W = 1024;
 const TEX_H = 664;
@@ -165,7 +182,7 @@ const SphereGallery = () => {
     scene.background = new THREE.Color(COLORS.bg);
 
     const camera = new THREE.PerspectiveCamera(
-      60,
+      restingFov(),
       mount.clientWidth / mount.clientHeight,
       0.1,
       100
@@ -332,7 +349,7 @@ const SphereGallery = () => {
         ease: "power3.inOut",
       });
       gsap.to(camera, {
-        fov: 38,
+        fov: restingFov() * OPEN_FOV_RATIO,
         duration: 0.7,
         ease: "power3.inOut",
         onUpdate: () => camera.updateProjectionMatrix(),
@@ -382,10 +399,10 @@ const SphereGallery = () => {
     mount.style.cursor = "grab";
 
     /* ----- intro zoom ----- */
-    camera.fov = 92;
+    camera.fov = introFov();
     camera.updateProjectionMatrix();
     gsap.to(camera, {
-      fov: 60,
+      fov: restingFov(),
       duration: 1.4,
       ease: "power3.out",
       onUpdate: () => camera.updateProjectionMatrix(),
@@ -400,6 +417,9 @@ const SphereGallery = () => {
     /* ----- resize ----- */
     const onResize = () => {
       camera.aspect = mount.clientWidth / mount.clientHeight;
+      // Beim Drehen des Geräts den passenden Ruhe-FOV übernehmen —
+      // außer während des Öffnens, sonst würde der Zoom überschrieben
+      if (!transitioning) camera.fov = restingFov();
       camera.updateProjectionMatrix();
       renderer.setSize(mount.clientWidth, mount.clientHeight);
     };
@@ -445,6 +465,30 @@ const SphereGallery = () => {
             "radial-gradient(ellipse at center, rgba(245,245,247,0) 55%, rgba(245,245,247,0.85) 100%)",
         }}
       />
+
+      {/* Instagram — unten mittig, über der Kugel */}
+      <a
+        href="https://www.instagram.com/hango.at/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Hango auf Instagram"
+        className="group absolute left-1/2 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-[#d2d2d7] bg-white/85 px-5 py-3 font-inter text-sm font-semibold text-[#1d1d1f] shadow-lg shadow-black/5 backdrop-blur transition-all duration-300 hover:border-[#1d1d1f] hover:bg-white active:scale-[0.98]"
+        style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.9"
+          aria-hidden="true"
+          className="h-[1.15rem] w-[1.15rem] transition-transform duration-300 group-hover:scale-110"
+        >
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+          <circle cx="12" cy="12" r="4.2" />
+          <circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none" />
+        </svg>
+        @hango.at
+      </a>
 
       {/* white transition overlay */}
       <div
