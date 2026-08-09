@@ -9,18 +9,16 @@ import {
 } from "framer-motion";
 const IMG_WIDTH = 60;
 const IMG_HEIGHT = 110;
-const TOTAL_IMAGES = 18;
 const MORPH_END = 600;
 const DISAPPEAR_END = 1000;
 
 const PHONE_IMAGES = Array.from(
-  { length: 9 },
+  { length: 12 },
   (_, i) => `/assets/images/phone-view/phone-view${i + 1}.png`
 );
-const IMAGES = Array.from(
-  { length: TOTAL_IMAGES },
-  (_, i) => PHONE_IMAGES[i % PHONE_IMAGES.length]
-);
+// Jede Referenz erscheint genau einmal im Kreis — keine Wiederholungen
+const IMAGES = PHONE_IMAGES;
+const TOTAL_IMAGES = IMAGES.length;
 
 const lerp = (a, b, t) => a * (1 - t) + b * t;
 

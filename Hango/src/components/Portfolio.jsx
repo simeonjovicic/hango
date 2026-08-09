@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HashLink } from 'react-router-hash-link';
+import { Link } from 'react-router-dom';
 import { useAutoCarousel } from '../hooks/useAutoCarousel';
 
 const PORTFOLIO_CAROUSEL_INTERVAL = 7500;
@@ -10,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Add a slug here once /public/portfolio/handy-{slug}.png exists.
 // Projects not listed fall back to the iphone-frame.png + {slug}-mobile.png composition.
-const HANDY_AVAILABLE = new Set(['sham', 'oasespa', 'fem', 'minicrm', 'misterm', 'sivar']);
+const HANDY_AVAILABLE = new Set(['sham', 'oasespa', 'fem', 'minicrm', 'misterm', 'sivar', 'choo', 'nes', 'datri']);
 
 const projects = [
     {
@@ -61,6 +62,30 @@ const projects = [
         description: 'Eine moderne Markenpräsenz, die Identität, Qualität und Wiedererkennung präzise auf den Punkt bringt.',
         link: '#',
     },
+    {
+        slug: 'choo',
+        domain: 'choo-foodstore.at',
+        category: 'Food & Retail',
+        headline: 'Asiatische Vielfalt, digital zum Greifen nah.',
+        description: 'Ein warmer, kuratierter Auftritt, der Sortiment, Standort und Einkaufslust auf einen Blick vermittelt.',
+        link: 'https://choo-foodstore.at',
+    },
+    {
+        slug: 'nes',
+        domain: 'nes-shop.at',
+        category: 'Fashion & E-Commerce',
+        headline: 'Zurückhaltende Eleganz für eine junge Marke.',
+        description: 'Eine ruhige Premium-Bühne, die Markenwerte, Neugier und Newsletter-Anmeldungen elegant zusammenführt.',
+        link: 'https://nes-shop.at',
+    },
+    {
+        slug: 'datri',
+        domain: 'datri-shop.at',
+        category: 'Sport & E-Commerce',
+        headline: 'Kompromisslose Marke, kompromissloser Auftritt.',
+        description: 'Ein kraftvoller Shop-Auftritt, der Härte, Qualitätsanspruch und klare Kaufwege konsequent verbindet.',
+        link: 'https://datri-shop.at',
+    },
 ];
 
 // Per-project handy size scale (1 = default 18% width / 190px max)
@@ -71,6 +96,9 @@ const HANDY_SCALE = {
     minicrm: 1.32,
     misterm: 1.21,
     sivar: 1.21,
+    choo: 1.21,
+    nes: 1.21,
+    datri: 1.21,
 };
 
 const ProjectCard = ({ project }) => {
@@ -631,6 +659,33 @@ const Portfolio = () => {
               />
             </svg>
           </button>
+        </div>
+
+        {/* Einstieg in die 3D-Galerie (/gallery) */}
+        <div className="mt-12 md:mt-16 flex flex-col items-center gap-3">
+          <Link
+            to="/gallery"
+            className="group inline-flex items-center gap-3 rounded-full bg-gray-950 px-7 py-4 md:px-9 font-inter text-sm md:text-base font-bold text-white shadow-lg shadow-black/20 transition-all duration-300 hover:bg-black hover:shadow-xl hover:shadow-black/30 active:scale-[0.98]"
+          >
+            Alle Projekte ansehen
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              aria-hidden="true"
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 12h14M13 6l6 6-6 6"
+              />
+            </svg>
+          </Link>
+          <p className="font-inter text-[0.65rem] md:text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
+            Interaktive 3D-Galerie
+          </p>
         </div>
       </div>
     </section>
