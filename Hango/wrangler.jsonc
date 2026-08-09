@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Die Website als Worker mit statischen Assets.
+  // Der Chat-Worker ist davon getrennt und hat seine eigene Config in worker/.
+  "name": "hango",
+  "compatibility_date": "2026-08-08",
+
+  "assets": {
+    // Das Build-Ergebnis, nicht der Quellcode. Ohne Build-Kommando im
+    // Dashboard lädt Wrangler sonst das Repo-Verzeichnis hoch und die Seite
+    // zeigt auf /src/main.jsx, das nie transpiliert wurde.
+    "directory": "./dist/",
+
+    // Unbekannte Pfade an index.html — sonst liefern /gallery, /impressum
+    // und /privacy-policy bei Direktaufruf oder Reload einen 404.
+    "not_found_handling": "single-page-application"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Muss exakt dem Worker im Dashboard entsprechen — `wrangler deploy` richtet
+  // sich nach diesem Feld, nicht danach, an welchem Worker die Build-Config
+  // hängt. Bei abweichendem Namen entsteht ein zweiter, leerer Worker.
+  "name": "falling-heart-60e1",
+  "main": "chat-worker.js",
+  "compatibility_date": "2026-08-08",
+
+  // Solange die Zone hango.at noch nicht aktiv ist, läuft der Chat über
+  // die workers.dev-Adresse.
+  "workers_dev": true
+
+  // Sobald die Zone aktiv ist: workers_dev auf false setzen und die Route
+  // aktivieren. Dann läuft der Chat unter hango.at/api/chat — gleiche
+  // Domain wie die Website, und die offene workers.dev-Adresse als
+  // Umgehung des WAF-Ratelimits fällt weg.
+  //
+  // "workers_dev": false,
+  // "routes": [{ "pattern": "hango.at/api/chat", "zone_name": "hango.at" }]
+}
